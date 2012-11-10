@@ -1,4 +1,4 @@
-<?php if(!isset($proc)) header('Location: ../');
+<?php
 /*
 $Rev: 274 $
 $Date: 2010-12-03 16:22:40 -0300 (Fri, 03 Dec 2010) $
@@ -19,11 +19,6 @@ $Author: unreal4u $
 $r['locale'] = setlocale(LC_ALL,'es_CL','es_ES','es','ES');
 date_default_timezone_set('America/Santiago');
 
-define('TIEMPO' ,TRUE); // Show page generation time in footer? NOT A PART OF THIS CLASS!
-if (TIEMPO == true) $q = time() + microtime();
-define('MEMORY' ,TRUE); // Show memory usage in footer? NOT A PART OF THIS CLASS!
-
-
 /* ************************************************************************** */
 /*                        MAIN CONFIGURATION                                  */
 /* ************************************************************************** */
@@ -43,4 +38,4 @@ define('MYSQL_NAME','test');   // your db's database name
 define('DBCHAR','utf8'); // The DB's charset
 /* ************************************************************************** */
 /*                        END MAIN CONFIGURATION                              */
-/* ************************************************************************** */ 
+/* ************************************************************************** */

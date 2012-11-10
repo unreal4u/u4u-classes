@@ -182,7 +182,7 @@ class db_mysqli {
      * As the connection is no longer established when the class initializes itself, we must do it our way
      */
     private function connect_to_db() {
-        if ($this->connected === FALSE) {
+        if ($this->connected === false) {
             $db_connect = mysql_connect::singleton();
             $this->db = $db_connect->db;
             $this->connected = true;
@@ -198,8 +198,8 @@ class db_mysqli {
      * @return boolean Whether we could execute the query or not
      */
     private function execute_query($arg_array = NULL) {
-        $execute_query = FALSE;
-        if ($this->cache_query === FALSE or $this->cache_recreate === true) {
+        $execute_query = false;
+        if ($this->cache_query === false or $this->cache_recreate === true) {
             $this->connect_to_db();
             $sql_query = array_shift($arg_array);
             $types = '';
@@ -244,8 +244,9 @@ class db_mysqli {
             if ($execute_query and is_object($this->stmt)) {
                 $this->stmt->execute();
                 $this->stmt->store_result();
-            } elseif (!$this->error)
+            } elseif (!$this->error) {
                 $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
+            }
         }
 
         return $execute_query;
@@ -260,7 +261,7 @@ class db_mysqli {
      */
     private function execute_result_info($arg_array = NULL) {
         if (!$this->error) {
-            if ($this->cache_query === FALSE and $this->load_from_cache === false) {
+            if ($this->cache_query === false and $this->load_from_cache === false) {
                 if ($this->db->affected_rows > 0)
                     $num_rows = $this->db->affected_rows;
                 else {
@@ -275,6 +276,7 @@ class db_mysqli {
             } else {
                 $result['num_rows'] = $this->get_cache_meta();
             }
+
             return $result;
         }
     }
@@ -285,10 +287,10 @@ class db_mysqli {
     private function execute_result_array($arg_array) {
         $result = 0;
         if (!$this->error) {
-            if ($this->cache_query === FALSE or $this->cache_recreate === true) {
+            if ($this->cache_query === false or $this->cache_recreate === true) {
                 if ($this->stmt->error) {
                     $this->logError(NULL, $this->stmt->errno, 'fatal', $this->stmt->error);
-                    return FALSE;
+                    return false;
                 }
                 $result_metadata = $this->stmt->result_metadata();
                 if (is_object($result_metadata)) {
@@ -297,9 +299,8 @@ class db_mysqli {
                         array_unshift($result_fields, $field->name);
                         $params[] = & $row[$field->name];
                     }
-                    call_user_func_array(array(
-                        $this->stmt, 'bind_result'
-                    ), $params);
+                    call_user_func_array(array($this->stmt, 'bind_result'), $params);
+
                     while ($this->stmt->fetch()) {
                         foreach ($row as $key => $val) {
                             $c[$key] = $val;
@@ -339,6 +340,7 @@ class db_mysqli {
             }
             $filename = 'db_' . md5($filename);
         }
+
         return DB_CACHE_LOCATION . $filename . '.xml';
     }
 
@@ -351,6 +353,7 @@ class db_mysqli {
     private function valid_cache($arg_array = NULL) {
         $filename = '';
         $is_valid = false;
+
         if (is_array($arg_array)) {
             $filename = $this->filename($arg_array);
             if (file_exists($filename)) {
@@ -361,6 +364,7 @@ class db_mysqli {
                 }
             }
         }
+
         return $is_valid;
     }
 
@@ -387,10 +391,11 @@ class db_mysqli {
         }
         if (!@file_put_contents($this->filename($arg_array), '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<db>' . $xml . '</db>')) {
             $this->logError($arg_array[0], 0, 'non-fatal', 'Couldn\'t create cache file!');
-            $this->cache_query = FALSE;
-            $this->cache_recreate = FALSE;
+            $this->cache_query = false;
+            $this->cache_recreate = false;
         }
         unset($xml);
+
         return true;
     }
 
@@ -425,13 +430,6 @@ class db_mysqli {
         return $r;
     }
 
-    /**
-     * ***********************************************************************
-     */
-    /*             LOGGING AND DEBUGGING                                      */
-    /**
-     * ***********************************************************************
-     */
     /**
      * Function that logs all errors
      *
@@ -475,7 +473,7 @@ class db_mysqli {
      * @return boolean Always returns TRUE.
      */
     private function logMe($stats, $arg_array, $result, $error, $from_cache) {
-        $this->cache_query = FALSE;
+        $this->cache_query = false;
         if (!DB_DATASIZE) {
             $datasize = 0;
         } else {
@@ -512,13 +510,15 @@ class db_mysqli {
      * @param $from_cache boolean
      * @return boolean Always returns TRUE.
      */
-    private function liveStats($query, $stats = NULL, $data = 0, $error = FALSE, $from_cache = FALSE) {
-        if ($error == FALSE)
+    private function liveStats($query, $stats = NULL, $data = 0, $error = false, $from_cache = false) {
+        if ($error == false) {
             $error = 'FALSE';
-        if (!is_array($stats) or empty($stats))
+        }
+        if (!is_array($stats) or empty($stats)) {
             $stats = array(
                 'time' => 0, 'memory' => 0
             );
+        }
         if ($from_cache === true) {
             $valid_cache = 'TRUE';
         } else {
@@ -529,6 +529,7 @@ class db_mysqli {
         } else {
             $in_trans = 'FALSE';
         }
+
         $results = $this->num_rows;
         if ($this->cache_query === true) {
             $this->rows_from_cache = $results;
@@ -537,6 +538,7 @@ class db_mysqli {
         $this->dbLiveStats[] = array(
             'query' => $query, 'number_results' => $results, 'time' => $stats['time'] . ' (seg)', 'memory' => $stats['memory'] . ' (bytes)', 'datasize' => $data . ' (bytes)', 'error' => $error, 'from_cache' => $valid_cache, 'within_transaction' => $in_trans
         );
+
         return true;
     }
 
@@ -579,7 +581,7 @@ class db_mysqli {
                 $final->addChild('sRef', htmlentities($referer));
                 $consultas = $final->addChild('myquery');
                 foreach ($query_arr as $k => $q) {
-                    if ($q['error'] == FALSE) {
+                    if ($q['error'] == false) {
                         $q['error'] = 'FALSE';
                     }
                     $detalle[$i] = $consultas->addChild('query_' . $i);
@@ -648,7 +650,7 @@ class db_mysqli {
  */
 class mysql_connect {
     private static $instance;
-    private $connected = FALSE;
+    private $connected = false;
 
     public static function singleton() {
         if (!isset(self::$instance)) {
@@ -677,11 +679,11 @@ class mysql_connect {
         } catch (Exception $e) {
             if (DB_SHOW_ERRORS === true) {
                 trigger_error($e->getMessage(), E_USER_ERROR);
-            }
-            else {
+            } else {
                 die();
             }
         }
+
         if ($this->connected === true) {
             $this->db->set_charset(DBCHAR);
         }

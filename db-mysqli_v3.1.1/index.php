@@ -1,19 +1,18 @@
-<?php //if(!isset($proc)) header('Location: ../../');
+<?php
 /**
  * Descripcion del modulo
- * 
+ *
  * @package General
  * @version $Rev$
  * @copyright $Date$
  * @author $Author$
  */
 
-$proc = TRUE;
 define('INCL','.');
 
 function _m($msg = '') {
   if (!empty($msg)) echo $msg."\n";
-  return TRUE;
+  return true;
 }
 
 include('config.php');
@@ -42,7 +41,7 @@ print_r($db->dbErrors);
 //print_r($db->dbLiveStats);
 _m('Termina ejecucion');
 
-echo $db->version(TRUE);
+echo $db->version(true);
 
 //print_r($db);
 

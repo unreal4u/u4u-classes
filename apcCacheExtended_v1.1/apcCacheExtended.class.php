@@ -1,46 +1,46 @@
 <?php
 
 /**
- * Module description
- * 
- * @package General
+ * Provides interaction with user space cache in APC
+ *
+ * @package Classes
  * @version 1.1
- * @copyright $Date$
- * @author $Author$
+ * @copyright 2012 - strftime('Y')
+ * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
 class apcCacheExtended {
 	/**
 	 * Time the cache is valid
-	 * 
+	 *
 	 * @var int
 	 */
 	protected $_ttl = 60;
-	
+
 	/**
 	 * Whether APC is enabled and ready to be used or not
-	 * 
+	 *
 	 * @var boolean Defaults to true
 	 */
 	public $isEnabled = true;
 
 	/**
 	 * Stores whether we have already checked that APC is enabled or not
-	 * 
+	 *
 	 * @var boolean Defaults to false
 	 */
 	private $isChecked = false;
-	
+
 	/**
 	 * Whether to throw exception on disabled APC cache module
-	 * 
+	 *
 	 * @var boolean Defaults to false
 	 */
 	private $throwExceptionOnDisabled = false;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param boolean $throwExceptionOnDisabled Whether to throw exception on disabled APC cache module. Defaults to false
 	 */
 	public function __construct($throwExceptionOnDisabled=false) {
@@ -48,10 +48,10 @@ class apcCacheExtended {
 			$this->throwExceptionOnDisabled = true;
 		}
 	}
-	
+
 	/**
 	 * Does the actual check whether APC is enabled or not
-	 * 
+	 *
 	 * @throws Exception If APC module is not loaded or enabled, throws this exception
 	 * @return boolean Returns true if APC is enabled, false otherwise
 	 */
@@ -60,19 +60,19 @@ class apcCacheExtended {
 		if (empty($this->isChecked)) {
 	        $this->isChecked = true;
 			$this->isEnabled = (bool)ini_get('apc.enabled');
-			
+
 			// Throw exception if configured that way (And APC isn't enabled)
 	        if ($this->throwExceptionOnDisabled === true AND ($this->isEnabled === false OR !extension_loaded('apc'))) {
 	            throw new Exception('APC extension is not loaded or not enabled!');
 	        }
 		}
-		
+
 		return $this->isEnabled;
 	}
-	
+
 	/**
 	 * Function that creates an unique identifier based on optional arguments
-	 * 
+	 *
 	 * @param string $identifier A function name
 	 * @param array $funcArgs Unique extra optional arguments
 	 * @return string Returns an unique md5 string
@@ -82,23 +82,23 @@ class apcCacheExtended {
 		if (empty($funcArgs) OR !is_array($funcArgs)) {
 			$funcArgs = array();
 		}
-		
+
 		// Returning the unique hash
 		return md5($identifier.serialize($funcArgs));
 	}
-	
+
 	/**
 	 * Sets the total time to live for a cache
-	 * 
+	 *
 	 * @param int $ttl
 	 */
 	protected function _setTtl($ttl=60) {
 		return $this->_ttl = $ttl;
 	}
-	
+
 	/**
 	 * Saves a cache into memory. Sets a time and the unique identifier
-	 * 
+	 *
 	 * @param mixed $data The data we want to save
 	 * @param string $identifier A unique name to use
 	 * @param array $funcArgs Optional extra arguments to differentiate cache
@@ -111,13 +111,13 @@ class apcCacheExtended {
 			$this->_setTtl($ttl);
 			$return = apc_store($this->_createIdentifier($identifier, $funcArgs), $data, $this->_ttl);
 		}
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * Rescues a cache from memory
-	 * 
+	 *
 	 * @param string $identifier A unique name to use
 	 * @param array $funcArgs Optional extra arguments to differentiate cache
 	 * @return mixed Returns the data or false if no cache was found
@@ -130,13 +130,13 @@ class apcCacheExtended {
 				$return = $data;
 			}
 		}
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * Physically removes a cache from memory
-	 * 
+	 *
 	 * @param string $identifier A unique name to use
 	 * @param array $funcArgs Optional extra arguments to differentiate cache
 	 */
@@ -145,13 +145,13 @@ class apcCacheExtended {
 		if ($this->checkApcEnabled()) {
 			$return = apc_delete($this->_createIdentifier($identifier, $funcArgs));
 		}
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * Deletes the entire cache
-	 * 
+	 *
 	 * @param boolean $onlyUserSpace Whether to delete only user space. Defaults to false
 	 */
 	public function purgeCache($onlyUserSpace=false) {
@@ -163,15 +163,15 @@ class apcCacheExtended {
 			apc_clear_cache('user');
 			$return = true;
 		}
-		
+
 		return $return;
 	}
 
 	/**
 	 * Gets cache information
-	 * 
+	 *
 	 * If $type is "user", it will return user space cache information. Otherwise, it will return the system space
-	 * 
+	 *
 	 * @param string $type Can be "user" or empty
 	 */
 	public function getCacheInformation($type=null) {
@@ -184,7 +184,7 @@ class apcCacheExtended {
 			}
 			$return = apc_cache_info($type);
 		}
-		
+
 		return $return;
 	}
 }

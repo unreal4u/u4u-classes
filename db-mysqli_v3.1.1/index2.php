@@ -1,6 +1,4 @@
 <?php
-// First we set our procedence, so that we can only visit this page and not directly the class or config file.
-$proc = TRUE;
 // Including our config file.
 include('config.php');
 // Including the class.
@@ -21,7 +19,7 @@ echo '</pre><strong>Query N° 1 executed (Simple query)</strong><hr><pre>';
 
 
 
-// Now let's do a more complicated query, with cache enabled: 
+// Now let's do a more complicated query, with cache enabled:
 $dbLink->cache_query = TRUE;
 // We will first enable the cache for _THIS_ query.
 $aRes = $dbLink->query('SELECT a.id,a.nombre AS name1,a.nombre2 AS name2,b.nombre AS name3,b.nombre2 AS name4 FROM t100000 AS a,t500000 AS b WHERE a.id=b.id AND a.id=? LIMIT ?',29137,3);
@@ -41,7 +39,7 @@ echo '</pre><strong>Query N° 2 executed (Query with parameters and stored to ca
 
 
 
-// Now, we will execute an invalid query: 
+// Now, we will execute an invalid query:
 $aRes = $dbLink->query('SELECT * FROM t100000,t500000 WHERE id = ? LIMIT ?',291,10);
 echo "\n\n".'--------------- THIRD QUERY ------------------'."\n";
 print_r($aRes);
@@ -89,7 +87,7 @@ echo 'Number of affected rows = '.$dbLink->num_rows."\n"; // Record N° 55313556
 
 
 
-// BUT! Oh no, we have a few invalid queries, let's take a look at our first auxiliar array: 
+// BUT! Oh no, we have a few invalid queries, let's take a look at our first auxiliar array:
 if (count($dbLink->dbErrors) > 0) {
   $num_errors = count($dbLink->dbErrors);
   echo '</pre><h3>All the queries executed, but we have some errors!</h3><pre>';
@@ -105,9 +103,9 @@ unset($aRes);
 echo '</pre><h3>The LiveStats<sup>&reg;</sup> of the queries are: </h3><pre>';
 print_r($dbLink->dbLiveStats);
 ?>
-Executed <strong><?php 
-  echo count($dbLink->dbLiveStats); ?></strong> queries which presented a total of <strong><?php 
-  echo $num_errors; ?></strong> errors.<hr><?php 
+Executed <strong><?php
+  echo count($dbLink->dbLiveStats); ?></strong> queries which presented a total of <strong><?php
+  echo $num_errors; ?></strong> errors.<hr><?php
 // Last but not least, we'll destroy the object, letting the XML logger do its thing
 unset($dbLink); // This is optional, because when the script ends, PHP will execute this as well, but... be kind :)
 
