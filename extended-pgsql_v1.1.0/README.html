@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>README for extended_pgsql.class.php</title>
+  </head>
+<body>
+<h2>CREDITS:</h2>
+<p>This class is made by unreal4u (Camilo Sperberg) and based on the <a href="http://www.phpclasses.org/package/5812-PHP-MySQL-database-access-wrapper-using-MySQLi.html">Extended MySQLi class</a> made by the same author. It haves exactly the same methods so that migrating from MySQL to PostGreSQL won't be so hard to do.</p>
+
+<h2>ABOUT THIS CLASS:</h2>
+<h3>In a glinch:</h3>
+<ul><li>It receives parametrized and simple SQL queries.</li>
+    <li>It creates 3 arrays: one containing all data, and another one that contains some statistics. Optionally, it logs all errors into another array and also into an valid XML file.</li>
+    <li>The DB connection made is singleton, that means only one connection is made for all your queries, even if you have more than 1 instance. The connection is established on demand, not when you initialize the class.</li>
+    <li>Have you some really long queries? It doesn't matter: you can cache them in W3C valid XML file.</li>
+</ul>
+<h3>Detailed:</h3>
+<p>This package implements a PostGreSQL database access wrapper using the PDO extension.<br><br>
+
+There is class that manages PostGreSQL database access connections so only one connection is established during the same PHP script execution.<br><br>
+
+Another class implements other database access functions like executing queries with prepared queries, measuring the time the queries take to execute and the memory usage, retrieving query results into arrays, the number of result rows, last inserted record identifier and log executed queries to a valid XML log file or directly into your page.<br><br>
+
+If the query takes just too long, you can cache the query result into an XML file, and you can also handle errors. <br><br>
+
+This package has been extensivily tested with xDebug and Suhosin so that no errors are present.</p>
+
+<h2>USAGE:</h2>
+<ul><li>This class was made with simplicity, speed and security in mind. Executing a query is easy: it are just 3 simple steps:<br>
+
+<pre>include('config.php'); // Please see below for explanation
+include('extended_pgsql.class.php');
+$dbLink = new extended_pgsql();
+$id_user = 23;
+$username = 'unreal4u';
+$aResult = $dbLink-&gt;query('SELECT id,username FROM users WHERE id = ? AND username = ?',$id_user,$username);</pre></li>
+    </li>
+    <li>Congratulations! <code>$aResult</code> haves the result of your query!</li>
+    <li>Now you can do anything you want with the array, one of the easiest methods to go trough it is a foreach:<br>
+<pre>foreach($aResult AS $a) {
+  echo 'The id of the user named '.$a['username'].' is: '.$a['id'].'&lt;br /&gt;';
+}</pre>
+
+    </li>
+    <li>In case of large queries, don't forget to unset the results in order to save PHP's memory for later:<br><br><code>unset($aResult);</code><br><br></li>
+    <li><strong>Please see index.php for more options and advanced usage</strong></li>
+</ul>
+
+<h2>PENDING:</h2>
+<ul>
+  <li>None at the moment</li>
+</ul>
+
+<h2>config.php:</h2>
+<blockquote><pre>
+define('CHARSET','UTF-8');
+define('DB_SHOW_ERRORS',TRUE); // Show DB connection error to users?
+define('DB_LOG_XML',FALSE); // Log all database activity to XML?
+define('DB_URL_XML','/home/user/db-log.xml'); // Location of XML file, recommended place is outside the public html directory!
+define('DB_CACHE_LOCATION','cache/'); // Location of cache file(s), with trailing slash
+define('DB_CACHE_EXPIRE','60'); // DB cache file expiricy, in seconds
+
+define('PGSQL_HOST','localhost'); // your db's host
+define('PGSQL_PORT',5432);        // your db's port
+define('PGSQL_USER','test'); // your db's username
+define('PGSQL_PASS','test'); // your db's password
+define('PGSQL_NAME','test');   // your db's database name
+define('PGSQL_FETCH_MODE',PDO::FETCH_ASSOC);
+</pre></blockquote>
+
+<h2>VERSION HISTORY:</h2>
+<ul><li>1.0.0 : 
+    <ul><li>(very) basic functionality. No support for cache options, not released to general public.</li></ul>
+</li></ul>
+<ul><li>1.1.0 : 
+    <ul><li>Added cache support.</li>
+        <li>Added version() method, which rescues the version of the DB.</li>
+        <li>Connection is made on-demand</li>
+        <li>Support for transactions</li>
+    </ul>
+</li></ul>
+
+</body></html>

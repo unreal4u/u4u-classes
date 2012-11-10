@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>README for css.class.php</title>
+    <style>p.q{font-weight:bold}</style>
+  </head>
+<body>
+<h2>CREDITS:</h2>
+<p>This class is made by unreal4u (Camilo Sperberg). The original idea was to just put together all CSS's on a page in one place, but why not try to optimize a bit the CSS in that step? Finally, why not compress it and send an 304 Not Modified header to save some bandwidth?</p>
+<p>I would also like to thank Jason Davis for his suggestion to print only the cache filename created by the class, that certainly opened some great posibilities! Thanks Jason!</p>
+
+<h2>ABOUT THIS CLASS:</h2>
+<ul><li>You can add several CSS to a stack. This class will process them and return one big CSS with comments stripped out and some optimizations made (not minified and non obstructive). It can however, save this big CSS to a file so that you don't have to process all the CSS again in every request.</li>
+    <li>It is also capable of working with the browser's cache, sending an 304 Not Modified header when necesary.</li>
+    <li>It can return 1 array: it is an error array which will tell you what possible errors have ocurred.</li>
+    <li>You can choose between an inline print (ideal for embedded CSS) or file print, which generates a typical CSS file that the browser can cache.</li>
+    <li>This class has been thoroughly tested with Xdebug so that no errors are present.</li>
+    <li>NOTE: It only works in PHP5!!</li> 
+</ul>
+
+<h2>USAGE:</h2>
+<ul><li>This class was made with simplicity and speed in mind. A very basic but common usage example is the following:<br>
+<pre>include('config.php'); // Please see below for explanation
+include('css.class.php');
+$CSStack = new CSStacker();
+$CSStack-&gt;add(array('first-css.css','second-css.css'));
+$CSStack-&gt;printme();
+</pre></li>
+    </li>
+    <li>Congratulations! This code will print the CSS of <code>first-css.css</code> and <code>second-css.css</code> combined and optimized.</li>
+    <li>As this code prints CSS, the best way to do that is to save this code in a file and call it via HTML:<br>
+<pre>&lt;link rel="stylesheet" href="process-css.php" type="text/css" /&gt;</pre>
+You can however, also print it as a style, as part from the HTML using <code>$CSStack-&gt;printme('inline')</code>.</li>
+    <li><strong>Please see process-css.php for more options and advanced usage</strong></li>
+</ul>
+
+<h2>PENDING:</h2>
+<ul><li>v1.5: strip out empty declarations, such as <code>ul{}</code></li>
+    <li>v1.4: optimize/benchmark color codes replacement.</li>
+</ul>
+
+<h2>config.php:</h2>
+<blockquote><pre>
+define('CHARSET','UTF-8');             // The charset to use
+define('OPTIMIZE_CSS',TRUE);           // Whether to strip the most common byte-eaters
+define('USE_CSS_CACHE',TRUE);          // Whether to use internal cache
+define('GZIP_CONTENTS',TRUE);          // Use TRUE only when the server doesn't compress CSS natively
+define('GZIP_LEVEL',6);                // GZIP compression level, range from 1 to 9
+define('CACHE_LOCATION','cache/');     // Cache location, WITH trailing slash, should be writable
+define('USE_BROWSER_CACHE',TRUE);      // Whether to instruct the browser to save the CSS in cache
+define('TIME_BROWSER_CACHE','3600');   // Time in seconds the browser caches our CSS
+</pre></blockquote>
+
+<h2>WHAT CAN THIS PACKAGE DO FOR ME?</h2>
+<p>First of all, if you are not worried about bandwidth, it would be better to NOT implement this class. It would be faster if you just reference the CSS directly from the HTML. </p>
+<p>But, if you are concerned with bandwidth usage, than this class is for you. It can take one or several CSS's, and make one big file of it/them. This will certainly reduce some HTTP requests. </p>
+<p>It will also create a cache CSS on your server, because when it creates this cache, it will strip out all unnecesary spaces, such as \n, \r, \t, white spaces, and optionally it will try to do some optimizations:</p>
+<ul><li>It will replace all type of 0px, 0em, 0% to just 0. 0 needs no unit. </li>
+    <li>It will try to replace some common color names to their short codes, white becomes #FFF, light grey becomes #CCC, and so on. The only exceptions to this rule are 4 letter codes (it would be the same) and the red color, which is the only one that is shorter in the color name than the color code.</li>
+    <li>It will also try to replace all color codes that can be shortened: #DDEE11 becomes #DE1, #111111 becomes #111 and so on.</li>
+    <li>It will also eliminate the last <code>;</code> of every declaration. It isn't needed.</li>
+    <li>Finally, it will behave differently on the ocasion: whenever possible, it will send an 304 Not Modified header or it will try to gzip the contents to send to the client.</li>
+</ul>
+
+<h2>WHAT <u>CAN'T</u> THIS PACKAGE DO FOR ME?</h2>
+<p>There are some things that this package won't do for you:</p>
+<ul><li>Shorten <code>margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:0px</code> to <code>margin:0</code>. It will however, shorten to <code>margin-top:0;margin-bottom:0;margin-left:0;margin-right:0</code> as explained previously.</li>
+    <li>Shorten other type of declarations: font, background, padding, etc. Why not? Basicly, to make sure that your CSS will work always as intended. Also because analyzing this kind of situations will require more processor time, and time is money.</li>
+</ul>
+
+<h2>FAQ/WHY DIDN'T YOU...</h2>
+<p class="q">Q: Use ETags?</p>
+<p>A: Because Expires, Cache-Control and Last-Modified headers are far more standarized and they work well with every browser I know about. Besides, sending an ETag will require more processor time (generating the ETag) and also more bandwidth sending all the necesary headers. (Back and forth)</p>
+<p class="q">Q: Installed the ability to add CSS when you create the object?</p>
+<p>A: Yes, it would have been nice to do that, but that would have meaned not to be able to add more CSS after that step.</p>
+<p class="q">Q: Made it compatible to work with JavaScript also?</p>
+<p>A: JavaScript behaves completely different than CSS and is far more complicated than CSS. However, I am planning to make another class that does the same thing as this one, but with JavaScript files. Maybe, and only maybe, I could adapt this class to do that, but I'm not a JavaScript expert.</p>
+<p class="q">Q: What method do you suggest?</p>
+<p>A: Without any doubt, use the internal cache and also the browser cache. I haven't benchmarked this class yet, but generating the first cache file should be the slowest method. Obviously, reading from the cache file or sending a simple 304 Not Modified header should be the fastests methods.</p>
+<p class="q">Q: What happens if I want to update the original CSS files?</p>
+<p>A: That is one of the big advantages of this class: you can easily update your original CSS files with your favorite editor and whenever you update them, the class will update the internal cache file. When a client checks for a new CSS definition, the class will automaticly send him the last version. (Which happens whenever the client haves a different version of the internal CSS cache)</p>
+<p class="q">Q: Is it a good idea to update the cache file generated by this class?</p>
+<p>A: Nopes... Whenever a change is detected in the original CSS files, the class will recreate the internal cache file, so any change you will make to the cache file and not the original files will be lost.</p>
+<p class="q">Q: When an error happens, how can I save it without messing up with the CSS output?</p>
+<p>A: Saving it into a temporary file. Example:<blockquote><pre>$csstacker-&gt;printme();
+
+if(isset($CSSErrors)) {
+  $fp = fopen(CACHE_LOCATION.'css-problems.log','a');
+  foreach($CSSErrors AS $e)
+    fwrite($fp,$e['type'].' -- '.$e['errm']."\n");
+  fclose($fp);
+}
+</pre></blockquote>
+This way you can save the CSS errors into css-problems.log</p>
+
+<h2>VERSION HISTORY:</h2>
+
+<ul><li>v1.0 : 
+    <ul><li>Basic functionality</li>
+    </ul>
+</li></ul>
+<ul><li>v1.1 : 
+    <ul><li>Improved GZIP functionality in case the webserver doesn't compress it already</li>
+    </ul>
+</li></ul>
+<ul><li>v1.2 :
+    <ul><li>function printme() now returns 1 or 0 in case their was any CSS to print out (1) or if no output was made (0).</li>
+        <li>If you have added the same CSS more than once, it will be added to the stack only the first time. After that, it will be ignored. Note: <strong>Order is important!</strong></li>
+        <li>If you have the same declaration in several CSS files, only the last one will be added. Example:<blockquote>
+file1.css:
+<pre>body{background:#000;color:#FFFFFF}
+h4{font-size:110%}
+h3{color:#FFF}
+h4{font-size:110%}</pre>
+file2.css:
+<pre>body{background:#000;color:white}
+h4{font-size:80%}
+h1{background:#FFF;color:000}</pre>
+The result will be:
+<pre>h3{color:#FFF}h4{font-size:110%}body{background:#000;color:#FFF}h4{font-size:80%}h1{background:#FFF;color:000}</pre></blockquote></li>
+        <li>Added new constant: GZIP compression level. Allows you to specify the compression level (as a constant).</li>
+        <li>Fixed little inconsistency when method was inline.</li>
+    </ul>
+</li></ul>
+<ul><li>v1.3 :
+    <ul><li>Complete rewrite of the status function. Now it should be a lot faster than before. On my test computer, the time between creating the object and sending the 304 not modified header decreased from ~0.00077 to ~0.00046 seconds, that's ~25% quicker!</li>
+        <li>Complete revision of the "inline" method, which should be ok now. (Before, when the method was inline, it didn't check the cache file and always ended up creating the CSS, now it first verifies the cache and only when it can't rescue from there, it will compress, optimize and finally print).</li>
+        <li>Added option: reset CSS. Now you can insert the CSS reset just doing <code>$css-&gt;resetCSS = TRUE;</code> before you print. <strong>Please note</strong>: if your cache file is newer than the last modified original CSS file, you must manually delete it! Don't know what CSS reset is? More info in <code>css.class.php</code>. (At the compress() function, line ~200)</li>
+        <li>Added new method: "filename", which prints only the cache filename if created and/or valid. Very useful if you want the Webserver to let decide if he should send an 304 header or not. Also, it makes including the class easier because it can be inserted directly within the main script and not in a separate process-css.php file :) Thanks Jason Davis for this <strong>very</strong> great suggestion!</li>
+        <li>Added a new posibility: to force the creation of a cache file. All you have to do is <code>$css-&gt;printme('(method)','force');</code> and a new cache file will be created.</li>
+        <li>Created a new example file (and extended the existing one A LOT) to reflect all changes.</li>
+    </ul>
+</li></ul>
+</body></html>
