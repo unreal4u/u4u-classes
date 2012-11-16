@@ -1,18 +1,18 @@
 <?php
 
+include('../functions.php');
+
 set_time_limit(0);
 // To be able to print strange characters
 header('Content-Type: text/html; charset=UTF-8');
 
 $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 
-include('apcCacheExtended.class.php');
+include('cacheManager.class.php');
 
 try {
-	$cache = new apcCacheExtended(true);
-	// Call this method or execute any other public method to get the same result
-	$cache->checkApcEnabled();
-} catch(Exception $e) {
+	$cache = new cacheManagerClass('apc');
+} catch(\CacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
 }
 
@@ -44,7 +44,7 @@ if (empty($languageMessages)) {
 
 	print('Build cache from scratch');
 	// Saving the cache
-	$cache->save($languageMessages, 'languageMessages', $languageIds, 3);
+	$cache->save($languageMessages, 'languageMessages', $languageIds, 120);
 } else {
 	print('Rescued from cache');
 }

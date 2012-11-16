@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extended MySQLi Parametrized DB Class
  *
@@ -7,7 +8,7 @@
  * Optimized, tuned and fixed by unreal4u (Camilo Sperberg)
  *
  * @package Database
- * @version 3.1.1
+ * @version 4.0.0
  * @author Camilo Sperberg, http://unreal4u.com/
  * @author Mertol Kasanan
  * @license BSD License
@@ -15,7 +16,7 @@
  */
 class db_mysqli {
     /**
-     * Whether to cache the query or not
+     * Whether to cache the following query or not
      *
      * @var boolean $cache_query Defaults to FALSE
      */
@@ -40,7 +41,7 @@ class db_mysqli {
     private $db = null;
     private $stmt = null;
     private $connected = false;
-    private static $stats = array();
+    private $stats = array();
     private $error = false;
     private $xmllog = array();
     private $cache_recreate = false;
@@ -58,9 +59,8 @@ class db_mysqli {
      */
     public function __construct($in_transaction = false) {
         if (version_compare(PHP_VERSION, '5.1.5', '<')) {
-            die('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version');
+            throw new Exception('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version');
         }
-
         if ($in_transaction === true) {
             $this->begin_transaction();
         }
@@ -85,12 +85,14 @@ class db_mysqli {
      * @param $arg_array array The data, such as the query. Can also by empty
      */
     public function __call($func, $arg_array) {
-        self::$stats = array(
-            'time' => time() + microtime(),
+        $this->stats = array(
+            'time'   => time() + microtime(),
             'memory' => memory_get_usage(),
         );
+
         $this->error = false;
         $this->load_from_cache = false;
+
         if ($this->cache_query === false) {
             $this->cache_recreate = false;
         } elseif (!$this->valid_cache($arg_array)) {
@@ -99,7 +101,8 @@ class db_mysqli {
             $this->cache_recreate = false;
             $this->load_from_cache = true;
         }
-        $log = true;
+        $logAction = true;
+
         switch ($func) {
             case 'num_rows':
                 if ($arg_array != NULL) {
@@ -107,31 +110,29 @@ class db_mysqli {
                     $num_rows = $this->execute_result_info($arg_array);
                     $result = $num_rows['num_rows'];
                 }
-                //else $result = $this->execute_num_rows();
-                break;
+            break;
             case 'insert_id':
                 if ($arg_array != NULL) {
                     $this->execute_query($arg_array);
                     $num_rows = $this->execute_result_info();
                     $result = $num_rows['insert_id'];
                 }
-                //else $result = $this->execute_num_rows();
-                break;
+            break;
             case 'query':
                 $this->execute_query($arg_array);
                 if (!$result = $this->execute_result_array($arg_array)) {
                     $result = false;
                 }
-                break;
+            break;
             case 'begin_transaction':
                 $this->connect_to_db();
                 if ($this->in_transaction === false) {
                     $this->in_transaction = true;
                     $this->db->autocommit(false);
                 }
-                $log = false;
+                $logAction = false;
                 $result = true;
-                break;
+            break;
             case 'end_transaction':
                 $result = true;
                 if ($this->in_transaction) {
@@ -145,8 +146,8 @@ class db_mysqli {
                     $this->db->autocommit(true);
                     $this->in_transaction = false;
                 }
-                $log = false;
-                break;
+                $logAction = false;
+            break;
             case 'version':
                 $result = 'Not connected yet';
                 $this->connect_to_db();
@@ -156,14 +157,14 @@ class db_mysqli {
                 } else {
                     $result = $this->db->client_info;
                 }
-
                 return $result;
             default:
                 return 'Method not supported!';
-                break;
+            break;
         }
-        if ($log) {
-            $this->logMe(self::$stats, $arg_array, $result, $this->error, $this->load_from_cache);
+
+        if (!empty($logAction)) {
+            $this->logMe($this->stats, $arg_array, $result, $this->error, $this->load_from_cache);
         }
 
         return $result;
@@ -174,7 +175,6 @@ class db_mysqli {
         if (!isset($num_rows[$v])) {
             $num_rows[$v] = 'Method not supported!';
         }
-
         return $num_rows[$v];
     }
 
@@ -187,7 +187,6 @@ class db_mysqli {
             $this->db = $db_connect->db;
             $this->connected = true;
         }
-
         return $this->connected;
     }
 
@@ -208,19 +207,18 @@ class db_mysqli {
                 switch ($v) {
                     case is_string($v):
                         $types .= 's';
-                        break;
+                    break;
                     case is_int($v):
                         $types .= 'i';
-                        break;
+                    break;
                     case is_double($v):
                         $types .= 'd';
-                        break;
+                    break;
                 }
             }
             if (isset($this->stmt)) {
                 unset($this->stmt);
             }
-
             $this->stmt = $this->db->prepare($sql_query);
             if (!is_object($this->stmt)) {
                 $this->logError($sql_query, $this->db->errno, 'fatal', $this->db->error);
@@ -228,7 +226,10 @@ class db_mysqli {
             if (isset($arg_array[0])) {
                 array_unshift($arg_array, $types);
                 if (!$this->error) {
-                    if (!$execute_query = @call_user_func_array(array($this->stmt, 'bind_param'), $this->makeValuesReferenced($arg_array))) {
+                    if (!$execute_query = @call_user_func_array(array(
+                        $this->stmt,
+                        'bind_param'
+                    ), $this->makeValuesReferenced($arg_array))) {
                         $this->logError($sql_query, $this->stmt->errno, 'fatal', 'Failed to bind. Do you have equal parameters for all the \'?\'?');
                         $execute_query = false;
                     }
@@ -248,7 +249,6 @@ class db_mysqli {
                 $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
             }
         }
-
         return $execute_query;
     }
 
@@ -276,7 +276,6 @@ class db_mysqli {
             } else {
                 $result['num_rows'] = $this->get_cache_meta();
             }
-
             return $result;
         }
     }
@@ -299,8 +298,10 @@ class db_mysqli {
                         array_unshift($result_fields, $field->name);
                         $params[] = & $row[$field->name];
                     }
-                    call_user_func_array(array($this->stmt, 'bind_result'), $params);
-
+                    call_user_func_array(array(
+                        $this->stmt,
+                        'bind_result'
+                    ), $params);
                     while ($this->stmt->fetch()) {
                         foreach ($row as $key => $val) {
                             $c[$key] = $val;
@@ -322,10 +323,12 @@ class db_mysqli {
                 $result = $this->get_cache($arg_array);
             }
         }
-
         return $result;
     }
 
+    /*
+     * Cache functionality, implements mostly cache module
+     */
     /**
      * Function that establish the cache filename
      *
@@ -335,12 +338,11 @@ class db_mysqli {
     private function filename($arg_array = NULL) {
         $filename = '0';
         if (!empty($arg_array)) {
-            foreach ($arg_array AS $a) {
+            foreach ($arg_array as $a) {
                 $filename .= $a;
             }
             $filename = 'db_' . md5($filename);
         }
-
         return DB_CACHE_LOCATION . $filename . '.xml';
     }
 
@@ -353,7 +355,6 @@ class db_mysqli {
     private function valid_cache($arg_array = NULL) {
         $filename = '';
         $is_valid = false;
-
         if (is_array($arg_array)) {
             $filename = $this->filename($arg_array);
             if (file_exists($filename)) {
@@ -364,14 +365,12 @@ class db_mysqli {
                 }
             }
         }
-
         return $is_valid;
     }
 
     /**
-     * Function that creates a valid XML file.
-     * I'm not using SimpleXML here because of speed. Using SimpleXML, with 100.000 records, it takes 26 seconds, this
-     * way, only 1 second (on my test server)
+     * Function that creates a valid XML file. I'm not using SimpleXML here because of speed. Using SimpleXML, with
+     * 100.000 records, it takes 26 seconds, this way, only 1 second (on my test server)
      *
      * @todo Don't return TRUE when cache creation fails
      * @param $arg_array array Used to create the filename
@@ -395,7 +394,6 @@ class db_mysqli {
             $this->cache_recreate = false;
         }
         unset($xml);
-
         return true;
     }
 
@@ -423,13 +421,16 @@ class db_mysqli {
             }
             $r[$i] = $bTemp;
             $i++;
-            $bTemp = NULL;
+            $bTemp = null;
         }
         $this->rows_from_cache = $i;
         unset($xml, $i, $bTemp, $value, $x, $v, $s);
         return $r;
     }
 
+    /*
+     * All functionality that handles with logs and stuff
+     */
     /**
      * Function that logs all errors
      *
@@ -439,7 +440,7 @@ class db_mysqli {
      * @param $error string The error description
      * @return boolean Always returns TRUE.
      */
-    private function logError($query, $errno, $type = 'non-fatal', $error) {
+    private function logError($query, $errno, $type='non-fatal', $error=null) {
         $query_num = count($this->dbLiveStats);
         if (empty($error)) {
             $error = '(not specified)';
@@ -449,11 +450,13 @@ class db_mysqli {
             $complete_error = '[ERROR] ' . $error;
             $this->rollback = true;
         }
-
         $this->dbErrors[$query_num] = array(
-            'query_number' => $query_num, 'query' => $query, 'errno' => $errno, 'type' => $type, 'error' => $complete_error
+            'query_number' => $query_num,
+            'query'        => $query,
+            'errno'        => $errno,
+            'type'         => $type,
+            'error'        => $complete_error
         );
-
         if ($type == 'fatal') {
             $this->error = '[' . $errno . '] ' . $error;
             $this->results = 0;
@@ -474,18 +477,11 @@ class db_mysqli {
      */
     private function logMe($stats, $arg_array, $result, $error, $from_cache) {
         $this->cache_query = false;
-        if (!DB_DATASIZE) {
-            $datasize = 0;
-        } else {
-            $datasize = $this->array_size($result);
-        }
-
         $stats = array(
-            'memory' => memory_get_usage() - $stats['memory'], 'time' => number_format((time() + microtime()) - $stats['time'], 5, ',', '.')
+            'memory' => memory_get_usage() - $stats['memory'],
+            'time' => number_format((time() + microtime()) - $stats['time'], 5, ',', '.')
         );
-
         $this->liveStats($arg_array, $stats, $datasize, $error, $from_cache);
-
         if (isset($arg_array[0])) {
             $query = $arg_array[0];
         } else {
@@ -493,10 +489,12 @@ class db_mysqli {
         }
         if (DB_LOG_XML) {
             $this->xmllog[] = array(
-                'query' => $query, 'memory' => $stats['memory'], 'time' => $stats['time'], 'datasize' => $datasize, 'error' => $error
+                'query'  => $query,
+                'memory' => $stats['memory'],
+                'time'   => $stats['time'],
+                'error'  => $error,
             );
         }
-
         return true;
     }
 
@@ -516,7 +514,8 @@ class db_mysqli {
         }
         if (!is_array($stats) or empty($stats)) {
             $stats = array(
-                'time' => 0, 'memory' => 0
+                'time'     => 0,
+                'memory'   => 0,
             );
         }
         if ($from_cache === true) {
@@ -529,14 +528,19 @@ class db_mysqli {
         } else {
             $in_trans = 'FALSE';
         }
-
         $results = $this->num_rows;
         if ($this->cache_query === true) {
             $this->rows_from_cache = $results;
         }
-
         $this->dbLiveStats[] = array(
-            'query' => $query, 'number_results' => $results, 'time' => $stats['time'] . ' (seg)', 'memory' => $stats['memory'] . ' (bytes)', 'datasize' => $data . ' (bytes)', 'error' => $error, 'from_cache' => $valid_cache, 'within_transaction' => $in_trans
+            'query'              => $query,
+            'number_results'     => $results,
+            'time'               => $stats['time'] . ' (seg)',
+            'memory'             => $stats['memory'] . ' (bytes)',
+            'datasize'           => $data . ' (bytes)',
+            'error'              => $error,
+            'from_cache'         => $valid_cache,
+            'within_transaction' => $in_trans
         );
 
         return true;
@@ -589,9 +593,6 @@ class db_mysqli {
                     $detalle[$i]->addChild('nResults', $this->num_rows);
                     $detalle[$i]->addChild('fTime', $q['time'] . ' (seg)');
                     $detalle[$i]->addChild('iMemory', $q['memory'] . ' (bytes)');
-                    if (DB_DATASIZE) {
-                        $detalle[$i]->addChild('iDataSize', $q['datasize'] . ' (bytes)');
-                    }
                     $detalle[$i]->addChild('iError', $q['error']);
                     $i++;
                 }
@@ -601,9 +602,13 @@ class db_mysqli {
             }
             unset($referer, $detalle, $final, $consultas, $xml, $q, $k, $i);
         }
+
         return true;
     }
 
+    /*
+     * Misc functions
+     */
     /**
      * Creates an referenced representation of an array
      *
@@ -618,32 +623,10 @@ class db_mysqli {
         }
         return $refs;
     }
-
-    /**
-     * Function that sums the total length of the data array
-     *
-     * @param $a array The array to get the size of
-     * @return int The length in bytes of the array.
-     */
-    private function array_size($a = NULL) {
-        $size = 0;
-        if (is_array($a)) {
-            while (list($k, $v) = each($a)) {
-                if (is_array($v)) {
-                    $size = $size + $this->array_size($v);
-                } else {
-                    $size = $size + strlen($v);
-                }
-            }
-        } else {
-            $size = strlen($a);
-        }
-        return $size;
-    }
 }
 
 /**
- * Singleton class to connect to DB
+ * Singleton class that holds the connection to MySQL
  *
  * @author Mertol Kasanan
  * @author Camilo Sperberg
@@ -652,6 +635,9 @@ class mysql_connect {
     private static $instance;
     private $connected = false;
 
+    /**
+     * Singleton
+     */
     public static function singleton() {
         if (!isset(self::$instance)) {
             $c = __CLASS__;
@@ -660,35 +646,39 @@ class mysql_connect {
         return self::$instance;
     }
 
+    /**
+     * Don't allow cloning
+     *
+     * @throws Exception If trying to clone
+     */
     public function __clone() {
-        if (DB_SHOW_ERRORS === true) {
-            trigger_error('We can only declare this once!', E_USER_ERROR);
-        } else {
-            die();
-        }
+        throw new Exception('We can only declare this once!');
     }
 
+    /**
+     * Tries to make the connection
+     *
+     * @throws Exception If any problem with the database
+     */
     public function __construct() {
         try {
             $this->db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_NAME, MYSQL_PORT);
             if (mysqli_connect_error()) {
-                throw new Exception('Sorry, no DB connection could be made, please run in circles while an administrator checks the system: ' . mysqli_connect_error());
+                throw new Exception('No DB connection could be made: ' . mysqli_connect_error());
             } else {
                 $this->connected = true;
             }
         } catch (Exception $e) {
-            if (DB_SHOW_ERRORS === true) {
-                trigger_error($e->getMessage(), E_USER_ERROR);
-            } else {
-                die();
-            }
+            throw new Exception($e->getMessage());
         }
-
         if ($this->connected === true) {
             $this->db->set_charset(DBCHAR);
         }
     }
 
+    /**
+     * Gracefully closes the connection (if there was an open one)
+     */
     public function __destruct() {
         if ($this->connected === true) {
             $this->db->close();

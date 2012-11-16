@@ -9,34 +9,13 @@
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class apcCacheExtended {
-	/**
-	 * Time the cache is valid
-	 *
-	 * @var int
-	 */
-	protected $_ttl = 60;
-
-	/**
-	 * Whether APC is enabled and ready to be used or not
-	 *
-	 * @var boolean Defaults to true
-	 */
-	public $isEnabled = true;
-
+class apcCache extends cacheManagerClass implements cacheManager {
 	/**
 	 * Stores whether we have already checked that APC is enabled or not
 	 *
 	 * @var boolean Defaults to false
 	 */
 	private $isChecked = false;
-
-	/**
-	 * Whether to throw exception on disabled APC cache module
-	 *
-	 * @var boolean Defaults to false
-	 */
-	private $throwExceptionOnDisabled = false;
 
 	/**
 	 * Constructor
@@ -55,7 +34,7 @@ class apcCacheExtended {
 	 * @throws Exception If APC module is not loaded or enabled, throws this exception
 	 * @return boolean Returns true if APC is enabled, false otherwise
 	 */
-	public function checkApcEnabled() {
+	public function checkIsEnabled() {
 		// If already checked, return that value instead
 		if (empty($this->isChecked)) {
 	        $this->isChecked = true;
@@ -71,32 +50,6 @@ class apcCacheExtended {
 	}
 
 	/**
-	 * Function that creates an unique identifier based on optional arguments
-	 *
-	 * @param string $identifier A function name
-	 * @param array $funcArgs Unique extra optional arguments
-	 * @return string Returns an unique md5 string
-	 */
-	protected function _createIdentifier($identifier='', $funcArgs=array()) {
-		// Any empty value (0, NULL, etc) will be converted to an array
-		if (empty($funcArgs) OR !is_array($funcArgs)) {
-			$funcArgs = array();
-		}
-
-		// Returning the unique hash
-		return md5($identifier.serialize($funcArgs));
-	}
-
-	/**
-	 * Sets the total time to live for a cache
-	 *
-	 * @param int $ttl
-	 */
-	protected function _setTtl($ttl=60) {
-		return $this->_ttl = $ttl;
-	}
-
-	/**
 	 * Saves a cache into memory. Sets a time and the unique identifier
 	 *
 	 * @param mixed $data The data we want to save
@@ -107,9 +60,9 @@ class apcCacheExtended {
 	public function save($data=false, $identifier='', $funcArgs=array(), $ttl=60) {
 		$return = false;
 		// In every public function we have to check whether APC is enabled or not
-		if ($this->checkApcEnabled()) {
+		if ($this->checkIsEnabled()) {
 			$this->_setTtl($ttl);
-			$return = apc_store($this->_createIdentifier($identifier, $funcArgs), $data, $this->_ttl);
+			$return = apc_store($this->_cacheId($identifier, $funcArgs), $data, $this->_ttl);
 		}
 
 		return $return;
@@ -124,8 +77,8 @@ class apcCacheExtended {
 	 */
 	public function load($identifier='', $funcArgs=array()) {
 		$return = false;
-		if ($this->checkApcEnabled()) {
-			$data = apc_fetch($this->_createIdentifier($identifier, $funcArgs), $return);
+		if ($this->checkIsEnabled()) {
+			$data = apc_fetch($this->_cacheId($identifier, $funcArgs), $return);
 			if (!empty($return)) {
 				$return = $data;
 			}
@@ -142,8 +95,8 @@ class apcCacheExtended {
 	 */
 	public function delete($identifier='', $funcArgs=array()) {
 		$return = false;
-		if ($this->checkApcEnabled()) {
-			$return = apc_delete($this->_createIdentifier($identifier, $funcArgs));
+		if ($this->checkIsEnabled()) {
+			$return = apc_delete($this->_cacheId($identifier, $funcArgs));
 		}
 
 		return $return;
@@ -156,7 +109,7 @@ class apcCacheExtended {
 	 */
 	public function purgeCache($onlyUserSpace=false) {
 		$return = false;
-		if ($this->checkApcEnabled()) {
+		if ($this->checkIsEnabled()) {
 			if (!empty($onlyUser)) {
 				apc_clear_cache();
 			}
@@ -176,7 +129,7 @@ class apcCacheExtended {
 	 */
 	public function getCacheInformation($type=null) {
 		$return = false;
-		if ($this->checkApcEnabled()) {
+		if ($this->checkIsEnabled()) {
 			if (!empty($type)) {
 				$type = 'user';
 			} else {
