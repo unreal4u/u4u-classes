@@ -1,17 +1,16 @@
 <?php
 
-include('../functions.php');
+include('../../functions.php');
 
-set_time_limit(0);
 // To be able to print strange characters
 header('Content-Type: text/html; charset=UTF-8');
 
 $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 
-include('cacheManager.class.php');
+include('../cacheManager.class.php');
 
 try {
-	$cache = new cacheManagerClass('apc');
+	$cache = new cacheManagerClass('apc', true);
 } catch(\CacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
 }
