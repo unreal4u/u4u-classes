@@ -3,141 +3,153 @@
 /**
  * Provides interaction with user space cache in APC
  *
- * @package Classes
- * @version 1.1
- * @copyright 2012 - strftime('Y')
+ * @package Cache Class
+ * @version 2.0
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
 class apcCache extends cacheManagerClass implements cacheManager {
-	/**
-	 * Stores whether we have already checked that APC is enabled or not
-	 *
-	 * @var boolean Defaults to false
-	 */
-	private $isChecked = false;
+    /**
+     * Constructor
+     *
+     * @param $throwExceptionOnDisabled boolean Whether to throw exception on disabled APC cache module. Defaults to false
+     */
+    public function __construct($throwExceptions=false) {
+        $this->throwExceptions($throwExceptions);
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param boolean $throwExceptionOnDisabled Whether to throw exception on disabled APC cache module. Defaults to false
-	 */
-	public function __construct($throwExceptionOnDisabled=false) {
-		if(!empty($throwExceptionOnDisabled)) {
-			$this->throwExceptionOnDisabled = true;
-		}
-	}
+    /**
+     * Does the actual check whether APC is enabled or not
+     *
+     * @see cacheManager::checkIsEnabled()
+     * @throws Exception If APC module is not loaded or enabled, throws this exception
+     * @return boolean Returns true if APC is enabled, false otherwise
+     */
+    public function checkIsEnabled() {
+        // If already checked, return that value instead
+        if (empty($this->isChecked)) {
+            $this->isChecked = true;
+            $this->isEnabled = (bool)ini_get('apc.enabled');
+            // Throw exception if configured that way (And APC isn't enabled)
+            if ($this->isEnabled === false or !extension_loaded('apc')) {
+                $this->isEnabled = false;
+                if ($this->throwExceptions === true) {
+                    throw new Exception('APC extension is not loaded or not enabled!');
+                }
+            }
+        }
 
-	/**
-	 * Does the actual check whether APC is enabled or not
-	 *
-	 * @throws Exception If APC module is not loaded or enabled, throws this exception
-	 * @return boolean Returns true if APC is enabled, false otherwise
-	 */
-	public function checkIsEnabled() {
-		// If already checked, return that value instead
-		if (empty($this->isChecked)) {
-	        $this->isChecked = true;
-			$this->isEnabled = (bool)ini_get('apc.enabled');
+        return $this->isEnabled;
+    }
 
-			// Throw exception if configured that way (And APC isn't enabled)
-	        if ($this->throwExceptionOnDisabled === true AND ($this->isEnabled === false OR !extension_loaded('apc'))) {
-	            throw new Exception('APC extension is not loaded or not enabled!');
-	        }
-		}
+    /**
+     * Saves a cache into memory. Sets a time and the unique identifier
+     *
+     * @see cacheManager::save()
+     * @param $data mixed The data we want to save
+     * @param $identifier string A unique name to use
+     * @param $funcArgs array Optional extra arguments to differentiate cache
+     * @param $ttl int The time the cache will be valid
+     */
+    public function save($data=false, $identifier='', $funcArgs=null, $ttl=60) {
+        $this->_setTtl($ttl);
+        $return = apc_store($this->_cacheId($identifier, $funcArgs), $data, $this->_ttl);
 
-		return $this->isEnabled;
-	}
+        return $return;
+    }
 
-	/**
-	 * Saves a cache into memory. Sets a time and the unique identifier
-	 *
-	 * @param mixed $data The data we want to save
-	 * @param string $identifier A unique name to use
-	 * @param array $funcArgs Optional extra arguments to differentiate cache
-	 * @param int $ttl The time the cache will be valid
-	 */
-	public function save($data=false, $identifier='', $funcArgs=array(), $ttl=60) {
-		$return = false;
-		// In every public function we have to check whether APC is enabled or not
-		if ($this->checkIsEnabled()) {
-			$this->_setTtl($ttl);
-			$return = apc_store($this->_cacheId($identifier, $funcArgs), $data, $this->_ttl);
-		}
+    /**
+     * Rescues a cache from memory
+     *
+     * @see cacheManager::load()
+     * @param $identifier string A unique name to use
+     * @param $funcArgs array Optional extra arguments to differentiate cache
+     * @return mixed Returns the data or false if no cache was found
+     */
+    public function load($identifier='', $funcArgs=null) {
+        $data = apc_fetch($this->_cacheId($identifier, $funcArgs), $return);
+        if (!empty($return)) {
+            $return = $data;
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Rescues a cache from memory
-	 *
-	 * @param string $identifier A unique name to use
-	 * @param array $funcArgs Optional extra arguments to differentiate cache
-	 * @return mixed Returns the data or false if no cache was found
-	 */
-	public function load($identifier='', $funcArgs=array()) {
-		$return = false;
-		if ($this->checkIsEnabled()) {
-			$data = apc_fetch($this->_cacheId($identifier, $funcArgs), $return);
-			if (!empty($return)) {
-				$return = $data;
-			}
-		}
+    /**
+     * Physically removes a cache from memory
+     *
+     * @see cacheManager::delete()
+     * @param $identifier string A unique name to use
+     * @param $funcArgs array Optional extra arguments to differentiate cache
+     */
+    public function delete($identifier='', $funcArgs=null) {
+        $return = apc_delete($this->_cacheId($identifier, $funcArgs));
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Physically removes a cache from memory
-	 *
-	 * @param string $identifier A unique name to use
-	 * @param array $funcArgs Optional extra arguments to differentiate cache
-	 */
-	public function delete($identifier='', $funcArgs=array()) {
-		$return = false;
-		if ($this->checkIsEnabled()) {
-			$return = apc_delete($this->_cacheId($identifier, $funcArgs));
-		}
+    /**
+     * Deletes the entire cache
+     *
+     * @see cacheManager::purgeCache()
+     * @param $onlyUserSpace boolean Whether to delete only user space. Defaults to false
+     */
+    public function purgeCache($onlyUserSpace=false) {
+        if (!empty($onlyUser)) {
+            apc_clear_cache();
+        }
+        $return = apc_clear_cache('user');
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Deletes the entire cache
-	 *
-	 * @param boolean $onlyUserSpace Whether to delete only user space. Defaults to false
-	 */
-	public function purgeCache($onlyUserSpace=false) {
-		$return = false;
-		if ($this->checkIsEnabled()) {
-			if (!empty($onlyUser)) {
-				apc_clear_cache();
-			}
-			apc_clear_cache('user');
-			$return = true;
-		}
+    /**
+     * Garbage collector for APC: not enabled because APC's internal garbage collector will be far better
+     *
+     * @see cacheManager::executeGarbageCollector()
+     * @return boolean Returns always true
+     */
+    public function executeGarbageCollector() {
+        return true;
+    }
 
-		return $return;
-	}
+    /**
+     * Gets cache information
+     * If $type is "user", it will return user space cache information. Otherwise, it will return the system space
+     *
+     * @param $type string Can be "user" or empty
+     */
+    public function getCacheInformation($type=null) {
+        if (!empty($type)) {
+            $type = 'user';
+        } else {
+            $type = null;
+        }
+        $return = apc_cache_info($type);
 
-	/**
-	 * Gets cache information
-	 *
-	 * If $type is "user", it will return user space cache information. Otherwise, it will return the system space
-	 *
-	 * @param string $type Can be "user" or empty
-	 */
-	public function getCacheInformation($type=null) {
-		$return = false;
-		if ($this->checkIsEnabled()) {
-			if (!empty($type)) {
-				$type = 'user';
-			} else {
-				$type = null;
-			}
-			$return = apc_cache_info($type);
-		}
+        return $return;
+    }
 
-		return $return;
-	}
+    /**
+     * Will purge all caches that haves the same identifier
+     *
+     * This can be of use on a multi-language website where the indexed content depends on the selected language.
+     * Normally you will only have the choice to delete all cache or one specific entry, with this little function you
+     * will delete all caches that have a certain identifier.
+     *
+     * @param string $identifier Which cache we want to delete
+     * @return int The amount of caches deleted
+     */
+    public function purgeIdentifierCache($identifier='') {
+        $deletedCount = 0;
+
+        $cacheList = apc_cache_info("user");
+        foreach ($cacheList['cache_list'] AS $deleteCandidate) {
+            if (strpos($deleteCandidate['info'], $identifier) === 0 AND apc_delete($deleteCandidate['info'])) {
+                $deletedCount++;
+            }
+        }
+
+        return $deletedCount;
+    }
 }

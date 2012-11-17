@@ -1,8 +1,12 @@
 <?php
+
 /**
  * The interface that all childs must implement
  *
- * @author unreal4u
+ * @package Cache manager
+ * @version 2.0
+ * @author Camilo Sperberg - http://unreal4u.com/
+ * @license BSD License. Feel free to use and modify
  */
 interface cacheManager {
     /**
@@ -16,7 +20,7 @@ interface cacheManager {
     public function checkIsEnabled();
 
     /**
-     * Saves a cache into memory
+     * Saves data into a cache
      *
      * @param mixed $data The data we want to save
      * @param string $identifier A unique name to use
@@ -26,7 +30,7 @@ interface cacheManager {
     public function save($data=false, $identifier='', $funcArgs=array(), $ttl=60);
 
 	/**
-	 * Rescues a cache from memory
+	 * Rescues data from cache
 	 *
 	 * @param string $identifier A unique name to use
 	 * @param array $funcArgs Optional extra arguments to differentiate cache options
@@ -44,16 +48,32 @@ interface cacheManager {
 
    	/**
 	 * Deletes the entire cache
-	 *
-	 * @param boolean $onlyUserSpace Whether to delete only user space. Defaults to false
 	 */
-    public function purgeCache($onlyUserSpace=false);
+    public function purgeCache();
+
+    /**
+     * Execute a garbage collector run
+     */
+    public function executeGarbageCollector();
 }
+
+/**
+ * The exception type that this class throws
+ *
+ * @package Cache manager
+ * @version 2.0
+ * @author Camilo Sperberg - http://unreal4u.com/
+ * @license BSD License. Feel free to use and modify
+ */
+class CacheException extends Exception {}
 
 /**
  * The main cache manager class which will call the child specified cache module
  *
- * @author unreal4u
+ * @package Cache manager
+ * @version 2.0
+ * @author Camilo Sperberg - http://unreal4u.com/
+ * @license BSD License. Feel free to use and modify
  */
 class cacheManagerClass {
     private $object  = null;
@@ -67,13 +87,20 @@ class cacheManagerClass {
     protected $_ttl = 60;
 
 	/**
-	 * Whether to throw exception on disabled APC cache module
+	 * Whether to throw exceptions or not
 	 *
 	 * @var boolean Defaults to false
 	 */
-	protected $throwExceptionOnDisabled = false;
+	protected $throwExceptions = false;
 
-    /**
+	/**
+	 * Stores whether we have already checked that APC is enabled or not
+	 *
+	 * @var boolean Defaults to false
+	 */
+	protected $isChecked = false;
+
+	/**
 	 * Whether APC is enabled and ready to be used or not
 	 *
 	 * @var boolean Defaults to true
@@ -90,13 +117,16 @@ class cacheManagerClass {
 
         if (is_readable($route)) {
             include($route);
-            $this->object = new $objectName($args);
-            if (!class_implements($this->object, 'cacheManager') OR !in_array('cacheManagerClass',class_parents($this->object))) {
-                throw new \CacheException('Class could not comply with minimum functionality, aborting creation');
+            $this->object = new $objectName(array_shift($args));
+            if ((!class_implements($this->object, 'cacheManager') OR !in_array('cacheManagerClass',class_parents($this->object))) AND $this->throwExceptions) {
+                throw new CacheException('Class could not comply with minimum functionality, aborting creation');
             }
+            $this->object->checkIsEnabled();
             $this->methods = get_class_methods($this->object);
         } else {
-            throw new \CacheException('Class does not exist');
+            if ($this->throwExceptions) {
+                throw new CacheException('Class does not exist');
+            }
         }
     }
 
@@ -113,12 +143,24 @@ class cacheManagerClass {
 
         if (in_array($methodName, $this->methods)) {
             try {
-                $return = call_user_func_array(array($this->object, $methodName), $args);
+                $return = false;
+                if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
+                    #$reflectionObject = new ReflectionMethod($this->object, $methodName);
+                    #if ($reflectionObject->isPublic()) {
+                        $return = call_user_func_array(array($this->object, $methodName), $args);
+                    #} else {
+                    #    throw new CacheException('Method "'.$methodName.'" is not public!');
+                    #}
+                }
             } catch (Exception $e) {
-                throw new \CacheException($e->getMessage());
+                if ($this->throwExceptions) {
+                    throw new CacheException($e->getMessage());
+                }
             }
         } else {
-            throw new \CacheException('The method "'.$methodName.'" does not exist');
+            if ($this->throwExceptions) {
+                throw new CacheException('The method "'.$methodName.'" does not exist');
+            }
         }
 
         return $return;
@@ -129,8 +171,8 @@ class cacheManagerClass {
 	 *
 	 * @param boolean $throwExceptionOnDisabled Pass true to enable exceptions, false otherwise
 	 */
-	public function setThrowExceptionOnDisabled($throwExceptionOnDisabled=false) {
-	    $this->throwExceptionOnDisabled = (bool)$throwExceptionOnDisabled;
+	public function throwExceptions($throwExceptions=false) {
+	    $this->throwExceptions = (bool)$throwExceptions;
 	}
 
     /**
@@ -141,9 +183,15 @@ class cacheManagerClass {
 	 * @return string Returns an unique md5 string
 	 */
 	protected function _cacheId($identifier='', $funcArgs=array()) {
-		// Any empty value (0, NULL, etc) will be converted to an array
-		if (empty($funcArgs) OR !is_array($funcArgs)) {
+		// Any empty value (0, NULL, false) will be converted to an empty array
+		if (empty($funcArgs)) {
 			$funcArgs = array();
+		}
+
+		// If we have a non-array object, convert it to a serializable array
+		if (!is_array($funcArgs)) {
+		    $tmpFuncArgs[] = $funcArgs;
+		    $funcArgs = $tmpFuncArgs;
 		}
 
 		// Returning the unique hash
