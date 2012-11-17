@@ -21,7 +21,8 @@ class fileCache extends cacheManagerClass implements cacheManager {
      *
      * @param string $cacheDirectory The directory in which to save the cache entries
      */
-    public function __construct($cacheDirectory='') {
+    public function __construct($throwExceptions=true, $cacheDirectory='') {
+        $this->throwExceptions($throwExceptions);
         $this->setSaveDirectory($cacheDirectory);
     }
 
@@ -120,9 +121,7 @@ class fileCache extends cacheManagerClass implements cacheManager {
             }
 
             if ($this->isEnabled !== true) {
-                if ($this->throwExceptions === true) {
-                    throw new Exception('Directory is not writable!');
-                }
+                throw new Exception('Directory is not writable!');
             }
         }
 

@@ -8,14 +8,16 @@ include('../cacheManager.class.php');
 
 try {
 	$cache = new cacheManagerClass('apc', true);
-} catch(CacheException $e) {
+} catch(cacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+} catch (versionException $e) {
+    die($e->getMessage());
 }
 
 try {
     $deletedCount = $cache->purgeIdentifierCache('random-data');
     print('Deleted '.$deletedCount.' caches of type "random-data"');
-} catch (CacheException $e) {
+} catch (cacheException $e) {
     print('Exception caught! Message: "'.$e->getMessage().'"<br />');
 }
 

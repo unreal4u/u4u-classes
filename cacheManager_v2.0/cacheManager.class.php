@@ -58,14 +58,24 @@ interface cacheManager {
 }
 
 /**
- * The exception type that this class throws
+ * If there is a problem that disrupts normal operation, a cacheException will be thrown
  *
  * @package Cache manager
  * @version 2.0
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class CacheException extends Exception {}
+class cacheException extends Exception {}
+
+/**
+ * If the minimum PHP version isn't run, a versionException will be thrown
+ *
+ * @package Cache manager
+ * @version 2.0
+ * @author Camilo Sperberg - http://unreal4u.com/
+ * @license BSD License. Feel free to use and modify
+ */
+class versionException extends Exception {}
 
 /**
  * The main cache manager class which will call the child specified cache module
@@ -91,7 +101,7 @@ class cacheManagerClass {
 	 *
 	 * @var boolean Defaults to false
 	 */
-	protected $throwExceptions = false;
+	protected $throwExceptions = true;
 
 	/**
 	 * Stores whether we have already checked that APC is enabled or not
@@ -109,23 +119,45 @@ class cacheManagerClass {
 
     /**
      * Constructor, initializes the object
+     *
+     * @throws versionException If minimum PHP version is not met, this exception will be thrown
+     * @throws cacheException If some functional problem ocurred, a cacheException will be thrown
      */
     public function __construct() {
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            throw new versionException('This class will only work with PHP &gt;= 5.3.0');
+        }
+
         $args       = func_get_args();
         $objectName = array_shift($args).'Cache';
         $route      = dirname(__FILE__).'/cacheTypes/'.$objectName.'.class.php';
 
+        // If you want speed, ensure that the cache you've selected exists and delete the is_readable call
         if (is_readable($route)) {
             include($route);
-            $this->object = new $objectName(array_shift($args));
-            if ((!class_implements($this->object, 'cacheManager') OR !in_array('cacheManagerClass',class_parents($this->object))) AND $this->throwExceptions) {
-                throw new CacheException('Class could not comply with minimum functionality, aborting creation');
+
+            $rc = new ReflectionClass($objectName);
+            $this->object = $rc->newInstanceArgs($args);
+
+            if ((!class_implements($this->object, 'cacheManager') OR !in_array('cacheManagerClass',class_parents($this->object))) AND $this->throwExceptions === true) {
+                throw new cacheException('Class could not comply with minimum functionality, aborting creation');
             }
-            $this->object->checkIsEnabled();
-            $this->methods = get_class_methods($this->object);
+
+            $rcMethods = $rc->getMethods(ReflectionMethod::IS_PUBLIC);
+            foreach($rcMethods AS $rcMethod) {
+                $this->methods[] = $rcMethod->getName();
+            }
+
+            try {
+                $this->object->checkIsEnabled();
+            } catch (Exception $e) {
+                if ($this->throwExceptions === true) {
+                    throw new cacheException($e->getMessage());
+                }
+            }
         } else {
-            if ($this->throwExceptions) {
-                throw new CacheException('Class does not exist');
+            if ($this->throwExceptions === true) {
+                throw new cacheException('Class does not exist');
             }
         }
     }
@@ -135,7 +167,7 @@ class cacheManagerClass {
      *
      * @param string $methodName The name of the method
      * @param mixed $args The arguments to pass on to the function
-     * @throws CacheException If the called method doesn't exist
+     * @throws cacheException If the called method doesn't exist
      * @return mixed Returns whatever response the child object gives
      */
     public function __call($methodName, $args) {
@@ -145,21 +177,16 @@ class cacheManagerClass {
             try {
                 $return = false;
                 if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
-                    #$reflectionObject = new ReflectionMethod($this->object, $methodName);
-                    #if ($reflectionObject->isPublic()) {
-                        $return = call_user_func_array(array($this->object, $methodName), $args);
-                    #} else {
-                    #    throw new CacheException('Method "'.$methodName.'" is not public!');
-                    #}
+                    $return = call_user_func_array(array($this->object, $methodName), $args);
                 }
             } catch (Exception $e) {
                 if ($this->throwExceptions) {
-                    throw new CacheException($e->getMessage());
+                    throw new cacheException($e->getMessage());
                 }
             }
         } else {
             if ($this->throwExceptions) {
-                throw new CacheException('The method "'.$methodName.'" does not exist');
+                throw new cacheException('The method "'.$methodName.'" does not exist or is not public');
             }
         }
 
@@ -171,7 +198,7 @@ class cacheManagerClass {
 	 *
 	 * @param boolean $throwExceptionOnDisabled Pass true to enable exceptions, false otherwise
 	 */
-	public function throwExceptions($throwExceptions=false) {
+	public function throwExceptions($throwExceptions=true) {
 	    $this->throwExceptions = (bool)$throwExceptions;
 	}
 

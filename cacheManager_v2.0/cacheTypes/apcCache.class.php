@@ -14,7 +14,7 @@ class apcCache extends cacheManagerClass implements cacheManager {
      *
      * @param $throwExceptionOnDisabled boolean Whether to throw exception on disabled APC cache module. Defaults to false
      */
-    public function __construct($throwExceptions=false) {
+    public function __construct($throwExceptions=true) {
         $this->throwExceptions($throwExceptions);
     }
 
@@ -30,12 +30,9 @@ class apcCache extends cacheManagerClass implements cacheManager {
         if (empty($this->isChecked)) {
             $this->isChecked = true;
             $this->isEnabled = (bool)ini_get('apc.enabled');
-            // Throw exception if configured that way (And APC isn't enabled)
             if ($this->isEnabled === false or !extension_loaded('apc')) {
                 $this->isEnabled = false;
-                if ($this->throwExceptions === true) {
-                    throw new Exception('APC extension is not loaded or not enabled!');
-                }
+                throw new Exception('APC extension is not loaded or not enabled!');
             }
         }
 

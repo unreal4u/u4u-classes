@@ -11,8 +11,10 @@ include('../cacheManager.class.php');
 
 try {
 	$cache = new cacheManagerClass('apc', true);
-} catch(CacheException $e) {
+} catch(cacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+} catch (versionException $e) {
+    die($e->getMessage());
 }
 
 // Even if APC module isn't loaded, this call will work (and return false)
