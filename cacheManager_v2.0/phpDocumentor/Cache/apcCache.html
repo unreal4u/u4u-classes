@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Docs For Class apcCache</title>
+	<link rel="stylesheet" type="text/css" href="../media/style.css">
+	<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
+    <td class="header-top-right">Cache<br /><div class="header-top-right-subpackage"></div></td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td colspan="2" class="header-menu">
+      
+                                      
+                      		[ <a href="../classtrees_Cache.html" class="menu">class tree: Cache</a> ]
+		[ <a href="../elementindex_Cache.html" class="menu">index: Cache</a> ]
+            [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="195" class="menu">
+		<div class="package-title">Cache</div>
+      <b>Packages:</b><br />
+  <div class="package">
+              <a href="../li_cacheManager.html">cacheManager</a><br />
+              <a href="../li_Cache.html">Cache</a><br />
+      	</div>
+      <br />
+                        <b>Files:</b><br />
+        <div class="package">
+				<span style="padding-left: 1em;"><a href="../Cache/_cacheTypes---apcCache.class.php.html">apcCache.class.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../Cache/_cacheManager.class.php.html">cacheManager.class.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../Cache/_cacheTypes---fileCache.class.php.html">fileCache.class.php</a></span><br />
+	  </div>
+            <br />
+                  <b>Classes:</b><br />
+        <div class="package">
+		    		<a href="../Cache/apcCache.html">apcCache</a>    	 <br />
+	    		<a href="../Cache/cacheException.html">cacheException</a>    	 <br />
+	    		<a href="../Cache/cacheManagerClass.html">cacheManagerClass</a>    	 <br />
+	    		<a href="../Cache/fileCache.html">fileCache</a>    	 <br />
+	    		<a href="../Cache/versionException.html">versionException</a>    	 <br />
+	  </div>
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Class: apcCache</h1>
+Source Location: /cacheTypes/apcCache.class.php<br /><br />
+
+<h2 class="class-name">Class apcCache</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Class Overview</div>
+	<div class="nav-bar">
+					<span class="disabled">Class Overview</span>
+						
+					| <a href="#sec-inherited">Inherited Properties, Constants, and Methods</a>
+													| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+								</div>
+	<div class="info-box-body">
+		<table width="100%" border="0">
+		<tr><td valign="top" width="60%" class="class-overview">
+
+        		<p align="center" class="short-description"><strong>Provides interaction with user space cache in APC
+</strong></p>
+
+		<p class="notes">
+			Located in <a class="field" href="_cacheTypes---apcCache.class.php.html">/cacheTypes/apcCache.class.php</a> [<span class="field">line 10</span>]
+		</p>
+
+		
+		<pre><a href="../Cache/cacheManagerClass.html">cacheManagerClass</a>
+   |
+   --apcCache</pre>
+
+		
+				<strong>Author(s):</strong>
+		<ul>
+		  			 			 <li>Camilo Sperberg - http://unreal4u.com/</li>
+			 		  			 		  			 		  		</ul>
+		
+		
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+				<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>2.0</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td>BSD</td></tr>
+	</table>
+		</td>
+
+		
+				<td valign="top" width="20%" class="class-overview">
+		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
+		<ul>
+		  		  <li><a href="../Cache/apcCache.html#method__construct">__construct</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodcheckIsEnabled">checkIsEnabled</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methoddelete">delete</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodexecuteGarbageCollector">executeGarbageCollector</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodgetCacheInformation">getCacheInformation</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodload">load</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodpurgeCache">purgeCache</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodpurgeIdentifierCache">purgeIdentifierCache</a></li>
+		  		  <li><a href="../Cache/apcCache.html#methodsave">save</a></li>
+		  		</ul>
+		</td>
+		
+		</tr></table>
+		<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+</div>
+
+
+	<a name="sec-inherited"></a>
+	<div class="info-box">
+		<div class="info-box-title">Inherited Properties, Constants, and Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+						| <span class="disabled">Inherited Properties, Constants, and Methods</span>
+															| <a href="#sec-method-summary">Method Summary</a> | <a href="#sec-methods">Methods Detail</a>
+							    				</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header" width="30%">Inherited Properties</th>
+					<th class="class-table-header" width="40%">Inherited Methods</th>
+					<th class="class-table-header" width="30%">Inherited Constants</th>
+				</tr>
+				<tr>
+					<td width="30%">
+											</td>
+					<td width="40%">
+													<p>Inherited From <span class="classname"><a href="../Cache/cacheManagerClass.html">cacheManagerClass</a></span></p>
+							<blockquote>
+								<dl>
+																			<dt>
+											<span class="method-definition"><a href="../Cache/cacheManagerClass.html#method__construct">cacheManagerClass::__construct()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">Constructor, initializes the object</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../Cache/cacheManagerClass.html#methodthrowExceptions">cacheManagerClass::throwExceptions()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">Enabled throwing exceptions</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../Cache/cacheManagerClass.html#method_cacheId">cacheManagerClass::_cacheId()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">Function that creates an unique identifier based on optional arguments</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../Cache/cacheManagerClass.html#method_setTtl">cacheManagerClass::_setTtl()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">Sets the total time to live for a cache</span>
+										</dd>
+																			<dt>
+											<span class="method-definition"><a href="../Cache/cacheManagerClass.html#method__call">cacheManagerClass::__call()</a></span>
+										</dt>
+										<dd>
+											<span class="method-definition">Executes the child method name</span>
+										</dd>
+																	</dl>
+							</blockquote>
+											</td>
+					<td width="30%">
+											</td>
+				</tr>
+			</table>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+						    					| <span class="disabled">Method Summary</span> | <a href="#sec-methods">Methods Detail</a>
+		</div>
+		<div class="info-box-body">
+			<div class="method-summary">
+				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
+																																																																																								<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">apcCache</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Constructor</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#checkIsEnabled" title="details" class="method-name">checkIsEnabled</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Does the actual check whether APC is enabled or not</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#delete" title="details" class="method-name">delete</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Physically removes a cache from memory</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#executeGarbageCollector" title="details" class="method-name">executeGarbageCollector</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Garbage collector for APC: not enabled because APC's internal garbage collector will be far better</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#getCacheInformation" title="details" class="method-name">getCacheInformation</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Gets cache information If $type is &quot;user&quot;, it will return user space cache information.</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">mixed</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#load" title="details" class="method-name">load</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Rescues a cache from memory</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#purgeCache" title="details" class="method-name">purgeCache</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Deletes the entire cache</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#purgeIdentifierCache" title="details" class="method-name">purgeIdentifierCache</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Will purge all caches that haves the same identifier</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#save" title="details" class="method-name">save</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Saves a cache into memory.</td></tr>
+				</div>
+												</table>
+			</div>
+			<br /><div class="top">[ <a href="#top">Top</a> ]</div>
+		</div>
+	</div>
+
+
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Class Overview</a>
+										| <a href="#sec-inherited">Inherited Properties and Methods</a>
+																| <a href="#sec-method-summary">Method Summary</a> | <span class="disabled">Methods Detail</span>
+					</div>
+		<div class="info-box-body">
+			<a name='method_detail'></a>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 16]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>apcCache __construct(
+[$throwExceptionOnDisabled
+$throwExceptions = true]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Constructor
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$throwExceptionOnDisabled</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$throwExceptions:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> boolean Whether to throw exception on disabled APC cache module. Defaults to false</span>			</td></tr>
+				</table>
+
+	<br />
+	
+
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../Cache/cacheManagerClass.html#method__construct">cacheManagerClass::__construct()</a></dt>
+						<dd>Constructor, initializes the object</dd>
+					</dl>
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodcheckIsEnabled" id="checkIsEnabled"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">checkIsEnabled</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 27]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean checkIsEnabled(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Does the actual check whether APC is enabled or not
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns true if APC is enabled, false otherwise</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::checkIsEnabled()
+ @</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>Exception If APC module is not loaded or enabled, throws this exception</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">delete</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 81]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void delete(
+[$identifier
+$identifier = ''], [$funcArgs
+$funcArgs = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Physically removes a cache from memory
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$identifier</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$identifier:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> string A unique name to use</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$funcArgs</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$funcArgs:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> array Optional extra arguments to differentiate cache</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::delete()
+ @</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodexecuteGarbageCollector" id="executeGarbageCollector"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">executeGarbageCollector</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 108]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean executeGarbageCollector(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Garbage collector for APC: not enabled because APC's internal garbage collector will be far better
+</strong></p>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns always true</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::executeGarbageCollector()
+ @</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodgetCacheInformation" id="getCacheInformation"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">getCacheInformation</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 118]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void getCacheInformation(
+[$type
+$type = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Gets cache information If $type is &quot;user&quot;, it will return user space cache information.
+</strong></p>
+<span class="description"><p>Otherwise, it will return the system space</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$type</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$type:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> string Can be &quot;user&quot; or empty</span>			</td></tr>
+				</table>
+
+	<br />
+	
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodload" id="load"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">load</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 65]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>mixed load(
+[$identifier
+$identifier = ''], [$funcArgs
+$funcArgs = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Rescues a cache from memory
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$identifier</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$identifier:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> string A unique name to use</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$funcArgs</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$funcArgs:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> array Optional extra arguments to differentiate cache</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns the data or false if no cache was found</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::load()
+ @</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpurgeCache" id="purgeCache"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">purgeCache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 93]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void purgeCache(
+[$onlyUserSpace
+$onlyUserSpace = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Deletes the entire cache
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$onlyUserSpace</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$onlyUserSpace:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> boolean Whether to delete only user space. Defaults to false</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::purgeCache()
+ @</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodpurgeIdentifierCache" id="purgeIdentifierCache"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">purgeIdentifierCache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 139]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>int purgeIdentifierCache(
+[string
+$identifier = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Will purge all caches that haves the same identifier
+</strong></p>
+<span class="description"><p>This can be of use on a multi-language website where the indexed content depends on the selected language. Normally you will only have the choice to delete all cache or one specific entry, with this little function you will delete all caches that have a certain identifier.</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$identifier:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> Which cache we want to delete</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>The amount of caches deleted</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+<a name="methodsave" id="save"><!-- --></a>
+<div class="evenrow">
+
+<div class="method-header">
+	<span class="method-title">save</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 50]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>void save(
+[$data
+$data = false], [$identifier
+$identifier = ''], [$funcArgs
+$funcArgs = null], [$ttl
+$ttl = 60]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Saves a cache into memory.
+</strong></p>
+<span class="description"><p>Sets a time and the unique identifier</p></span>
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$data</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$data:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> mixed The data we want to save</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$identifier</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$identifier:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> string A unique name to use</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$funcArgs</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$funcArgs:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> array Optional extra arguments to differentiate cache</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type">$ttl</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$ttl:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> int The time the cache will be valid</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>See:</strong>&nbsp;&nbsp;</td><td>cacheManager::save()
+ @</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
+		</div>
+	</div>
+
+
+        <div class="credit">
+		    <hr class="separator" />
+		    Documentation generated on Sat, 17 Nov 2012 04:46:18 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
