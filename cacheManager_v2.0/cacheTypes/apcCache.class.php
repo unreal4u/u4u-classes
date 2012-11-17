@@ -8,7 +8,7 @@
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class apcCache extends cacheManagerClass implements cacheManager {
+class apcCache extends cacheManager implements cacheManagerInterface {
     /**
      * Constructor
      *

@@ -7,7 +7,7 @@ $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 include('../cacheManager.class.php');
 
 try {
-	$cache = new cacheManagerClass('file', true, '/tmp/myCacheDirectory/');
+	$cache = new cacheManager('file', true, '/tmp/myCacheDirectory/');
 	$cache->throwExceptions(true);
 } catch(cacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
