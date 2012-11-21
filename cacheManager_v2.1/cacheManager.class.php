@@ -60,7 +60,7 @@ class cacheManager {
 
         // If you want speed, ensure that the cache you've selected exists and delete the is_readable call
         if (is_readable($route)) {
-            include($route);
+            include_once($route);
 
             $rc = new ReflectionClass($objectName);
             $this->object = $rc->newInstanceArgs($args);
