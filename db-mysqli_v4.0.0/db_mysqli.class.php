@@ -1,5 +1,7 @@
 <?php
 
+include(dirname(__FILE__).'/auxiliar_classes.php');
+
 /**
  * Extended MySQLi Parametrized DB Class
  *
@@ -7,12 +9,12 @@
  * Original idea from Mertol Kasanan, http://www.phpclasses.org/browse/package/5191.html
  * Optimized, tuned and fixed by unreal4u (Camilo Sperberg)
  *
- * @package Database
+ * @package mysqli
  * @version 4.0.0
  * @author Camilo Sperberg, http://unreal4u.com/
  * @author Mertol Kasanan
  * @license BSD License
- * @copyright 2009 - strftime('Y') Camilo Sperberg
+ * @copyright 2009 - 2013 Camilo Sperberg
  */
 class db_mysqli {
     /**
@@ -21,20 +23,23 @@ class db_mysqli {
      * @var boolean $cache_query Defaults to FALSE
      */
     public $cache_query = false;
+
     /**
      * Maintains statistics of the executed queries
      *
      * @var array $dbLiveStats
      */
     public $dbLiveStats = array();
+
     /**
      * Maintains statistics exclusively from the errors in SQL
      *
      * @var array $dbErrors
      */
     public $dbErrors = array();
+
     /**
-     * Contains the actual DB connection
+     * Contains the actual DB connection instance
      *
      * @var object $db
      */
@@ -53,13 +58,27 @@ class db_mysqli {
     public $createRuntimeLog = false;
 
     /**
+     * Whether to disable throwing exceptions
+     *
+     * @var boolean $supressErrors Defaults to false
+     */
+    public $supressErrors = false;
+
+    /**
+     * The default expiration time of the cache
+     *
+     * @var int $cacheExpirationTime Defaults to 60 seconds
+     */
+    public $cacheExpirationTime = 60;
+
+    /**
      * When constructed we could enter transaction mode
      *
      * @param $in_transaction boolean Defaults to FALSE
      */
-    public function __construct($in_transaction = false) {
+    public function __construct($in_transaction=false) {
         if (version_compare(PHP_VERSION, '5.1.5', '<')) {
-            throw new Exception('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version');
+            $this->throwException('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version');
         }
         if ($in_transaction === true) {
             $this->begin_transaction();
@@ -73,9 +92,24 @@ class db_mysqli {
         if ($this->in_transaction === true and $this->connected === true) {
             $this->end_transaction();
         }
-        if (DB_LOG_XML) {
+        if (DB_LOG_XML === true) {
             $this->db_log($this->xmllog);
         }
+    }
+
+    /**
+     * Throws an exception if these are enabled
+     *
+     * @param string $msg The string to print within the exception
+     * @throws databaseException
+     * @return boolean Returns always false (only when supressErrors is active)
+     */
+    private function throwException($msg='') {
+        if (empty($supressErrors)) {
+            throw new databaseException($msg);
+        }
+
+        return false;
     }
 
     /**
@@ -85,6 +119,8 @@ class db_mysqli {
      * @param $arg_array array The data, such as the query. Can also by empty
      */
     public function __call($func, $arg_array) {
+        // Sets our own error handler (Defined in config)
+        set_error_handler(array('databaseErrorHandler', 'handleError'));
         $this->stats = array(
             'time'   => time() + microtime(),
             'memory' => memory_get_usage(),
@@ -157,15 +193,17 @@ class db_mysqli {
                 } else {
                     $result = $this->db->client_info;
                 }
-                return $result;
+            break;
             default:
-                return 'Method not supported!';
+                $result = 'Method not supported!';
             break;
         }
 
         if (!empty($logAction)) {
             $this->logMe($this->stats, $arg_array, $result, $this->error, $this->load_from_cache);
         }
+
+        restore_error_handler();
 
         return $result;
     }
@@ -183,7 +221,7 @@ class db_mysqli {
      */
     private function connect_to_db() {
         if ($this->connected === false) {
-            $db_connect = mysql_connect::singleton();
+            $db_connect = mysql_connect::getInstance($this->supressErrors);
             $this->db = $db_connect->db;
             $this->connected = true;
         }
@@ -203,16 +241,27 @@ class db_mysqli {
             $sql_query = array_shift($arg_array);
             $types = '';
             foreach ($arg_array as $v) {
-                // @TODO Add is_boolean() and others
                 switch ($v) {
-                    case is_string($v):
+                    case is_null($v):
+                        $types .= 'b';
+                        $v = null;
+                    break;
+                    case is_bool($v):
+                        $types .= 'b';
+                    break;
+                    case is_array($v):
+                    case is_object($v):
                         $types .= 's';
+                        $v = serialize($v);
                     break;
                     case is_int($v):
                         $types .= 'i';
                     break;
                     case is_double($v):
                         $types .= 'd';
+                    break;
+                    case is_string($v):
+                        $types .= 's';
                     break;
                 }
             }
@@ -296,7 +345,7 @@ class db_mysqli {
                     $result_fields = array();
                     while ($field = $result_metadata->fetch_field()) {
                         array_unshift($result_fields, $field->name);
-                        $params[] = & $row[$field->name];
+                        $params[] =& $row[$field->name];
                     }
                     call_user_func_array(array(
                         $this->stmt,
@@ -630,18 +679,20 @@ class db_mysqli {
  *
  * @author Mertol Kasanan
  * @author Camilo Sperberg
+ * @package db_mysqli
  */
 class mysql_connect {
     private static $instance;
     private $connected = false;
+    private $supressErrors;
 
     /**
-     * Singleton
+     * Get a singleton instance
      */
-    public static function singleton() {
+    public static function getInstance($supressErrors) {
         if (!isset(self::$instance)) {
             $c = __CLASS__;
-            self::$instance = new $c();
+            self::$instance = new $c($supressErrors);
         }
         return self::$instance;
     }
@@ -652,7 +703,7 @@ class mysql_connect {
      * @throws Exception If trying to clone
      */
     public function __clone() {
-        throw new Exception('We can only declare this once!');
+        $this->throwException('We can only declare this class once! Do not try to clone it');
     }
 
     /**
@@ -660,24 +711,38 @@ class mysql_connect {
      *
      * @throws Exception If any problem with the database
      */
-    public function __construct() {
-        try {
-            $this->db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_NAME, MYSQL_PORT);
-            if (mysqli_connect_error()) {
-                throw new Exception('No DB connection could be made: ' . mysqli_connect_error());
-            } else {
-                $this->connected = true;
-            }
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+    public function __construct($supressErrors=false) {
+        $this->supressErrors = $supressErrors;
+
+        $this->db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_NAME, MYSQL_PORT);
+        if (mysqli_connect_error()) {
+            $this->throwException('No DB connection could be made: ' . mysqli_connect_error());
+        } else {
+            $this->connected = true;
         }
+
         if ($this->connected === true) {
             $this->db->set_charset(DBCHAR);
         }
     }
 
     /**
-     * Gracefully closes the connection (if there was an open one)
+     * Throws an exception if these are enabled
+     *
+     * @param string $msg The string to print within the exception
+     * @throws databaseException
+     * @return boolean Returns always false (only when supressErrors is active)
+     */
+    private function throwException($msg) {
+        if (empty($this->supressErrors)) {
+            throw new databaseException($msg);
+        }
+
+        return false;
+    }
+
+    /**
+     * Gracefully closes the connection (if there is an open one)
      */
     public function __destruct() {
         if ($this->connected === true) {
