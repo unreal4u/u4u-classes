@@ -48,8 +48,10 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $funcArgs array Optional extra arguments to differentiate cache
      * @param $ttl int The time the cache will be valid
      */
-    public function save($data=false, $identifier='', $funcArgs=null, $ttl=60) {
-        $this->_setTtl($ttl);
+    public function save($data=false, $identifier='', $funcArgs=null, $ttl=null) {
+        if (!is_int($ttl)) {
+            $this->_setTtl($ttl);
+        }
         $return = apc_store($this->_cacheId($identifier, $funcArgs), $data, $this->_ttl);
 
         return $return;
@@ -90,6 +92,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      *
      * @see cacheManager::purgeCache()
      * @param $onlyUserSpace boolean Whether to delete only user space. Defaults to false
+     * @return boolean Returns true when cache could be deleted, false otherwise
      */
     public function purgeCache($onlyUserSpace=false) {
         if (!empty($onlyUser)) {

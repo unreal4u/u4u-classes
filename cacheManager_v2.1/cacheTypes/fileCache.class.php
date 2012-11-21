@@ -133,9 +133,13 @@ class fileCache extends cacheManager implements cacheManagerInterface {
      *
      * @see cacheManager::save()
      */
-    public function save($data=false, $identifier='', $funcArgs=array(), $ttl=60) {
+    public function save($data=false, $identifier='', $funcArgs=array(), $ttl=null) {
+        if (is_int($ttl)) {
+            $this->_setTtl($ttl);
+        }
+
         $cacheId = $this->_cacheId($identifier, $funcArgs);
-        $writeData = serialize(array('ttl' => $ttl, 'data' => $data));
+        $writeData = serialize(array('ttl' => $this->_ttl, 'data' => $data));
 
         $result = file_put_contents($this->getCacheFilename($cacheId), $writeData);
         if (!empty($result)) {
