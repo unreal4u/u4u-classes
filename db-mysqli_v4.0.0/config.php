@@ -25,4 +25,4 @@ define('MYSQL_PORT',3306);                    // your db's port
 define('MYSQL_USER','db_mysqli_v4');          // your db's username
 define('MYSQL_PASS','db_mysqli_v4');          // your db's password
 define('MYSQL_NAME','db_mysqli_v4');          // your db's database name
-define('DBCHAR','utf8');                      // The DB's charset
+define('DB_CHAR','utf8');                     // The DB's charset

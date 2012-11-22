@@ -11,15 +11,15 @@
 <table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
   <tr>
 	<td class="header-top-left"><img src="../media/logo.png" border="0" alt="phpDocumentor " /></td>
-    <td class="header-top-right">Database<br /><div class="header-top-right-subpackage"></div></td>
+    <td class="header-top-right">db_mysqli<br /><div class="header-top-right-subpackage"></div></td>
   </tr>
   <tr><td colspan="2" class="header-line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
   <tr>
     <td colspan="2" class="header-menu">
       
                         
-                      		[ <a href="../classtrees_Database.html" class="menu">class tree: Database</a> ]
-		[ <a href="../elementindex_Database.html" class="menu">index: Database</a> ]
+                      		[ <a href="../classtrees_db_mysqli.html" class="menu">class tree: db_mysqli</a> ]
+		[ <a href="../elementindex_db_mysqli.html" class="menu">index: db_mysqli</a> ]
             [ <a href="../elementindex.html" class="menu">all elements</a> ]
     </td>
   </tr>
@@ -29,7 +29,7 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr valign="top">
     <td width="195" class="menu">
-		<div class="package-title">Database</div>
+		<div class="package-title">db_mysqli</div>
   <div class="package">
 	<div id="todolist">
 			<p><a href="../todolist.html">Todo List</a></p>
@@ -37,18 +37,26 @@
 	</div>
       <b>Packages:</b><br />
   <div class="package">
-              <a href="../li_Database.html">Database</a><br />
+              <a href="../li_db_mysqli.html">db_mysqli</a><br />
       	</div>
       <br />
                         <b>Files:</b><br />
         <div class="package">
-				<span style="padding-left: 1em;"><a href="../Database/_db_mysqli.class.php.html">db_mysqli.class.php</a></span><br />
+				<span style="padding-left: 1em;"><a href="../db_mysqli/_auxiliar_classes.php.html">auxiliar_classes.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---complex-example.php.html">complex-example.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_config.php.html">config.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_db_mysqli.class.php.html">db_mysqli.class.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_index2.php.html">index2.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---simple-example.php.html">simple-example.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---transaction-example.php.html">transaction-example.php</a></span><br />
 	  </div>
             <br />
                   <b>Classes:</b><br />
         <div class="package">
-		    		<a href="../Database/DB_connect.html">DB_connect</a>    	 <br />
-	    		<a href="../Database/db_mysqli.html">db_mysqli</a>    	 <br />
+		    		<a href="../db_mysqli/databaseErrorHandler.html">databaseErrorHandler</a>    	 <br />
+	    		<a href="../db_mysqli/databaseException.html">databaseException</a>    	 <br />
+	    		<a href="../db_mysqli/db_mysqli.html">db_mysqli</a>    	 <br />
+	    		<a href="../db_mysqli/mysql_connect.html">mysql_connect</a>    	 <br />
 	  </div>
                 </td>
     <td>
@@ -71,11 +79,11 @@ Source Location: /db_mysqli.class.php<br /><br />
 		<table width="100%" border="0">
 		<tr><td valign="top" width="60%" class="class-overview">
 
-        		<p align="center" class="short-description"><strong>Main class
+        		<p align="center" class="short-description"><strong>Extended MySQLi Parametrized DB Class
 </strong></p>
-
+<span class="description"><p>db_mysqli.class.php, a MySQLi database access wrapper Original idea from Mertol Kasanan, http://www.phpclasses.org/browse/package/5191.html Optimized, tuned and fixed by unreal4u (Camilo Sperberg)</p></span>
 		<p class="notes">
-			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 25</span>]
+			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 18</span>]
 		</p>
 
 		
@@ -84,39 +92,42 @@ Source Location: /db_mysqli.class.php<br /><br />
 		
 				<strong>Author(s):</strong>
 		<ul>
-		  			 			 <li>unreal4u</li>
-			 		  			 			 <li>Mertol Kasanan</li>
-			 		  		</ul>
+		  			 			 <li>Mertol Kasanan</li>
+			 		  			 			 <li>Camilo Sperberg, http://unreal4u.com/</li>
+			 		  			 		  			 		  			 		  		</ul>
 		
 		
 <strong>Information Tags:</strong><br />
 <table border="0" cellspacing="0" cellpadding="0">
-		</table>
+					<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>4.0.0</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>2009 - 2013 Camilo Sperberg</td></tr>
+				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td>BSD</td></tr>
+	</table>
 		</td>
 
 		
 				<td valign="top" width="20%" class="class-overview">
 		<p align="center" class="short-description"><strong><a href="#sec_methods">Methods</a></strong></p>
 		<ul>
-		  		  <li><a href="../Database/db_mysqli.html#method__construct">__construct</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#method__destruct">__destruct</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodarray_size">array_size</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodconnect_to_db">connect_to_db</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodcreate_cache">create_cache</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methoddb_log">db_log</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodexecute_query">execute_query</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodexecute_result_array">execute_result_array</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodexecute_result_info">execute_result_info</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodfilename">filename</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodget_cache">get_cache</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodget_cache_meta">get_cache_meta</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodliveStats">liveStats</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodlogError">logError</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodlogMe">logMe</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodmakeValuesReferenced">makeValuesReferenced</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#methodvalid_cache">valid_cache</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#method__call">__call</a></li>
-		  		  <li><a href="../Database/db_mysqli.html#method__get">__get</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#method__construct">__construct</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#method__destruct">__destruct</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodconnect_to_db">connect_to_db</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodcreate_cache">create_cache</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methoddb_log">db_log</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_query">execute_query</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_result_array">execute_result_array</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_result_info">execute_result_info</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodfilename">filename</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodget_cache">get_cache</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodget_cache_meta">get_cache_meta</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodliveStats">liveStats</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodlogError">logError</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodlogMe">logMe</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodmakeValuesReferenced">makeValuesReferenced</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodthrowException">throwException</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodvalid_cache">valid_cache</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#method__call">__call</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#method__get">__get</a></li>
 		  		</ul>
 		</td>
 		
@@ -150,19 +161,14 @@ Source Location: /db_mysqli.class.php<br /><br />
 					<td class="method-definition">Ends a transaction if needed and logs (when it should) everything into a XML file.</td></tr>
 				</div>
 																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#array_size" title="details" class="method-name">array_size</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that sums the total length of the data array</td></tr>
-				</div>
-																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#connect_to_db" title="details" class="method-name">connect_to_db</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">As the connection is no longer established when the class initializes itself, we must do it our way</td></tr>
+					<td class="method-definition">This method will connect to the database</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#create_cache" title="details" class="method-name">create_cache</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that creates a valid XML file.</td></tr>
+					<td class="method-definition">Function that creates a valid XML file. I'm not using SimpleXML here because of speed.</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
@@ -221,6 +227,11 @@ Source Location: /db_mysqli.class.php<br /><br />
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#throwException" title="details" class="method-name">throwException</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Throws an exception if these are enabled</td></tr>
+				</div>
+																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#valid_cache" title="details" class="method-name">valid_cache</a>()&nbsp;&nbsp;</td>
 					<td class="method-definition">Checks whether our cache file is still valid.</td></tr>
 				</div>
@@ -232,7 +243,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#__get" title="details" class="method-name">__get</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition"></td></tr>
+					<td class="method-definition">Magic get method.</td></tr>
 				</div>
 												</table>
 			</div>
@@ -255,7 +266,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 62]</span>
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 78]</span>
 </div>
 <br />
 
@@ -264,7 +275,7 @@ Source Location: /db_mysqli.class.php<br /><br />
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>db_mysqli __construct(
 [boolean
-$in_transaction = FALSE]&nbsp;
+$in_transaction = false]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
@@ -279,7 +290,7 @@ $in_transaction = FALSE]&nbsp;
 				<td>
 				<span class="var-name">$in_transaction:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Defaults to FALSE</span>			</td></tr>
+				<span class="var-description"> Whether to begin a transaction, defaults to false</span>			</td></tr>
 				</table>
 
 	<br />
@@ -293,7 +304,7 @@ $in_transaction = FALSE]&nbsp;
 <div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 69]</span>
+	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 90]</span>
 </div>
 <br />
 
@@ -315,56 +326,11 @@ $in_transaction = FALSE]&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
-<a name="methodarray_size" id="array_size"><!-- --></a>
+<a name="methodconnect_to_db" id="connect_to_db"><!-- --></a>
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">array_size</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 517]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>int array_size(
-[array
-$a = NULL]&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that sums the total length of the data array
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$a:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> The array to get the size of</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>The length in bytes of the array.</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodconnect_to_db" id="connect_to_db"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">connect_to_db</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 155]</span>
+	<span class="method-title">connect_to_db</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 231]</span>
 </div>
 <br />
 
@@ -376,7 +342,7 @@ $a = NULL]&nbsp;
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>As the connection is no longer established when the class initializes itself, we must do it our way
+	<p align="center" class="short-description"><strong>This method will connect to the database
 </strong></p>
 
 	<br />
@@ -387,10 +353,10 @@ $a = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodcreate_cache" id="create_cache"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">create_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 326]</span>
+	<span class="method-title">create_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 445]</span>
 </div>
 <br />
 
@@ -398,30 +364,30 @@ $a = NULL]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean create_cache(
-array
-$arg_array, array
+$arg_array
+$arg_array, $result
 $result&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>Function that creates a valid XML file.
+	<p align="center" class="short-description"><strong>Function that creates a valid XML file. I'm not using SimpleXML here because of speed.
 </strong></p>
-<span class="description"><p>I'm not using SimpleXML here because of speed. Using SimpleXML, with 100.000 records, it takes 26 seconds, this  way, only 1 second (on my test server)</p></span>
+<span class="description"><p>Using SimpleXML, with 100.000 records, it takes 26 seconds, this way, only 1 second (on my test server)</p></span>
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Used to create the filename</span>			</td></tr>
+				<span class="var-description"> array Used to create the filename</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$result</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$result:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Used to replicate the result in the XML file.</span>			</td></tr>
+				<span class="var-description"> array Used to replicate the result in the XML file.</span>			</td></tr>
 				</table>
 
 	<br />
@@ -445,10 +411,10 @@ $result&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methoddb_log" id="db_log"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">db_log</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 451]</span>
+	<span class="method-title">db_log</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 620]</span>
 </div>
 <br />
 
@@ -456,7 +422,7 @@ $result&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean db_log(
-array
+$query_arr
 $query_arr&nbsp;
 )</code>
     </td></tr></table>
@@ -468,11 +434,11 @@ $query_arr&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$query_arr</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$query_arr:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> array</span>			</td></tr>
 				</table>
 
 	<br />
@@ -490,10 +456,10 @@ $query_arr&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodexecute_query" id="execute_query"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">execute_query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 170]</span>
+	<span class="method-title">execute_query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 253]</span>
 </div>
 <br />
 
@@ -501,7 +467,7 @@ $query_arr&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean execute_query(
-[array
+[$arg_array
 $arg_array = NULL]&nbsp;
 )</code>
     </td></tr></table>
@@ -513,11 +479,11 @@ $arg_array = NULL]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Contains the binded values</span>			</td></tr>
+				<span class="var-description"> array Contains the binded values</span>			</td></tr>
 				</table>
 
 	<br />
@@ -535,10 +501,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodexecute_result_array" id="execute_result_array"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">execute_result_array</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 241]</span>
+	<span class="method-title">execute_result_array</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 351]</span>
 </div>
 <br />
 
@@ -573,10 +539,10 @@ $arg_array&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodexecute_result_info" id="execute_result_info"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">execute_result_info</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 223]</span>
+	<span class="method-title">execute_result_info</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 327]</span>
 </div>
 <br />
 
@@ -584,7 +550,7 @@ $arg_array&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>array execute_result_info(
-[array
+[$arg_array
 $arg_array = NULL]&nbsp;
 )</code>
     </td></tr></table>
@@ -596,11 +562,11 @@ $arg_array = NULL]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Contains the binded values</span>			</td></tr>
+				<span class="var-description"> array Contains the binded values</span>			</td></tr>
 				</table>
 
 	<br />
@@ -618,10 +584,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodfilename" id="filename"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">filename</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 284]</span>
+	<span class="method-title">filename</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 403]</span>
 </div>
 <br />
 
@@ -629,7 +595,7 @@ $arg_array = NULL]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>string filename(
-[array
+[$arg_array
 $arg_array = NULL]&nbsp;
 )</code>
     </td></tr></table>
@@ -641,11 +607,11 @@ $arg_array = NULL]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Used to create the filename</span>			</td></tr>
+				<span class="var-description"> array Used to create the filename</span>			</td></tr>
 				</table>
 
 	<br />
@@ -663,10 +629,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodget_cache" id="get_cache"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">get_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 357]</span>
+	<span class="method-title">get_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 480]</span>
 </div>
 <br />
 
@@ -674,7 +640,7 @@ $arg_array = NULL]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>array get_cache(
-[array
+[$arg_array
 $arg_array = NULL]&nbsp;
 )</code>
     </td></tr></table>
@@ -686,11 +652,11 @@ $arg_array = NULL]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Used to create the filename</span>			</td></tr>
+				<span class="var-description"> array Used to create the filename</span>			</td></tr>
 				</table>
 
 	<br />
@@ -708,10 +674,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodget_cache_meta" id="get_cache_meta"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">get_cache_meta</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 348]</span>
+	<span class="method-title">get_cache_meta</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 470]</span>
 </div>
 <br />
 
@@ -741,10 +707,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodliveStats" id="liveStats"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">liveStats</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 431]</span>
+	<span class="method-title">liveStats</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 576]</span>
 </div>
 <br />
 
@@ -752,12 +718,12 @@ $arg_array = NULL]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean liveStats(
-string
-$query, [array
-$stats = NULL], [int
-$data = 0], [boolean
-$error = FALSE], [boolean
-$from_cache = FALSE]&nbsp;
+$query
+$query, [$stats
+$stats = null], [$data
+$data = 0], [$error
+$error = false], [$from_cache
+$from_cache = false]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
@@ -768,35 +734,35 @@ $from_cache = FALSE]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$query</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$query:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> string</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$stats</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$stats:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> array</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$data</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$data:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> int</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$error:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> boolean</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$from_cache</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$from_cache:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> boolean</span>			</td></tr>
 				</table>
 
 	<br />
@@ -814,10 +780,10 @@ $from_cache = FALSE]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodlogError" id="logError"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">logError</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 382]</span>
+	<span class="method-title">logError</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 508]</span>
 </div>
 <br />
 
@@ -825,11 +791,11 @@ $from_cache = FALSE]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean logError(
-string
-$query, int
-$errno, [string
-$type = 'non-fatal'], string
-$error&nbsp;
+$query
+$query, $errno
+$errno, [$type
+$type = 'non-fatal'], [$error
+$error = null]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
@@ -840,29 +806,29 @@ $error&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$query</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$query:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> The query to log</span>			</td></tr>
+				<span class="var-description"> string The query to log</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">int</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$errno</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$errno:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> The error number to log</span>			</td></tr>
+				<span class="var-description"> int The error number to log</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$type</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$type:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Whether the error is fatal or non-fatal</span>			</td></tr>
+				<span class="var-description"> string Whether the error is fatal or non-fatal</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$error:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> The error description</span>			</td></tr>
+				<span class="var-description"> string The error description</span>			</td></tr>
 				</table>
 
 	<br />
@@ -880,10 +846,10 @@ $error&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodlogMe" id="logMe"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">logMe</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 407]</span>
+	<span class="method-title">logMe</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 543]</span>
 </div>
 <br />
 
@@ -891,11 +857,11 @@ $error&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean logMe(
-array
-$stats, array
-$arg_array, array
-$result, boolean
-$error, boolean
+$stats
+$stats, $arg_array
+$arg_array, $result
+$result, $error
+$error, $from_cache
 $from_cache&nbsp;
 )</code>
     </td></tr></table>
@@ -907,35 +873,35 @@ $from_cache&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$stats</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$stats:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> array</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> array</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$result</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$result:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> array</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$error:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> boolean</span>			</td></tr>
 					<tr><td class="indent">
-				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$from_cache</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$from_cache:&nbsp;</span></td>
 				<td>
-							</td></tr>
+				<span class="var-description"> boolean</span>			</td></tr>
 				</table>
 
 	<br />
@@ -953,10 +919,10 @@ $from_cache&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodmakeValuesReferenced" id="makeValuesReferenced"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">makeValuesReferenced</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 506]</span>
+	<span class="method-title">makeValuesReferenced</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 684]</span>
 </div>
 <br />
 
@@ -964,7 +930,7 @@ $from_cache&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>array makeValuesReferenced(
-array
+$arr
 $arr&nbsp;
 )</code>
     </td></tr></table>
@@ -976,11 +942,11 @@ $arr&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arr</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arr:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> The array that creates a referenced copy</span>			</td></tr>
+				<span class="var-description"> array The array that creates a referenced copy</span>			</td></tr>
 				</table>
 
 	<br />
@@ -1003,11 +969,62 @@ $arr&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
+<a name="methodthrowException" id="throwException"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 106]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>boolean throwException(
+[string
+$msg = '']&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Throws an exception if these are enabled
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">string</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$msg:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> The string to print within the exception</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns always false (only when supressErrors is active)</td>
+  </tr>
+</table>
+<br />
+
+<strong>Information Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>databaseException</td>
+  </tr>
+</table>
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
 <a name="methodvalid_cache" id="valid_cache"><!-- --></a>
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">valid_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 298]</span>
+	<span class="method-title">valid_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 420]</span>
 </div>
 <br />
 
@@ -1015,7 +1032,7 @@ $arr&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean valid_cache(
-[array
+[$arg_array
 $arg_array = NULL]&nbsp;
 )</code>
     </td></tr></table>
@@ -1027,11 +1044,11 @@ $arg_array = NULL]&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> Used to create the filename</span>			</td></tr>
+				<span class="var-description"> array Used to create the filename</span>			</td></tr>
 				</table>
 
 	<br />
@@ -1052,7 +1069,7 @@ $arg_array = NULL]&nbsp;
 <div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 79]</span>
+	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
 </div>
 <br />
 
@@ -1061,7 +1078,7 @@ $arg_array = NULL]&nbsp;
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>void __call(
 string
-$func, array
+$method, array
 $arg_array&nbsp;
 )</code>
     </td></tr></table>
@@ -1075,7 +1092,7 @@ $arg_array&nbsp;
 					<tr><td class="indent">
 				<span class="var-type">string</span>&nbsp;&nbsp;</td>
 				<td>
-				<span class="var-name">$func:&nbsp;</span></td>
+				<span class="var-name">$method:&nbsp;</span></td>
 				<td>
 				<span class="var-description"> The method to call</span>			</td></tr>
 					<tr><td class="indent">
@@ -1097,7 +1114,7 @@ $arg_array&nbsp;
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 144]</span>
+	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 219]</span>
 </div>
 <br />
 
@@ -1105,17 +1122,19 @@ $arg_array&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>void __get(
-
+mixed
 $v&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	
+	<p align="center" class="short-description"><strong>Magic get method.
+</strong></p>
+<span class="description"><p>Will always return the number of rows</p></span>
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$v:&nbsp;</span></td>
 				<td>
@@ -1135,7 +1154,7 @@ $v&nbsp;
 
         <div class="credit">
 		    <hr class="separator" />
-		    Documentation generated on Fri, 08 Jul 2011 14:03:31 -0400 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
+		    Documentation generated on Thu, 22 Nov 2012 00:34:46 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>

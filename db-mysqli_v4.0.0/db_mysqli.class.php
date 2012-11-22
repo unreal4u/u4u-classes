@@ -9,7 +9,7 @@ include(dirname(__FILE__).'/auxiliar_classes.php');
  * Original idea from Mertol Kasanan, http://www.phpclasses.org/browse/package/5191.html
  * Optimized, tuned and fixed by unreal4u (Camilo Sperberg)
  *
- * @package mysqli
+ * @package db_mysqli
  * @version 4.0.0
  * @author Camilo Sperberg, http://unreal4u.com/
  * @author Mertol Kasanan
@@ -74,7 +74,7 @@ class db_mysqli {
     /**
      * When constructed we could enter transaction mode
      *
-     * @param $in_transaction boolean Defaults to FALSE
+     * @param boolean $in_transaction Whether to begin a transaction, defaults to false
      */
     public function __construct($in_transaction=false) {
         if (version_compare(PHP_VERSION, '5.1.5', '<')) {
@@ -105,7 +105,7 @@ class db_mysqli {
      * @return boolean Returns always false (only when supressErrors is active)
      */
     private function throwException($msg='') {
-        if (empty($supressErrors)) {
+        if (empty($this->supressErrors)) {
             throw new databaseException($msg);
         }
 
@@ -115,14 +115,16 @@ class db_mysqli {
     /**
      * Controls all the calls to the class
      *
-     * @param $func string The method to call
-     * @param $arg_array array The data, such as the query. Can also by empty
+     * @param string $method The method to call
+     * @param array $arg_array The data, such as the query. Can also by empty
      */
-    public function __call($func, $arg_array) {
+    public function __call($method, $arg_array) {
         // Sets our own error handler (Defined in config)
         set_error_handler(array('databaseErrorHandler', 'handleError'));
+
+        // Some custom statistics
         $this->stats = array(
-            'time'   => time() + microtime(),
+            'time'   => microtime(true),
             'memory' => memory_get_usage(),
         );
 
@@ -139,16 +141,16 @@ class db_mysqli {
         }
         $logAction = true;
 
-        switch ($func) {
+        switch ($method) {
             case 'num_rows':
-                if ($arg_array != NULL) {
+                if (!is_null($arg_array)) {
                     $this->execute_query($arg_array);
                     $num_rows = $this->execute_result_info($arg_array);
                     $result = $num_rows['num_rows'];
                 }
             break;
             case 'insert_id':
-                if ($arg_array != NULL) {
+                if (!is_null($arg_array)) {
                     $this->execute_query($arg_array);
                     $num_rows = $this->execute_result_info();
                     $result = $num_rows['insert_id'];
@@ -203,27 +205,42 @@ class db_mysqli {
             $this->logMe($this->stats, $arg_array, $result, $this->error, $this->load_from_cache);
         }
 
+        // Restore whatever error handler we had before calling this class
         restore_error_handler();
 
+        // Finally, return our result
         return $result;
     }
 
+    /**
+     * Magic get method. Will always return the number of rows
+     *
+     * @param mixed $v
+     */
     public function __get($v) {
         $num_rows = $this->execute_result_info();
         if (!isset($num_rows[$v])) {
             $num_rows[$v] = 'Method not supported!';
         }
+
         return $num_rows[$v];
     }
 
     /**
-     * As the connection is no longer established when the class initializes itself, we must do it our way
+     * This method will connect to the database
      */
     private function connect_to_db() {
         if ($this->connected === false) {
-            $db_connect = mysql_connect::getInstance($this->supressErrors);
-            $this->db = $db_connect->db;
-            $this->connected = true;
+            try {
+                // Always capture all errors from the singleton connection
+                $db_connect = mysql_connect::getInstance(false);
+                $this->db = $db_connect->db;
+                $this->connected = true;
+            } catch (databaseException $e) {
+                // Log the error in our internal error collector and re-throw the exception
+                $this->logError(null, 0, 'fatal', $e->getMessage());
+                $this->throwException($e->getMessage());
+            }
         }
         return $this->connected;
     }
@@ -243,21 +260,17 @@ class db_mysqli {
             foreach ($arg_array as $v) {
                 switch ($v) {
                     case is_null($v):
-                        $types .= 'b';
+                        $types .= 'i';
                         $v = null;
                     break;
                     case is_bool($v):
-                        $types .= 'b';
-                    break;
-                    case is_array($v):
-                    case is_object($v):
-                        $types .= 's';
-                        $v = serialize($v);
+                        $types .= 'i';
+                        $v = (int)(bool)$v;
                     break;
                     case is_int($v):
                         $types .= 'i';
                     break;
-                    case is_double($v):
+                    case is_float($v):
                         $types .= 'd';
                     break;
                     case is_string($v):
@@ -335,25 +348,33 @@ class db_mysqli {
     private function execute_result_array($arg_array) {
         $result = 0;
         if (!$this->error) {
+            $result = array();
             if ($this->cache_query === false or $this->cache_recreate === true) {
                 if ($this->stmt->error) {
                     $this->logError(NULL, $this->stmt->errno, 'fatal', $this->stmt->error);
                     return false;
                 }
+
                 $result_metadata = $this->stmt->result_metadata();
                 if (is_object($result_metadata)) {
-                    $result_fields = array();
-                    while ($field = $result_metadata->fetch_field()) {
-                        array_unshift($result_fields, $field->name);
-                        $params[] =& $row[$field->name];
+                    $fields = $result_metadata->fetch_fields();
+                    foreach($fields AS $field) {
+                        $rows[$field->name] = null;
+                        $dataTypes[$field->name] = $field->type;
+                        $params[] =& $rows[$field->name];
                     }
                     call_user_func_array(array(
                         $this->stmt,
                         'bind_result'
                     ), $params);
+
                     while ($this->stmt->fetch()) {
-                        foreach ($row as $key => $val) {
+                        foreach ($rows as $key => $val) {
                             $c[$key] = $val;
+                            // Fix for boolean data types: hard-detect these and set them explicitely as boolean
+                            if ($dataTypes[$key] == 16) {
+                                $c[$key] = (bool)$val;
+                            }
                         }
                         $result[] = $c;
                     }
@@ -421,7 +442,7 @@ class db_mysqli {
      * Function that creates a valid XML file. I'm not using SimpleXML here because of speed. Using SimpleXML, with
      * 100.000 records, it takes 26 seconds, this way, only 1 second (on my test server)
      *
-     * @todo Don't return TRUE when cache creation fails
+     * @TODO Don't return TRUE when cache creation fails
      * @param $arg_array array Used to create the filename
      * @param $result array Used to replicate the result in the XML file.
      * @return boolean Returns always TRUE.
@@ -491,8 +512,9 @@ class db_mysqli {
      */
     private function logError($query, $errno, $type='non-fatal', $error=null) {
         $query_num = count($this->dbLiveStats);
+
         if (empty($error)) {
-            $error = '(not specified)';
+            $complete_error = '(not specified)';
         } else if ($type == 'non-fatal') {
             $complete_error = '[NOTICE] ' . $error;
         } else {
@@ -528,9 +550,9 @@ class db_mysqli {
         $this->cache_query = false;
         $stats = array(
             'memory' => memory_get_usage() - $stats['memory'],
-            'time' => number_format((time() + microtime()) - $stats['time'], 5, ',', '.')
+            'time'   => number_format(microtime(true) - $stats['time'], 5, ',', '.'),
         );
-        $this->liveStats($arg_array, $stats, $datasize, $error, $from_cache);
+        $this->liveStats($arg_array, $stats, $error, $from_cache);
         if (isset($arg_array[0])) {
             $query = $arg_array[0];
         } else {
@@ -557,7 +579,7 @@ class db_mysqli {
      * @param $from_cache boolean
      * @return boolean Always returns TRUE.
      */
-    private function liveStats($query, $stats = NULL, $data = 0, $error = false, $from_cache = false) {
+    private function liveStats($query, $stats=null, $data=0, $error=false, $from_cache=false) {
         if ($error == false) {
             $error = 'FALSE';
         }
@@ -589,7 +611,7 @@ class db_mysqli {
             'datasize'           => $data . ' (bytes)',
             'error'              => $error,
             'from_cache'         => $valid_cache,
-            'within_transaction' => $in_trans
+            'within_transaction' => $in_trans,
         );
 
         return true;
@@ -675,7 +697,7 @@ class db_mysqli {
 }
 
 /**
- * Singleton class that holds the connection to MySQL
+ * Singleton class that holds the connection to MySQL. Do not manually call this class!
  *
  * @author Mertol Kasanan
  * @author Camilo Sperberg
@@ -684,7 +706,7 @@ class db_mysqli {
 class mysql_connect {
     private static $instance;
     private $connected = false;
-    private $supressErrors;
+    private $supressErrors = false;
 
     /**
      * Get a singleton instance
@@ -694,6 +716,7 @@ class mysql_connect {
             $c = __CLASS__;
             self::$instance = new $c($supressErrors);
         }
+
         return self::$instance;
     }
 
@@ -722,7 +745,7 @@ class mysql_connect {
         }
 
         if ($this->connected === true) {
-            $this->db->set_charset(DBCHAR);
+            $this->db->set_charset(DB_CHAR);
         }
     }
 
