@@ -1,7 +1,7 @@
 <?php
 
 include(dirname(__FILE__).'/auxiliar_classes.php');
-include(CACHEMANAGER);
+include(dirname(__FILE__).CACHEMANAGER);
 
 /**
  * Extended MySQLi Parametrized DB Class
@@ -62,6 +62,10 @@ class db_mysqli {
     private $num_rows = 0;
     private $in_transaction = false;
     private $rollback = false;
+
+    private $cache;
+    private $cacheEnabled = false;
+
     public $createRuntimeLog = false;
 
     /**
@@ -90,6 +94,8 @@ class db_mysqli {
         if ($in_transaction === true) {
             $this->begin_transaction();
         }
+
+        $this->setCacheClass();
     }
 
     /**
@@ -409,9 +415,23 @@ class db_mysqli {
     /*
      * Cache functionality, implements mostly cache module
      */
-    private function get_cache($type='query', $arg_array=null) {
-        $cache = new cacheManagerClass();
+    private function setCacheClass() {
+        if (CACHEMANAGER_TYPE != '') {
+            try {
+                $this->cache = new cacheManager(CACHEMANAGER_TYPE);
+                $this->cacheEnabled = true;
+            } catch (cacheException $e) {
+                $this->throwException($e->getMessage(), __LINE__);
+            }
+        }
+
+
+        return true;
     }
+
+    #private function get_cache($type='query', $arg_array=null) {
+    #    $cache = new cacheManager(CACHEMANAGER_TYPE);
+    #}
 
     /**
      * Function that establish the cache filename

@@ -10,8 +10,8 @@
 date_default_timezone_set('America/Santiago');
 
 /* CLASS CONFIGURATION */
-define('CACHEMANAGER', '../cacheManager_v2.0/cacheManager.class.php'); // Location of cacheManager class
-define('CACHEMANAGER_TYPE', 'apc');           // Until now, "apc" or "file". Leave empty to not use any. If you don't know what APC is, choose "file"
+define('CACHEMANAGER', '/../cacheManager_v2.1/cacheManager.class.php'); // Location of cacheManager class, relative to the class's location
+define('CACHEMANAGER_TYPE', 'lolastic');           // Until now, "apc" or "file". Leave empty to not use any. If you don't know what APC is, choose "file"
 
 define('DB_LOG_XML', false);                  // Log all database activity to XML?
 define('DB_URL_XML','/home/user/db-log.xml'); // Location of XML file, recommended place is outside the public_html directory!
