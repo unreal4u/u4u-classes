@@ -56,8 +56,6 @@ class db_mysqli {
     private $stats = array();
     private $error = false;
     private $xmllog = array();
-    private $cache_recreate = false;
-    private $load_from_cache = false;
     private $rows_from_cache = -1;
     private $num_rows = 0;
     private $in_transaction = false;
@@ -65,6 +63,7 @@ class db_mysqli {
 
     private $cache;
     private $cacheEnabled = false;
+    private $cacheTtl = 60;
 
     public $createRuntimeLog = false;
 
@@ -117,95 +116,93 @@ class db_mysqli {
      * @param array $arg_array The data, such as the query. Can also by empty
      */
     public function __call($method, $arg_array) {
-        // Sets our own error handler (Defined in config)
-        set_error_handler(array('databaseErrorHandler', 'handleError'));
-
-        // Some custom statistics
-        $this->stats = array(
-            'time'   => microtime(true),
-            'memory' => memory_get_usage(),
-        );
-
-        $this->error = false;
-        $this->load_from_cache = false;
-
-        if ($this->cache_query === false) {
-            $this->cache_recreate = false;
-        } elseif (!$this->valid_cache($arg_array)) {
-            $this->cache_recreate = true;
-        } else {
-            $this->cache_recreate = false;
-            $this->load_from_cache = true;
+        $result = false;
+        if ($this->cache_query === true) {
+            $result = $this->get_cache($arg_array);
         }
-        $logAction = true;
 
-        switch ($method) {
-            case 'num_rows':
-                if (!is_null($arg_array)) {
+        if ($result === false) {
+            // Sets our own error handler (Defined in config)
+            set_error_handler(array('databaseErrorHandler', 'handleError'));
+
+            // Some custom statistics
+            $this->stats = array(
+                'time'   => microtime(true),
+                'memory' => memory_get_usage(),
+            );
+
+            $this->error = false;
+            $logAction   = true;
+
+            switch ($method) {
+                case 'num_rows':
+                    if (!is_null($arg_array)) {
+                        $this->execute_query($arg_array);
+                        $num_rows = $this->execute_result_info($arg_array);
+                        $result = $num_rows['num_rows'];
+                    }
+                break;
+                case 'insert_id':
+                    if (!is_null($arg_array)) {
+                        $this->execute_query($arg_array);
+                        $num_rows = $this->execute_result_info();
+                        $result = $num_rows['insert_id'];
+                    }
+                break;
+                case 'query':
                     $this->execute_query($arg_array);
-                    $num_rows = $this->execute_result_info($arg_array);
-                    $result = $num_rows['num_rows'];
-                }
-            break;
-            case 'insert_id':
-                if (!is_null($arg_array)) {
-                    $this->execute_query($arg_array);
-                    $num_rows = $this->execute_result_info();
-                    $result = $num_rows['insert_id'];
-                }
-            break;
-            case 'query':
-                $this->execute_query($arg_array);
-                if (!$result = $this->execute_result_array($arg_array)) {
-                    $result = false;
-                }
-            break;
-            case 'begin_transaction':
-                $this->connect_to_db();
-                if ($this->in_transaction === false) {
-                    $this->in_transaction = true;
-                    $this->db->autocommit(false);
-                }
-                $logAction = false;
-                $result = true;
-            break;
-            case 'end_transaction':
-                $result = true;
-                if ($this->in_transaction) {
-                    if ($this->rollback === false) {
-                        $this->db->commit();
-                    } else {
-                        $this->db->rollback();
-                        $this->rollback = false;
+                    if (!$result = $this->execute_result_array($arg_array)) {
                         $result = false;
                     }
-                    $this->db->autocommit(true);
-                    $this->in_transaction = false;
-                }
-                $logAction = false;
-            break;
-            case 'version':
-                $result = 'Not connected yet';
-                $this->connect_to_db();
-                if (!empty($arg_array[0])) {
-                    $temp = explode(' ', $this->db->client_info);
-                    $result = $temp[1];
-                } else {
-                    $result = $this->db->client_info;
-                }
-            break;
-            default:
-                $result = 'Method not supported!';
-            break;
+                break;
+                case 'begin_transaction':
+                    $this->connect_to_db();
+                    if ($this->in_transaction === false) {
+                        $this->in_transaction = true;
+                        $this->db->autocommit(false);
+                    }
+                    $logAction = false;
+                    $result = true;
+                break;
+                case 'end_transaction':
+                    $result = true;
+                    if ($this->in_transaction) {
+                        if ($this->rollback === false) {
+                            $this->db->commit();
+                        } else {
+                            $this->db->rollback();
+                            $this->rollback = false;
+                            $result = false;
+                        }
+                        $this->db->autocommit(true);
+                        $this->in_transaction = false;
+                    }
+                    $logAction = false;
+                break;
+                case 'version':
+                    $result = 'Not connected yet';
+                    $this->connect_to_db();
+                    if (!empty($arg_array[0])) {
+                        $temp = explode(' ', $this->db->client_info);
+                        $result = $temp[1];
+                    } else {
+                        $result = $this->db->client_info;
+                    }
+                break;
+                default:
+                    $result = 'Method not supported!';
+                break;
+            }
+
+            if (!empty($logAction)) {
+                $this->logMe($this->stats, $arg_array, $result, $this->error, $this->load_from_cache);
+            }
+
+            // Restore whatever error handler we had before calling this class
+            restore_error_handler();
         }
 
-        if (!empty($logAction)) {
-            $this->logMe($this->stats, $arg_array, $result, $this->error, $this->load_from_cache);
-        }
-
-        // Restore whatever error handler we had before calling this class
-        restore_error_handler();
-
+        $this->cache_query = false;
         // Finally, return our result
         return $result;
     }
@@ -251,81 +248,84 @@ class db_mysqli {
      */
     protected function execute_query($arg_array = NULL) {
         $execute_query = false;
-        if ($this->cache_query === false or $this->cache_recreate === true) {
-            if ($this->connect_to_db()) {
-                $sql_query = array_shift($arg_array);
-                $types = '';
-                foreach ($arg_array as $v) {
-                    switch ($v) {
-                        // note: boolean(false) is also considered by this function as null
-                        case is_null($v):
-                            $types .= 'i';
-                            $v = null;
-                        break;
-                        // Cast to int type and save it that way
-                        case is_bool($v):
-                            $types .= 'i';
-                            $v = (int)(bool)$v;
-                        break;
-                        // Save an int
-                        case is_int($v):
-                            $types .= 'i';
-                        break;
-                        // Save a float type data
-                        case is_float($v):
-                            $types .= 'd';
-                        break;
-                        // Save a string typed data
-                        case is_string($v):
-                            $types .= 's';
-                        break;
-                        /*
-                         * Objects or arrays could also be saved as a string by serializing them, however, that is
-                         * beyond the scope of this class and should be implemented by an extending class that
-                         * overwrites this method.
-                         * If you want, uncomment the following lines but keep in mind that you will have to do the
-                         * same everytime an update for this class is released
-                         */
-                        #default:
-                        #    $types .= 's';
-                        #    $v = serialize($v);
-                        #break;
-                    }
+        if ($this->connect_to_db()) {
+            $sql_query = array_shift($arg_array);
+            $types = '';
+            foreach ($arg_array as $v) {
+                switch ($v) {
+                    // note: boolean(false) is also considered by this function as null
+                    case is_null($v):
+                        $types .= 'i';
+                        $v = null;
+                    break;
+                    // Cast to int type and save it that way
+                    case is_bool($v):
+                        $types .= 'i';
+                        $v = (int)(bool)$v;
+                    break;
+                    // Save an int
+                    case is_int($v):
+                        $types .= 'i';
+                    break;
+                    // Save a float type data
+                    case is_float($v):
+                        $types .= 'd';
+                    break;
+                    // Save a string typed data
+                    case is_string($v):
+                        $types .= 's';
+                    break;
+                    /*
+                     * Objects or arrays could also be saved as a string by serializing them, however, that is
+                     * beyond the scope of this class and should be implemented by an extending class that
+                     * overwrites this method.
+                     * If you want, uncomment the following lines but keep in mind that you will have to do the
+                     * same everytime an update for this class is released
+                     */
+                    #default:
+                    #    $types .= 's';
+                    #    $v = serialize($v);
+                    #break;
                 }
-                if (isset($this->stmt)) {
-                    unset($this->stmt);
-                }
-                $this->stmt = $this->db->prepare($sql_query);
-                if (!is_object($this->stmt)) {
-                    $this->logError($sql_query, $this->db->errno, 'fatal', $this->db->error);
-                }
-                if (isset($arg_array[0])) {
-                    array_unshift($arg_array, $types);
-                    if (!$this->error) {
-                        if (!$execute_query = @call_user_func_array(array(
-                            $this->stmt,
-                            'bind_param'
-                        ), $this->makeValuesReferenced($arg_array))) {
-                            $this->logError($sql_query, $this->stmt->errno, 'fatal', 'Failed to bind. Do you have equal parameters for all the \'?\'?');
-                            $execute_query = false;
-                        }
-                    } else {
+            }
+
+            if (isset($this->stmt)) {
+                unset($this->stmt);
+            }
+
+            $this->stmt = $this->db->prepare($sql_query);
+            if (!is_object($this->stmt)) {
+                $this->logError($sql_query, $this->db->errno, 'fatal', $this->db->error);
+            }
+
+            if (isset($arg_array[0])) {
+                array_unshift($arg_array, $types);
+                if (!$this->error) {
+                    if (!$execute_query = @call_user_func_array(array(
+                        $this->stmt,
+                        'bind_param'
+                    ), $this->makeValuesReferenced($arg_array))) {
+                        $this->logError($sql_query, $this->stmt->errno, 'fatal', 'Failed to bind. Do you have equal parameters for all the \'?\'?');
                         $execute_query = false;
                     }
                 } else {
-                    $execute_query = true;
-                    if (empty($sql_query)) {
-                        $execute_query = false;
-                    }
+                    $execute_query = false;
                 }
-                if ($execute_query and is_object($this->stmt)) {
-                    $this->stmt->execute();
-                    $this->stmt->store_result();
-                } elseif (!$this->error) {
-                    $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
+            } else {
+                $execute_query = true;
+                if (empty($sql_query)) {
+                    $execute_query = false;
                 }
             }
+
+            if ($execute_query and is_object($this->stmt)) {
+                $this->stmt->execute();
+                $this->stmt->store_result();
+            } elseif (!$this->error) {
+                $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
+            }
         }
+
         return $execute_query;
     }
 
@@ -337,24 +337,23 @@ class db_mysqli {
      * @return array $result Can return affected rows, number of rows or last id inserted.
      */
     private function execute_result_info($arg_array = NULL) {
+        $result = array();
+
         if (!$this->error) {
-            if ($this->cache_query === false and $this->load_from_cache === false) {
-                if ($this->db->affected_rows > 0)
-                    $num_rows = $this->db->affected_rows;
-                else {
-                    if (isset($this->db->num_rows)) {
-                        $num_rows = $this->db->num_rows;
-                    } else {
-                        $num_rows = 0;
-                    }
+            if ($this->db->affected_rows > 0)
+                $num_rows = $this->db->affected_rows;
+            else {
+                if (isset($this->db->num_rows)) {
+                    $num_rows = $this->db->num_rows;
+                } else {
+                    $num_rows = 0;
                 }
-                $result['num_rows'] = $num_rows;
-                $result['insert_id'] = $this->db->insert_id;
-            } else {
-                $result['num_rows'] = $this->get_cache_meta();
             }
-            return $result;
+            $result['num_rows'] = $num_rows;
+            $result['insert_id'] = $this->db->insert_id;
         }
+
+        return $result;
     }
 
     /**
@@ -362,59 +361,62 @@ class db_mysqli {
      */
     private function execute_result_array($arg_array) {
         $result = 0;
+
         if (!$this->error) {
             $result = array();
-            if ($this->cache_query === false or $this->cache_recreate === true) {
-                if ($this->stmt->error) {
-                    $this->logError(NULL, $this->stmt->errno, 'fatal', $this->stmt->error);
-                    return false;
+            if ($this->stmt->error) {
+                $this->logError(NULL, $this->stmt->errno, 'fatal', $this->stmt->error);
+                return false;
+            }
+
+            $result_metadata = $this->stmt->result_metadata();
+            if (is_object($result_metadata)) {
+                $rows = array();
+                $fields = $result_metadata->fetch_fields();
+                foreach($fields AS $field) {
+                    $rows[$field->name] = null;
+                    $dataTypes[$field->name] = $field->type;
+                    $params[] =& $rows[$field->name];
                 }
 
-                $result_metadata = $this->stmt->result_metadata();
-                if (is_object($result_metadata)) {
-                    $rows = array();
-                    $fields = $result_metadata->fetch_fields();
-                    foreach($fields AS $field) {
-                        $rows[$field->name] = null;
-                        $dataTypes[$field->name] = $field->type;
-                        $params[] =& $rows[$field->name];
-                    }
-                    call_user_func_array(array(
-                        $this->stmt,
-                        'bind_result'
-                    ), $params);
+                call_user_func_array(array(
+                    $this->stmt,
+                    'bind_result'
+                ), $params);
 
-                    while ($this->stmt->fetch()) {
-                        foreach ($rows as $key => $val) {
-                            $c[$key] = $val;
-                            // Fix for boolean data types: hard-detect these and set them explicitely as boolean
-                            if ($dataTypes[$key] == 16) {
-                                $c[$key] = (bool)$val;
-                            }
+                while ($this->stmt->fetch()) {
+                    foreach ($rows as $key => $val) {
+                        $c[$key] = $val;
+                        // Fix for boolean data types: hard-detect these and set them explicitely as boolean
+                        if ($dataTypes[$key] == 16) {
+                            $c[$key] = (bool)$val;
                         }
-                        $result[] = $c;
                     }
-                    if ($this->cache_recreate === true and !empty($result)) {
-                        $this->create_cache($arg_array, $result);
-                    }
-                    if (!isset($result)) {
-                        $result = 0;
-                    }
-                } elseif ($this->stmt->errno == 0) {
-                    $result = true;
-                } else {
-                    $result = $this->stmt->errno;
+                    $result[] = $c;
                 }
+            } elseif ($this->stmt->errno == 0) {
+                $result = true;
             } else {
-                $result = $this->get_cache($arg_array);
+                $result = $this->stmt->errno;
             }
         }
+
+        if ($this->cache_query === true) {
+            $this->save_cache($arg_array, $result);
+        }
+
         return $result;
     }
 
     /*
      * Cache functionality, implements mostly cache module
      */
+    public function setTtl($time=0) {
+        if ($this->cacheEnabled === true AND is_numeric($time)) {
+            $result = $this->cacheTtl = $time;
+        }
+    }
+
     private function setCacheClass() {
         if (CACHEMANAGER_TYPE != '') {
             try {
@@ -425,111 +427,25 @@ class db_mysqli {
             }
         }
 
-
         return true;
     }
 
-    #private function get_cache($type='query', $arg_array=null) {
-    #    $cache = new cacheManager(CACHEMANAGER_TYPE);
-    #}
-
-    /**
-     * Function that establish the cache filename
-     *
-     * @param $arg_array array Used to create the filename
-     * @return string Returns the filename of the cache file
-     */
-    private function filename($arg_array = NULL) {
-        $filename = '0';
-        if (!empty($arg_array)) {
-            foreach ($arg_array as $a) {
-                $filename .= $a;
-            }
-            $filename = 'db_' . md5($filename);
+    private function get_cache($arg_array=null) {
+        $return = false;
+        if ($this->cacheEnabled === true) {
+            $return = $this->cache->load('db_mysqli_query', $arg_array);
         }
-        return DB_CACHE_LOCATION . $filename . '.xml';
+
+        return $return;
     }
 
-    /**
-     * Checks whether our cache file is still valid.
-     *
-     * @param $arg_array array Used to create the filename
-     * @return boolean TRUE if cache file is still valid, FALSE otherwise
-     */
-    private function valid_cache($arg_array = NULL) {
-        $filename = '';
-        $is_valid = false;
-        if (is_array($arg_array)) {
-            $filename = $this->filename($arg_array);
-            if (file_exists($filename)) {
-                if (filemtime($filename) > time() - DB_CACHE_EXPIRE) {
-                    $is_valid = true;
-                } else if (!@unlink($filename)) {
-                    $this->logError($arg_array[0], 0, 'non-fatal', 'Couldn\'t delete old cache file! Check permissions');
-                }
-            }
+    private function save_cache($arg_array=null, $data=null) {
+        $return = false;
+        if ($this->cacheEnabled === true) {
+            $return = $this->cache->save($data, 'db_mysqli_query', $arg_array, $this->cacheTtl);
         }
-        return $is_valid;
-    }
 
-    /**
-     * Function that creates a valid XML file. I'm not using SimpleXML here because of speed. Using SimpleXML, with
-     * 100.000 records, it takes 26 seconds, this way, only 1 second (on my test server)
-     *
-     * @TODO Don't return TRUE when cache creation fails
-     * @param $arg_array array Used to create the filename
-     * @param $result array Used to replicate the result in the XML file.
-     * @return boolean Returns always TRUE.
-     */
-    private function create_cache($arg_array, $result) {
-        $i = 0;
-        $xml = '';
-        foreach ($result as $r) {
-            $xml .= '<r' . $i . '>';
-            foreach ($r as $key => $value) {
-                $xml .= '<' . $key . '>' . $value . '</' . $key . '>';
-            }
-            $xml .= '</r' . $i . '>';
-            $i++;
-        }
-        if (!@file_put_contents($this->filename($arg_array), '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<db>' . $xml . '</db>')) {
-            $this->logError($arg_array[0], 0, 'non-fatal', 'Couldn\'t create cache file!');
-            $this->cache_query = false;
-            $this->cache_recreate = false;
-        }
-        unset($xml);
-        return true;
-    }
-
-    /**
-     * Returns number of rows in the XML.
-     *
-     * @return int Number of rows
-     */
-    private function get_cache_meta() {
-        return $this->rows_from_cache;
-    }
-
-    /**
-     * Parses and returns the XML in an array.
-     *
-     * @param $arg_array array Used to create the filename
-     * @return array The result set rescued from the cache file
-     */
-    private function get_cache($arg_array = NULL) {
-        $i = 0;
-        $xml = simplexml_load_file($this->filename($arg_array));
-        foreach ($xml as $x => $value) {
-            foreach ($value as $v => $s) {
-                $bTemp[$v] = (string)$s;
-            }
-            $r[$i] = $bTemp;
-            $i++;
-            $bTemp = null;
-        }
-        $this->rows_from_cache = $i;
-        unset($xml, $i, $bTemp, $value, $x, $v, $s);
-        return $r;
+        return $return;
     }
 
     /*
@@ -596,18 +512,20 @@ class db_mysqli {
      * @param $from_cache boolean
      * @return boolean Always returns TRUE.
      */
-    private function logMe($stats, $arg_array, $result, $error, $from_cache) {
+    private function logMe($stats, $arg_array, $result, $error) {
         $this->cache_query = false;
         $stats = array(
             'memory' => memory_get_usage() - $stats['memory'],
             'time'   => number_format(microtime(true) - $stats['time'], 5, ',', '.'),
         );
-        $this->liveStats($arg_array, $stats, $error, $from_cache);
+        $this->liveStats($arg_array, $stats, $error);
+
         if (isset($arg_array[0])) {
             $query = $arg_array[0];
         } else {
             $query = '';
         }
+
         if (DB_LOG_XML) {
             $this->xmllog[] = array(
                 'query'  => $query,
@@ -629,7 +547,7 @@ class db_mysqli {
      * @param $from_cache boolean
      * @return boolean Always returns TRUE.
      */
-    private function liveStats($query, $stats=null, $data=0, $error=false, $from_cache=false) {
+    private function liveStats($query, $stats=null, $data=0, $error=false) {
         if ($this->keepLiveLog === true) {
             if ($error == false) {
                 $error = 'FALSE';
@@ -656,19 +574,13 @@ class db_mysqli {
                 $in_trans = 'FALSE';
             }
 
-            $results = $this->num_rows;
-            if ($this->cache_query === true) {
-                $this->rows_from_cache = $results;
-            }
-
             $this->dbLiveStats[] = array(
                 'query'              => $query,
-                'number_results'     => $results,
+                'number_results'     => $this->num_rows,
                 'time'               => $stats['time'] . ' (seg)',
                 'memory'             => $stats['memory'] . ' (bytes)',
                 'datasize'           => $data . ' (bytes)',
                 'error'              => $error,
-                'from_cache'         => $valid_cache,
                 'within_transaction' => $in_trans,
             );
         }
