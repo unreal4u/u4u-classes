@@ -25,6 +25,12 @@ class db_mysqli {
     public $cache_query = false;
 
     /**
+     * Keep an informational array with all executed queries. Defaults to false
+     *
+     * @var boolean $keepLiveLog
+     */
+    public $keepLiveLog = false;
+    /**
      * Maintains statistics of the executed queries
      *
      * @var array $dbLiveStats
@@ -45,7 +51,7 @@ class db_mysqli {
      */
     private $db = null;
     private $stmt = null;
-    private $connected = false;
+    private $isConnected = false;
     private $stats = array();
     private $error = false;
     private $xmllog = array();
@@ -78,7 +84,7 @@ class db_mysqli {
      */
     public function __construct($in_transaction=false) {
         if (version_compare(PHP_VERSION, '5.1.5', '<')) {
-            $this->throwException('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version');
+            $this->throwException('Sorry, class only valid for PHP &gt; 5.1.5, please consider upgrading to the latest version', __LINE__);
         }
         if ($in_transaction === true) {
             $this->begin_transaction();
@@ -89,27 +95,12 @@ class db_mysqli {
      * Ends a transaction if needed and logs (when it should) everything into a XML file.
      */
     public function __destruct() {
-        if ($this->in_transaction === true and $this->connected === true) {
+        if ($this->in_transaction === true and $this->isConnected === true) {
             $this->end_transaction();
         }
         if (DB_LOG_XML === true) {
             $this->db_log($this->xmllog);
         }
-    }
-
-    /**
-     * Throws an exception if these are enabled
-     *
-     * @param string $msg The string to print within the exception
-     * @throws databaseException
-     * @return boolean Returns always false (only when supressErrors is active)
-     */
-    private function throwException($msg='') {
-        if (empty($this->supressErrors)) {
-            throw new databaseException($msg);
-        }
-
-        return false;
     }
 
     /**
@@ -227,22 +218,22 @@ class db_mysqli {
     }
 
     /**
-     * This method will connect to the database
+     * This method will open a connection to the database
      */
     private function connect_to_db() {
-        if ($this->connected === false) {
+        if ($this->isConnected === false) {
             try {
                 // Always capture all errors from the singleton connection
-                $db_connect = mysql_connect::getInstance(false);
+                $db_connect = mysql_connect::getInstance();
                 $this->db = $db_connect->db;
-                $this->connected = true;
+                $this->isConnected = true;
             } catch (databaseException $e) {
                 // Log the error in our internal error collector and re-throw the exception
                 $this->logError(null, 0, 'fatal', $e->getMessage());
-                $this->throwException($e->getMessage());
+                $this->throwException($e->getMessage(), $e->getLine());
             }
         }
-        return $this->connected;
+        return $this->isConnected;
     }
 
     /**
@@ -251,64 +242,81 @@ class db_mysqli {
      * @param $arg_array array Contains the binded values
      * @return boolean Whether we could execute the query or not
      */
-    private function execute_query($arg_array = NULL) {
+    protected function execute_query($arg_array = NULL) {
         $execute_query = false;
         if ($this->cache_query === false or $this->cache_recreate === true) {
-            $this->connect_to_db();
-            $sql_query = array_shift($arg_array);
-            $types = '';
-            foreach ($arg_array as $v) {
-                switch ($v) {
-                    case is_null($v):
-                        $types .= 'i';
-                        $v = null;
-                    break;
-                    case is_bool($v):
-                        $types .= 'i';
-                        $v = (int)(bool)$v;
-                    break;
-                    case is_int($v):
-                        $types .= 'i';
-                    break;
-                    case is_float($v):
-                        $types .= 'd';
-                    break;
-                    case is_string($v):
-                        $types .= 's';
-                    break;
+            if ($this->connect_to_db()) {
+                $sql_query = array_shift($arg_array);
+                $types = '';
+                foreach ($arg_array as $v) {
+                    switch ($v) {
+                        // note: boolean(false) is also considered by this function as null
+                        case is_null($v):
+                            $types .= 'i';
+                            $v = null;
+                        break;
+                        // Cast to int type and save it that way
+                        case is_bool($v):
+                            $types .= 'i';
+                            $v = (int)(bool)$v;
+                        break;
+                        // Save an int
+                        case is_int($v):
+                            $types .= 'i';
+                        break;
+                        // Save a float type data
+                        case is_float($v):
+                            $types .= 'd';
+                        break;
+                        // Save a string typed data
+                        case is_string($v):
+                            $types .= 's';
+                        break;
+                        /*
+                         * Objects or arrays could also be saved as a string by serializing them, however, that is
+                         * beyond the scope of this class and should be implemented by an extending class that
+                         * overwrites this method.
+                         * If you want, uncomment the following lines but keep in mind that you will have to do the
+                         * same everytime an update for this class is released
+                         */
+                        #default:
+                        #    $types .= 's';
+                        #    $v = serialize($v);
+                        #break;
+                    }
                 }
-            }
-            if (isset($this->stmt)) {
-                unset($this->stmt);
-            }
-            $this->stmt = $this->db->prepare($sql_query);
-            if (!is_object($this->stmt)) {
-                $this->logError($sql_query, $this->db->errno, 'fatal', $this->db->error);
-            }
-            if (isset($arg_array[0])) {
-                array_unshift($arg_array, $types);
-                if (!$this->error) {
-                    if (!$execute_query = @call_user_func_array(array(
-                        $this->stmt,
-                        'bind_param'
-                    ), $this->makeValuesReferenced($arg_array))) {
-                        $this->logError($sql_query, $this->stmt->errno, 'fatal', 'Failed to bind. Do you have equal parameters for all the \'?\'?');
+                if (isset($this->stmt)) {
+                    unset($this->stmt);
+                }
+                $this->stmt = $this->db->prepare($sql_query);
+                if (!is_object($this->stmt)) {
+                    $this->logError($sql_query, $this->db->errno, 'fatal', $this->db->error);
+                }
+                if (isset($arg_array[0])) {
+                    array_unshift($arg_array, $types);
+                    if (!$this->error) {
+                        if (!$execute_query = @call_user_func_array(array(
+                            $this->stmt,
+                            'bind_param'
+                        ), $this->makeValuesReferenced($arg_array))) {
+                            $this->logError($sql_query, $this->stmt->errno, 'fatal', 'Failed to bind. Do you have equal parameters for all the \'?\'?');
+                            $execute_query = false;
+                        }
+                    } else {
                         $execute_query = false;
                     }
                 } else {
-                    $execute_query = false;
+                    $execute_query = true;
+                    if (empty($sql_query)) {
+                        $execute_query = false;
+                    }
                 }
-            } else {
-                $execute_query = true;
-                if (empty($sql_query)) {
-                    $execute_query = false;
+                if ($execute_query and is_object($this->stmt)) {
+                    $this->stmt->execute();
+                    $this->stmt->store_result();
+                } elseif (!$this->error) {
+                    $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
                 }
-            }
-            if ($execute_query and is_object($this->stmt)) {
-                $this->stmt->execute();
-                $this->stmt->store_result();
-            } elseif (!$this->error) {
-                $this->logError($sql_query, 0, 'non-fatal', 'General error: Bad query or no query at all');
             }
         }
         return $execute_query;
@@ -357,6 +365,7 @@ class db_mysqli {
 
                 $result_metadata = $this->stmt->result_metadata();
                 if (is_object($result_metadata)) {
+                    $rows = array();
                     $fields = $result_metadata->fetch_fields();
                     foreach($fields AS $field) {
                         $rows[$field->name] = null;
@@ -499,8 +508,24 @@ class db_mysqli {
     }
 
     /*
-     * All functionality that handles with logs and stuff
+     * All functionality that handles with logs, exceptions and other stuff
      */
+    /**
+     * Throws an exception if these are enabled
+     *
+     * @param string $msg The string to print within the exception
+     * @param int $line The line in which the exception ocurred
+     * @throws databaseException
+     * @return boolean Returns always false (only when supressErrors is active)
+     */
+    protected function throwException($msg='', $line=0) {
+        if (empty($this->supressErrors)) {
+            throw new databaseException($msg, $line, __FILE__);
+        }
+
+        return false;
+    }
+
     /**
      * Function that logs all errors
      *
@@ -580,39 +605,48 @@ class db_mysqli {
      * @return boolean Always returns TRUE.
      */
     private function liveStats($query, $stats=null, $data=0, $error=false, $from_cache=false) {
-        if ($error == false) {
-            $error = 'FALSE';
-        }
-        if (!is_array($stats) or empty($stats)) {
-            $stats = array(
-                'time'     => 0,
-                'memory'   => 0,
+        if ($this->keepLiveLog === true) {
+            if ($error == false) {
+                $error = 'FALSE';
+            } else {
+                $error = 'TRUE';
+            }
+
+            if (!is_array($stats) or empty($stats)) {
+                $stats = array(
+                    'time'     => 0,
+                    'memory'   => 0,
+                );
+            }
+
+            if ($from_cache === true) {
+                $valid_cache = 'TRUE';
+            } else {
+                $valid_cache = 'FALSE';
+            }
+
+            if ($this->in_transaction === true) {
+                $in_trans = 'TRUE';
+            } else {
+                $in_trans = 'FALSE';
+            }
+
+            $results = $this->num_rows;
+            if ($this->cache_query === true) {
+                $this->rows_from_cache = $results;
+            }
+
+            $this->dbLiveStats[] = array(
+                'query'              => $query,
+                'number_results'     => $results,
+                'time'               => $stats['time'] . ' (seg)',
+                'memory'             => $stats['memory'] . ' (bytes)',
+                'datasize'           => $data . ' (bytes)',
+                'error'              => $error,
+                'from_cache'         => $valid_cache,
+                'within_transaction' => $in_trans,
             );
         }
-        if ($from_cache === true) {
-            $valid_cache = 'TRUE';
-        } else {
-            $valid_cache = 'FALSE';
-        }
-        if ($this->in_transaction === true) {
-            $in_trans = 'TRUE';
-        } else {
-            $in_trans = 'FALSE';
-        }
-        $results = $this->num_rows;
-        if ($this->cache_query === true) {
-            $this->rows_from_cache = $results;
-        }
-        $this->dbLiveStats[] = array(
-            'query'              => $query,
-            'number_results'     => $results,
-            'time'               => $stats['time'] . ' (seg)',
-            'memory'             => $stats['memory'] . ' (bytes)',
-            'datasize'           => $data . ' (bytes)',
-            'error'              => $error,
-            'from_cache'         => $valid_cache,
-            'within_transaction' => $in_trans,
-        );
 
         return true;
     }
@@ -705,16 +739,16 @@ class db_mysqli {
  */
 class mysql_connect {
     private static $instance;
-    private $connected = false;
+    private $isConnected = false;
     private $supressErrors = false;
 
     /**
      * Get a singleton instance
      */
-    public static function getInstance($supressErrors) {
+    public static function getInstance() {
         if (!isset(self::$instance)) {
             $c = __CLASS__;
-            self::$instance = new $c($supressErrors);
+            self::$instance = new $c();
         }
 
         return self::$instance;
@@ -726,7 +760,7 @@ class mysql_connect {
      * @throws Exception If trying to clone
      */
     public function __clone() {
-        $this->throwException('We can only declare this class once! Do not try to clone it');
+        $this->throwException('We can only declare this class once! Do not try to clone it', __LINE__);
     }
 
     /**
@@ -734,19 +768,14 @@ class mysql_connect {
      *
      * @throws Exception If any problem with the database
      */
-    public function __construct($supressErrors=false) {
-        $this->supressErrors = $supressErrors;
-
+    public function __construct() {
         $this->db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_NAME, MYSQL_PORT);
         if (mysqli_connect_error()) {
-            $this->throwException('No DB connection could be made: ' . mysqli_connect_error());
-        } else {
-            $this->connected = true;
+            $this->throwException(mysqli_connect_error(), __LINE__);
         }
 
-        if ($this->connected === true) {
-            $this->db->set_charset(DB_CHAR);
-        }
+        $this->isConnected = true;
+        $this->db->set_charset(DB_CHAR);
     }
 
     /**
@@ -756,10 +785,8 @@ class mysql_connect {
      * @throws databaseException
      * @return boolean Returns always false (only when supressErrors is active)
      */
-    private function throwException($msg) {
-        if (empty($this->supressErrors)) {
-            throw new databaseException($msg);
-        }
+    private function throwException($msg, $line=0) {
+        throw new databaseException($msg, $line, __FILE__);
 
         return false;
     }
@@ -768,7 +795,7 @@ class mysql_connect {
      * Gracefully closes the connection (if there is an open one)
      */
     public function __destruct() {
-        if ($this->connected === true) {
+        if ($this->isConnected === true) {
             $this->db->close();
         }
     }

@@ -10,8 +10,8 @@
 date_default_timezone_set('America/Santiago');
 
 /* CLASS CONFIGURATION */
-define('CACHEMANAGER', '../cacheManager_v2.0/cacheManager.class.php');
-define('CACHEMANAGER_TYPE', 'apc');           // Until now, "apc" or "file". If you don't know what APC is, choose "file"
+define('CACHEMANAGER', '../cacheManager_v2.0/cacheManager.class.php'); // Location of cacheManager class
+define('CACHEMANAGER_TYPE', 'apc');           // Until now, "apc" or "file". Leave empty to not use any. If you don't know what APC is, choose "file"
 
 define('DB_LOG_XML', false);                  // Log all database activity to XML?
 define('DB_URL_XML','/home/user/db-log.xml'); // Location of XML file, recommended place is outside the public_html directory!
@@ -24,5 +24,5 @@ define('MYSQL_HOST','localhost');             // your db's host
 define('MYSQL_PORT',3306);                    // your db's port
 define('MYSQL_USER','db_mysqli_v4');          // your db's username
 define('MYSQL_PASS','db_mysqli_v4');          // your db's password
-define('MYSQL_NAME','db_mysqli_v4');          // your db's database name
+define('MYSQL_NAME','db_mysqli_v42');          // your db's database name
 define('DB_CHAR','utf8');                     // The DB's charset
