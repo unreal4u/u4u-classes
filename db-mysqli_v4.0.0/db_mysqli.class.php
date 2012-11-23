@@ -1,6 +1,7 @@
 <?php
 
 include(dirname(__FILE__).'/auxiliar_classes.php');
+include(CACHEMANAGER);
 
 /**
  * Extended MySQLi Parametrized DB Class
@@ -408,6 +409,10 @@ class db_mysqli {
     /*
      * Cache functionality, implements mostly cache module
      */
+    private function get_cache($type='query', $arg_array=null) {
+        $cache = new cacheManagerClass();
+    }
+
     /**
      * Function that establish the cache filename
      *

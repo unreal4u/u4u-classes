@@ -12,6 +12,7 @@ include('../db_mysqli.class.php');
 
 try {
     $db = new db_mysqli();
+    //$db->supressErrors = true;
 
     $db->query('INSERT INTO a (string_valued, int_valued, bool_valued, string_null_valued, int_null_valued, bool_null_valued, float_valued, float_null_valued, datetime_valued,       datetime_null_valued, timestamp_valued, timestamp_null_valued) VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),?)',
                                'a',           11,         true,        null,               null,            null,             11.22,        null,              '2001-02-03 00:00:00', null,                                   null

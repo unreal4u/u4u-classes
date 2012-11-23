@@ -23,6 +23,6 @@ define('DB_CACHE_EXPIRE','30');               // DB cache file expiricy, in seco
 define('MYSQL_HOST','localhost');             // your db's host
 define('MYSQL_PORT',3306);                    // your db's port
 define('MYSQL_USER','db_mysqli_v4');          // your db's username
-define('MYSQL_PASS','db_mysqli_v4');          // your db's password
-define('MYSQL_NAME','db_mysqli_v42');          // your db's database name
+define('MYSQL_PASS','db_mysqli_v42');          // your db's password
+define('MYSQL_NAME','db_mysqli_v4');          // your db's database name
 define('DB_CHAR','utf8');                     // The DB's charset
