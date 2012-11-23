@@ -49,7 +49,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $ttl int The time the cache will be valid
      */
     public function save($data=false, $identifier='', $funcArgs=null, $ttl=null) {
-        if (!is_int($ttl)) {
+        if (is_int($ttl)) {
             $this->_setTtl($ttl);
         }
         $return = apc_store($this->_cacheId($identifier, $funcArgs), $data, $this->_ttl);
