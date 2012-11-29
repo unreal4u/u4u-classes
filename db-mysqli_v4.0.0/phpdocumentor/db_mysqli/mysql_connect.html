@@ -30,11 +30,6 @@
   <tr valign="top">
     <td width="195" class="menu">
 		<div class="package-title">db_mysqli</div>
-  <div class="package">
-	<div id="todolist">
-			<p><a href="../todolist.html">Todo List</a></p>
-	</div>
-	</div>
       <b>Packages:</b><br />
   <div class="package">
               <a href="../li_db_mysqli.html">db_mysqli</a><br />
@@ -43,10 +38,12 @@
                         <b>Files:</b><br />
         <div class="package">
 				<span style="padding-left: 1em;"><a href="../db_mysqli/_auxiliar_classes.php.html">auxiliar_classes.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---capturing-exceptions.php.html">capturing-exceptions.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---complex-example.php.html">complex-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_config.php.html">config.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_db_mysqli.class.php.html">db_mysqli.class.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_index2.php.html">index2.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---reset-cache.php.html">reset-cache.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---simple-example.php.html">simple-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---transaction-example.php.html">transaction-example.php</a></span><br />
 	  </div>
@@ -83,7 +80,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 </strong></p>
 <span class="description"><p>Do not manually call this class!</p></span>
 		<p class="notes">
-			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 700</span>]
+			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 557</span>]
 		</p>
 
 		
@@ -176,10 +173,10 @@ Source Location: /db_mysqli.class.php<br /><br />
 			<a name='method_detail'></a>
 
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 731]</span>
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 588]</span>
 </div>
 <br />
 
@@ -187,24 +184,12 @@ Source Location: /db_mysqli.class.php<br /><br />
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>mysql_connect __construct(
-[
-$supressErrors = false]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
 	<p align="center" class="short-description"><strong>Tries to make the connection
 </strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type"></span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$supressErrors:&nbsp;</span></td>
-				<td>
-							</td></tr>
-				</table>
 
 	<br />
 	
@@ -220,10 +205,10 @@ $supressErrors = false]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="method__destruct" id="__destruct"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 764]</span>
+	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 614]</span>
 </div>
 <br />
 
@@ -246,10 +231,10 @@ $supressErrors = false]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodgetInstance" id="getInstance"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">getInstance</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 708]</span>
+	<span class="method-title">getInstance</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 565]</span>
 </div>
 <br />
 
@@ -257,24 +242,12 @@ $supressErrors = false]&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>void getInstance(
-
-$supressErrors&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
 	<p align="center" class="short-description"><strong>Get a singleton instance
 </strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type"></span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$supressErrors:&nbsp;</span></td>
-				<td>
-							</td></tr>
-				</table>
 
 	<br />
 	
@@ -284,10 +257,10 @@ $supressErrors&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="methodthrowException" id="throwException"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 753]</span>
+	<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 605]</span>
 </div>
 <br />
 
@@ -296,7 +269,8 @@ $supressErrors&nbsp;
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean throwException(
 string
-$msg&nbsp;
+$msg, [
+$line = 0]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
@@ -312,6 +286,12 @@ $msg&nbsp;
 				<span class="var-name">$msg:&nbsp;</span></td>
 				<td>
 				<span class="var-description"> The string to print within the exception</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$line:&nbsp;</span></td>
+				<td>
+							</td></tr>
 				</table>
 
 	<br />
@@ -335,10 +315,10 @@ $msg&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="method__clone" id="__clone"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">__clone</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 722]</span>
+	<span class="method-title">__clone</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 579]</span>
 </div>
 <br />
 
@@ -372,7 +352,7 @@ $msg&nbsp;
 
         <div class="credit">
 		    <hr class="separator" />
-		    Documentation generated on Thu, 22 Nov 2012 00:34:46 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+		    Documentation generated on Thu, 29 Nov 2012 23:13:03 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>

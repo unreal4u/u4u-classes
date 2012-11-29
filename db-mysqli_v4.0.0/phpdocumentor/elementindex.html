@@ -27,11 +27,6 @@
   <tr valign="top">
     <td width="195" class="menu">
 		<div class="package-title"></div>
-  <div class="package">
-	<div id="todolist">
-			<p><a href="todolist.html">Todo List</a></p>
-	</div>
-	</div>
       <b>Packages:</b><br />
   <div class="package">
               <a href="li_db_mysqli.html">db_mysqli</a><br />
@@ -52,12 +47,12 @@
 	[ <a href="elementindex.html#c">c</a> ]
 	[ <a href="elementindex.html#d">d</a> ]
 	[ <a href="elementindex.html#e">e</a> ]
-	[ <a href="elementindex.html#f">f</a> ]
 	[ <a href="elementindex.html#g">g</a> ]
 	[ <a href="elementindex.html#h">h</a> ]
 	[ <a href="elementindex.html#i">i</a> ]
 	[ <a href="elementindex.html#l">l</a> ]
 	[ <a href="elementindex.html#m">m</a> ]
+	[ <a href="elementindex.html#r">r</a> ]
 	[ <a href="elementindex.html#s">s</a> ]
 	[ <a href="elementindex.html#t">t</a> ]
 	[ <a href="elementindex.html#v">v</a> ]
@@ -85,16 +80,14 @@
 	<div>
 		<h2>c</h2>
 		<dl>
-							<dt><b>CACHEMANAGER</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineCACHEMANAGER">CACHEMANAGER</a></dd>
-							<dt><b>CACHEMANAGER_TYPE</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineCACHEMANAGER_TYPE">CACHEMANAGER_TYPE</a></dd>
+							<dt><b>castValues</b></dt>
+				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodcastValues">db_mysqli::castValues()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that checks what type is the data we are trying to insert</dd>
 							<dt><b>config.php</b></dt>
 				<dd>procedural page <a href="db_mysqli/_config.php.html">config.php</a></dd>
 							<dt><b>connect_to_db</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodconnect_to_db">db_mysqli::connect_to_db()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;This method will connect to the database</dd>
-							<dt><b>create_cache</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodcreate_cache">db_mysqli::create_cache()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that creates a valid XML file. I'm not using SimpleXML here because of speed.</dd>
+				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodconnect_to_db">db_mysqli::connect_to_db()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;This method will open a connection to the database</dd>
+							<dt><b>capturing-exceptions.php</b></dt>
+				<dd>procedural page <a href="db_mysqli/_documentation---capturing-exceptions.php.html">capturing-exceptions.php</a></dd>
 							<dt><b>complex-example.php</b></dt>
 				<dd>procedural page <a href="db_mysqli/_documentation---complex-example.php.html">complex-example.php</a></dd>
 					</dl>
@@ -112,22 +105,12 @@
 				<dd>in file auxiliar_classes.php, class <a href="db_mysqli/databaseErrorHandler.html">databaseErrorHandler</a><br>&nbsp;&nbsp;&nbsp;&nbsp;This class will handle all errors for us</dd>
 							<dt><b>databaseException</b></dt>
 				<dd>in file auxiliar_classes.php, class <a href="db_mysqli/databaseException.html">databaseException</a><br>&nbsp;&nbsp;&nbsp;&nbsp;This class will throw this type of exceptions</dd>
-							<dt><b>DBCHAR</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDBCHAR">DBCHAR</a></dd>
-							<dt><b>DB_CACHE_EXPIRE</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDB_CACHE_EXPIRE">DB_CACHE_EXPIRE</a></dd>
-							<dt><b>DB_CACHE_LOCATION</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDB_CACHE_LOCATION">DB_CACHE_LOCATION</a></dd>
-							<dt><b>db_log</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methoddb_log">db_mysqli::db_log()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that creates a log in XML format</dd>
-							<dt><b>DB_LOG_XML</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDB_LOG_XML">DB_LOG_XML</a></dd>
+							<dt><b>DB_CHAR</b></dt>
+				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDB_CHAR">DB_CHAR</a></dd>
 							<dt><b>db_mysqli</b></dt>
 				<dd>in file db_mysqli.class.php, class <a href="db_mysqli/db_mysqli.html">db_mysqli</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Extended MySQLi Parametrized DB Class</dd>
 							<dt><b>db_mysqli.class.php</b></dt>
 				<dd>procedural page <a href="db_mysqli/_db_mysqli.class.php.html">db_mysqli.class.php</a></dd>
-							<dt><b>DB_URL_XML</b></dt>
-				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineDB_URL_XML">DB_URL_XML</a></dd>
 					</dl>
 	</div>
 	<a name="e"></a>
@@ -140,24 +123,11 @@
 		<h2>e</h2>
 		<dl>
 							<dt><b>execute_query</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodexecute_query">db_mysqli::execute_query()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that prepares and binds the query, or does nothing if an valid cache file is found.</dd>
+				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodexecute_query">db_mysqli::execute_query()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that prepares and binds the query</dd>
 							<dt><b>execute_result_array</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodexecute_result_array">db_mysqli::execute_result_array()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Establishes the $result array: the data itself.</dd>
+				<dd>in file db_mysqli.class.php, function <a href="db_mysqli/_db_mysqli.class.php.html#functionexecute_result_array">execute_result_array()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Establishes the $result array: the data itself</dd>
 							<dt><b>execute_result_info</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodexecute_result_info">db_mysqli::execute_result_info()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns data like the number of rows or the last insert id.</dd>
-					</dl>
-	</div>
-	<a name="f"></a>
-	<div class="index-letter-section">
-		<div style="float: left" class="index-letter-title">f</div>
-		<div style="float: right"><a href="#top">[Top]</a></div>
-		<div style="clear: both"></div>
-	</div>
-	<div>
-		<h2>f</h2>
-		<dl>
-							<dt><b>filename</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodfilename">db_mysqli::filename()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that establish the cache filename</dd>
+				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodexecute_result_info">db_mysqli::execute_result_info()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns data like the number of rows or the last insert id</dd>
 					</dl>
 	</div>
 	<a name="g"></a>
@@ -171,10 +141,6 @@
 		<dl>
 							<dt><b>getInstance</b></dt>
 				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/mysql_connect.html#methodgetInstance">mysql_connect::getInstance()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Get a singleton instance</dd>
-							<dt><b>get_cache</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodget_cache">db_mysqli::get_cache()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Parses and returns the XML in an array.</dd>
-							<dt><b>get_cache_meta</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodget_cache_meta">db_mysqli::get_cache_meta()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns number of rows in the XML.</dd>
 					</dl>
 	</div>
 	<a name="h"></a>
@@ -212,12 +178,10 @@
 	<div>
 		<h2>l</h2>
 		<dl>
-							<dt><b>liveStats</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodliveStats">db_mysqli::liveStats()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Live Statistics, can be embedded in source code to quickly check some things</dd>
 							<dt><b>logError</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodlogError">db_mysqli::logError()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that logs all errors</dd>
-							<dt><b>logMe</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodlogMe">db_mysqli::logMe()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that executes after each query and also acumulates data for the XML log</dd>
+				<dd>in file db_mysqli.class.php, function <a href="db_mysqli/_db_mysqli.class.php.html#functionlogError">logError()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that logs all errors</dd>
+							<dt><b>logStatistics</b></dt>
+				<dd>in file db_mysqli.class.php, function <a href="db_mysqli/_db_mysqli.class.php.html#functionlogStatistics">logStatistics()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Function that executes after each query</dd>
 					</dl>
 	</div>
 	<a name="m"></a>
@@ -230,7 +194,7 @@
 		<h2>m</h2>
 		<dl>
 							<dt><b>makeValuesReferenced</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodmakeValuesReferenced">db_mysqli::makeValuesReferenced()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Creates an referenced representation of an array</dd>
+				<dd>in file db_mysqli.class.php, function <a href="db_mysqli/_db_mysqli.class.php.html#functionmakeValuesReferenced">makeValuesReferenced()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Creates an referenced representation of an array</dd>
 							<dt><b>mysql_connect</b></dt>
 				<dd>in file db_mysqli.class.php, class <a href="db_mysqli/mysql_connect.html">mysql_connect</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Singleton class that holds the connection to MySQL.</dd>
 							<dt><b>MYSQL_HOST</b></dt>
@@ -243,6 +207,19 @@
 				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineMYSQL_PORT">MYSQL_PORT</a></dd>
 							<dt><b>MYSQL_USER</b></dt>
 				<dd>in file config.php, constant <a href="db_mysqli/_config.php.html#defineMYSQL_USER">MYSQL_USER</a></dd>
+					</dl>
+	</div>
+	<a name="r"></a>
+	<div class="index-letter-section">
+		<div style="float: left" class="index-letter-title">r</div>
+		<div style="float: right"><a href="#top">[Top]</a></div>
+		<div style="clear: both"></div>
+	</div>
+	<div>
+		<h2>r</h2>
+		<dl>
+							<dt><b>reset-cache.php</b></dt>
+				<dd>procedural page <a href="db_mysqli/_documentation---reset-cache.php.html">reset-cache.php</a></dd>
 					</dl>
 	</div>
 	<a name="s"></a>
@@ -272,7 +249,7 @@
 							<dt><b>throwException</b></dt>
 				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/mysql_connect.html#methodthrowException">mysql_connect::throwException()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Throws an exception if these are enabled</dd>
 							<dt><b>throwException</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodthrowException">db_mysqli::throwException()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Throws an exception if these are enabled</dd>
+				<dd>in file db_mysqli.class.php, function <a href="db_mysqli/_db_mysqli.class.php.html#functionthrowException">throwException()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Throws an exception if these are enabled</dd>
 					</dl>
 	</div>
 	<a name="v"></a>
@@ -284,8 +261,8 @@
 	<div>
 		<h2>v</h2>
 		<dl>
-							<dt><b>valid_cache</b></dt>
-				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodvalid_cache">db_mysqli::valid_cache()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Checks whether our cache file is still valid.</dd>
+							<dt><b>version</b></dt>
+				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#methodversion">db_mysqli::version()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Will return MySQL version or client version</dd>
 					</dl>
 	</div>
 	<a name="_"></a>
@@ -305,6 +282,8 @@
 				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/mysql_connect.html#method__construct">mysql_connect::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Tries to make the connection</dd>
 							<dt><b>__construct</b></dt>
 				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/db_mysqli.html#method__construct">db_mysqli::__construct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;When constructed we could enter transaction mode</dd>
+							<dt><b>__construct</b></dt>
+				<dd>in file auxiliar_classes.php, method <a href="db_mysqli/databaseException.html#method__construct">databaseException::__construct()</a></dd>
 							<dt><b>__destruct</b></dt>
 				<dd>in file db_mysqli.class.php, method <a href="db_mysqli/mysql_connect.html#method__destruct">mysql_connect::__destruct()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Gracefully closes the connection (if there is an open one)</dd>
 							<dt><b>__destruct</b></dt>
@@ -315,7 +294,7 @@
 	</div>
         <div class="credit">
 		    <hr class="separator" />
-		    Documentation generated on Thu, 22 Nov 2012 00:34:46 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+		    Documentation generated on Thu, 29 Nov 2012 23:13:03 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>

@@ -30,11 +30,6 @@
   <tr valign="top">
     <td width="195" class="menu">
 		<div class="package-title">db_mysqli</div>
-  <div class="package">
-	<div id="todolist">
-			<p><a href="../todolist.html">Todo List</a></p>
-	</div>
-	</div>
       <b>Packages:</b><br />
   <div class="package">
               <a href="../li_db_mysqli.html">db_mysqli</a><br />
@@ -43,10 +38,12 @@
                         <b>Files:</b><br />
         <div class="package">
 				<span style="padding-left: 1em;"><a href="../db_mysqli/_auxiliar_classes.php.html">auxiliar_classes.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---capturing-exceptions.php.html">capturing-exceptions.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---complex-example.php.html">complex-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_config.php.html">config.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_db_mysqli.class.php.html">db_mysqli.class.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_index2.php.html">index2.php</a></span><br />
+			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---reset-cache.php.html">reset-cache.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---simple-example.php.html">simple-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---transaction-example.php.html">transaction-example.php</a></span><br />
 	  </div>
@@ -83,7 +80,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 </strong></p>
 <span class="description"><p>db_mysqli.class.php, a MySQLi database access wrapper Original idea from Mertol Kasanan, http://www.phpclasses.org/browse/package/5191.html Optimized, tuned and fixed by unreal4u (Camilo Sperberg)</p></span>
 		<p class="notes">
-			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 18</span>]
+			Located in <a class="field" href="_db_mysqli.class.php.html">/db_mysqli.class.php</a> [<span class="field">line 24</span>]
 		</p>
 
 		
@@ -92,15 +89,34 @@ Source Location: /db_mysqli.class.php<br /><br />
 		
 				<strong>Author(s):</strong>
 		<ul>
-		  			 			 <li>Mertol Kasanan</li>
+		  			 		  			 		  			 		  			 		  			 		  			 			 <li>Mertol Kasanan</li>
 			 		  			 			 <li>Camilo Sperberg, http://unreal4u.com/</li>
 			 		  			 		  			 		  			 		  		</ul>
 		
-		
+		<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Method:</strong>&nbsp;&nbsp;</td><td>int num_rows(): num_rows(...) Returns the number of results from the query</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Method:</strong>&nbsp;&nbsp;</td><td>mixed[] insert_id(): insert_id(...) Returns the insert id of the query</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Method:</strong>&nbsp;&nbsp;</td><td>mixed[] query(): query(...) Returns false if query could not be executed, resultset otherwise</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Method:</strong>&nbsp;&nbsp;</td><td>boolean begin_transaction(): begin_transaction() Returns always true</td>
+  </tr>
+  <tr>
+    <td class="indent"><strong>Method:</strong>&nbsp;&nbsp;</td><td>boolean end_transaction(): end_transaction() Commits the changes to the database. If rollback is needed, this will return false, otherwise true</td>
+  </tr>
+</table>
+<br />
+
 <strong>Information Tags:</strong><br />
 <table border="0" cellspacing="0" cellpadding="0">
 					<tr><td><strong>Version:</strong>&nbsp;&nbsp;</td><td>4.0.0</td></tr>
-				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td>2009 - 2013 Camilo Sperberg</td></tr>
+				<tr><td><strong>Copyright:</strong>&nbsp;&nbsp;</td><td><p>2009 - 2013 Camilo Sperberg</p><p></p></td></tr>
 				<tr><td><strong>License:</strong>&nbsp;&nbsp;</td><td>BSD</td></tr>
 	</table>
 		</td>
@@ -111,21 +127,11 @@ Source Location: /db_mysqli.class.php<br /><br />
 		<ul>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#method__construct">__construct</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#method__destruct">__destruct</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodcastValues">castValues</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#methodconnect_to_db">connect_to_db</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodcreate_cache">create_cache</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methoddb_log">db_log</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_query">execute_query</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_result_array">execute_result_array</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#methodexecute_result_info">execute_result_info</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodfilename">filename</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodget_cache">get_cache</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodget_cache_meta">get_cache_meta</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodliveStats">liveStats</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodlogError">logError</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodlogMe">logMe</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodmakeValuesReferenced">makeValuesReferenced</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodthrowException">throwException</a></li>
-		  		  <li><a href="../db_mysqli/db_mysqli.html#methodvalid_cache">valid_cache</a></li>
+		  		  <li><a href="../db_mysqli/db_mysqli.html#methodversion">version</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#method__call">__call</a></li>
 		  		  <li><a href="../db_mysqli/db_mysqli.html#method__get">__get</a></li>
 		  		</ul>
@@ -150,7 +156,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 		<div class="info-box-body">
 			<div class="method-summary">
 				<table border="0" cellspacing="0" cellpadding="0" class="method-summary">
-																																																																																																																																																																								<div class="method-definition">
+																																																																																								<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">db_mysqli</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#__construct" title="details" class="method-name">__construct</a>()&nbsp;&nbsp;</td>
 					<td class="method-definition">When constructed we could enter transaction mode</td></tr>
@@ -161,79 +167,29 @@ Source Location: /db_mysqli.class.php<br /><br />
 					<td class="method-definition">Ends a transaction if needed and logs (when it should) everything into a XML file.</td></tr>
 				</div>
 																<div class="method-definition">
+											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
+										<td class="method-definition"><a href="#castValues" title="details" class="method-name">castValues</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Function that checks what type is the data we are trying to insert</td></tr>
+				</div>
+																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#connect_to_db" title="details" class="method-name">connect_to_db</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">This method will connect to the database</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#create_cache" title="details" class="method-name">create_cache</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that creates a valid XML file. I'm not using SimpleXML here because of speed.</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#db_log" title="details" class="method-name">db_log</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that creates a log in XML format</td></tr>
+					<td class="method-definition">This method will open a connection to the database</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#execute_query" title="details" class="method-name">execute_query</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that prepares and binds the query, or does nothing if an valid cache file is found.</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#execute_result_array" title="details" class="method-name">execute_result_array</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Establishes the $result array: the data itself.</td></tr>
+					<td class="method-definition">Function that prepares and binds the query</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
 										<td class="method-definition"><a href="#execute_result_info" title="details" class="method-name">execute_result_info</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Returns data like the number of rows or the last insert id.</td></tr>
+					<td class="method-definition">Returns data like the number of rows or the last insert id</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">string</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#filename" title="details" class="method-name">filename</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that establish the cache filename</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#get_cache" title="details" class="method-name">get_cache</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Parses and returns the XML in an array.</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">int</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#get_cache_meta" title="details" class="method-name">get_cache_meta</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Returns number of rows in the XML.</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#liveStats" title="details" class="method-name">liveStats</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Live Statistics, can be embedded in source code to quickly check some things</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#logError" title="details" class="method-name">logError</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that logs all errors</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#logMe" title="details" class="method-name">logMe</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Function that executes after each query and also acumulates data for the XML log</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">array</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#makeValuesReferenced" title="details" class="method-name">makeValuesReferenced</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Creates an referenced representation of an array</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#throwException" title="details" class="method-name">throwException</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Throws an exception if these are enabled</td></tr>
-				</div>
-																<div class="method-definition">
-											<tr><td class="method-definition"><span class="method-result">boolean</span>&nbsp;&nbsp;</td>
-										<td class="method-definition"><a href="#valid_cache" title="details" class="method-name">valid_cache</a>()&nbsp;&nbsp;</td>
-					<td class="method-definition">Checks whether our cache file is still valid.</td></tr>
+										<td class="method-definition"><a href="#version" title="details" class="method-name">version</a>()&nbsp;&nbsp;</td>
+					<td class="method-definition">Will return MySQL version or client version</td></tr>
 				</div>
 																<div class="method-definition">
 											<tr><td class="method-definition"><span class="method-result">void</span>&nbsp;&nbsp;</td>
@@ -263,10 +219,10 @@ Source Location: /db_mysqli.class.php<br /><br />
 			<a name='method_detail'></a>
 
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 78]</span>
+	<span class="method-title">Constructor __construct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 108]</span>
 </div>
 <br />
 
@@ -275,7 +231,7 @@ Source Location: /db_mysqli.class.php<br /><br />
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>db_mysqli __construct(
 [boolean
-$in_transaction = false]&nbsp;
+$inTransaction = false]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
@@ -288,7 +244,7 @@ $in_transaction = false]&nbsp;
 					<tr><td class="indent">
 				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
 				<td>
-				<span class="var-name">$in_transaction:&nbsp;</span></td>
+				<span class="var-name">$inTransaction:&nbsp;</span></td>
 				<td>
 				<span class="var-description"> Whether to begin a transaction, defaults to false</span>			</td></tr>
 				</table>
@@ -301,10 +257,10 @@ $in_transaction = false]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="method__destruct" id="__destruct"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 90]</span>
+	<span class="method-title">Destructor __destruct</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
 </div>
 <br />
 
@@ -326,11 +282,56 @@ $in_transaction = false]&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
+<a name="methodcastValues" id="castValues"><!-- --></a>
+<div class="oddrow">
+
+<div class="method-header">
+	<span class="method-title">castValues</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 273]</span>
+</div>
+<br />
+
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
+		<code>array castValues(
+[array
+$arg_array = null]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table><br /></div>
+
+	<p align="center" class="short-description"><strong>Function that checks what type is the data we are trying to insert
+</strong></p>
+
+			<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$arg_array:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> All values that the query will be handling</span>			</td></tr>
+				</table>
+
+	<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns an array with a string of types and another one with the corrected values</td>
+  </tr>
+</table>
+<br />
+
+
+		
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+</div>
 <a name="methodconnect_to_db" id="connect_to_db"><!-- --></a>
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">connect_to_db</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 231]</span>
+	<span class="method-title">connect_to_db</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 245]</span>
 </div>
 <br />
 
@@ -342,7 +343,7 @@ $in_transaction = false]&nbsp;
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>This method will connect to the database
+	<p align="center" class="short-description"><strong>This method will open a connection to the database
 </strong></p>
 
 	<br />
@@ -352,114 +353,11 @@ $in_transaction = false]&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
-<a name="methodcreate_cache" id="create_cache"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">create_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 445]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean create_cache(
-$arg_array
-$arg_array, $result
-$result&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that creates a valid XML file. I'm not using SimpleXML here because of speed.
-</strong></p>
-<span class="description"><p>Using SimpleXML, with 100.000 records, it takes 26 seconds, this way, only 1 second (on my test server)</p></span>
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array Used to create the filename</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$result</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$result:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array Used to replicate the result in the XML file.</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns always TRUE.</td>
-  </tr>
-</table>
-<br />
-
-<strong>Information Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Todo:</strong>&nbsp;&nbsp;</td><td>Don't return TRUE when cache creation fails</td>
-  </tr>
-</table>
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methoddb_log" id="db_log"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">db_log</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 620]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean db_log(
-$query_arr
-$query_arr&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that creates a log in XML format
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$query_arr</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$query_arr:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns always TRUE.</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
 <a name="methodexecute_query" id="execute_query"><!-- --></a>
 <div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">execute_query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 253]</span>
+	<span class="method-title">execute_query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 310]</span>
 </div>
 <br />
 
@@ -468,12 +366,12 @@ $query_arr&nbsp;
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>boolean execute_query(
 [$arg_array
-$arg_array = NULL]&nbsp;
+$arg_array = null]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>Function that prepares and binds the query, or does nothing if an valid cache file is found.
+	<p align="center" class="short-description"><strong>Function that prepares and binds the query
 </strong></p>
 
 			<strong>Parameters:</strong><br />
@@ -500,49 +398,11 @@ $arg_array = NULL]&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
-<a name="methodexecute_result_array" id="execute_result_array"><!-- --></a>
+<a name="methodexecute_result_info" id="execute_result_info"><!-- --></a>
 <div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">execute_result_array</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 351]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>void execute_result_array(
-
-$arg_array&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Establishes the $result array: the data itself.
-</strong></p>
-<span class="description"><p>If we have a valid cache file, it rescues it from there.</p></span>
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type"></span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
-				<td>
-							</td></tr>
-				</table>
-
-	<br />
-	
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodexecute_result_info" id="execute_result_info"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">execute_result_info</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 327]</span>
+	<span class="method-title">execute_result_info</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 359]</span>
 </div>
 <br />
 
@@ -550,30 +410,38 @@ $arg_array&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>array execute_result_info(
-[$arg_array
-$arg_array = NULL]&nbsp;
+mixed
+0, array
+$arg_array, 
+1&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>Returns data like the number of rows or the last insert id.
+	<p align="center" class="short-description"><strong>Returns data like the number of rows or the last insert id
 </strong></p>
-<span class="description"><p>If a valid cache file is found, it rescues the number of rows from the XML file.</p></span>
+
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$arg_array:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> array Contains the binded values</span>			</td></tr>
+				<span class="var-description"> Contains the binded values</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">1:&nbsp;</span></td>
+				<td>
+							</td></tr>
 				</table>
 
 	<br />
 	<strong>API Tags:</strong><br />
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>$result Can return affected rows, number of rows or last id inserted.</td>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Can return affected rows, number of rows or last id inserted.</td>
   </tr>
 </table>
 <br />
@@ -583,479 +451,42 @@ $arg_array = NULL]&nbsp;
 		<br />
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
-<a name="methodfilename" id="filename"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">filename</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 403]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>string filename(
-[$arg_array
-$arg_array = NULL]&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that establish the cache filename
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array Used to create the filename</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns the filename of the cache file</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodget_cache" id="get_cache"><!-- --></a>
+<a name="methodversion" id="version"><!-- --></a>
 <div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">get_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 480]</span>
+	<span class="method-title">version</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 227]</span>
 </div>
 <br />
 
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>array get_cache(
-[$arg_array
-$arg_array = NULL]&nbsp;
+		<code>string version(
+[boolean
+$clientInformation = false]&nbsp;
 )</code>
     </td></tr></table>
     </td></tr></table><br /></div>
 
-	<p align="center" class="short-description"><strong>Parses and returns the XML in an array.
+	<p align="center" class="short-description"><strong>Will return MySQL version or client version
 </strong></p>
 
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
 				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
+				<span class="var-name">$clientInformation:&nbsp;</span></td>
 				<td>
-				<span class="var-description"> array Used to create the filename</span>			</td></tr>
+				<span class="var-description"> Set to true to return client information. Defaults to false</span>			</td></tr>
 				</table>
 
 	<br />
 	<strong>API Tags:</strong><br />
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>The result set rescued from the cache file</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodget_cache_meta" id="get_cache_meta"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">get_cache_meta</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 470]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>int get_cache_meta(
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Returns number of rows in the XML.
-</strong></p>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Number of rows</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodliveStats" id="liveStats"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">liveStats</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 576]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean liveStats(
-$query
-$query, [$stats
-$stats = null], [$data
-$data = 0], [$error
-$error = false], [$from_cache
-$from_cache = false]&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Live Statistics, can be embedded in source code to quickly check some things
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$query</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$query:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> string</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$stats</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$stats:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$data</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$data:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> int</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$error:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> boolean</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$from_cache</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$from_cache:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> boolean</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Always returns TRUE.</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodlogError" id="logError"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">logError</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 508]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean logError(
-$query
-$query, $errno
-$errno, [$type
-$type = 'non-fatal'], [$error
-$error = null]&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that logs all errors
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$query</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$query:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> string The query to log</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$errno</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$errno:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> int The error number to log</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$type</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$type:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> string Whether the error is fatal or non-fatal</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$error:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> string The error description</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Always returns TRUE.</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodlogMe" id="logMe"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">logMe</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 543]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean logMe(
-$stats
-$stats, $arg_array
-$arg_array, $result
-$result, $error
-$error, $from_cache
-$from_cache&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Function that executes after each query and also acumulates data for the XML log
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$stats</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$stats:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$result</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$result:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$error</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$error:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> boolean</span>			</td></tr>
-					<tr><td class="indent">
-				<span class="var-type">$from_cache</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$from_cache:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> boolean</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Always returns TRUE.</td>
-  </tr>
-</table>
-<br />
-
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodmakeValuesReferenced" id="makeValuesReferenced"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">makeValuesReferenced</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 684]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>array makeValuesReferenced(
-$arr
-$arr&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Creates an referenced representation of an array
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$arr</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arr:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array The array that creates a referenced copy</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>A referenced copy of the original array</td>
-  </tr>
-</table>
-<br />
-
-<strong>Information Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Author:</strong>&nbsp;&nbsp;</td><td>Hugo Simon http://www.phpclasses.org/discuss/package/5812/thread/5/</td>
-  </tr>
-</table>
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodthrowException" id="throwException"><!-- --></a>
-<div class="oddrow">
-
-<div class="method-header">
-	<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 106]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean throwException(
-[string
-$msg = '']&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Throws an exception if these are enabled
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">string</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$msg:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> The string to print within the exception</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns always false (only when supressErrors is active)</td>
-  </tr>
-</table>
-<br />
-
-<strong>Information Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Throws:</strong>&nbsp;&nbsp;</td><td>databaseException</td>
-  </tr>
-</table>
-
-		
-		<br />
-	<div class="top">[ <a href="#top">Top</a> ]</div>
-</div>
-<a name="methodvalid_cache" id="valid_cache"><!-- --></a>
-<div class="evenrow">
-
-<div class="method-header">
-	<span class="method-title">valid_cache</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 420]</span>
-</div>
-<br />
-
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
-		<code>boolean valid_cache(
-[$arg_array
-$arg_array = NULL]&nbsp;
-)</code>
-    </td></tr></table>
-    </td></tr></table><br /></div>
-
-	<p align="center" class="short-description"><strong>Checks whether our cache file is still valid.
-</strong></p>
-
-			<strong>Parameters:</strong><br />
-			<table border="0" cellspacing="0" cellpadding="0">
-					<tr><td class="indent">
-				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
-				<td>
-				<span class="var-name">$arg_array:&nbsp;</span></td>
-				<td>
-				<span class="var-description"> array Used to create the filename</span>			</td></tr>
-				</table>
-
-	<br />
-	<strong>API Tags:</strong><br />
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>TRUE if cache file is still valid, FALSE otherwise</td>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns a string with the client version</td>
   </tr>
 </table>
 <br />
@@ -1066,10 +497,10 @@ $arg_array = NULL]&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="method__call" id="__call"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 
 <div class="method-header">
-	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 120]</span>
+	<span class="method-title">__call</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 132]</span>
 </div>
 <br />
 
@@ -1111,10 +542,10 @@ $arg_array&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 </div>
 <a name="method__get" id="__get"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 
 <div class="method-header">
-	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 219]</span>
+	<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 211]</span>
 </div>
 <br />
 
@@ -1122,7 +553,7 @@ $arg_array&nbsp;
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">&nbsp;
 		<code>void __get(
-mixed
+mixed[]
 $v&nbsp;
 )</code>
     </td></tr></table>
@@ -1134,7 +565,7 @@ $v&nbsp;
 			<strong>Parameters:</strong><br />
 			<table border="0" cellspacing="0" cellpadding="0">
 					<tr><td class="indent">
-				<span class="var-type">mixed</span>&nbsp;&nbsp;</td>
+				<span class="var-type">mixed[]</span>&nbsp;&nbsp;</td>
 				<td>
 				<span class="var-name">$v:&nbsp;</span></td>
 				<td>
@@ -1154,7 +585,7 @@ $v&nbsp;
 
         <div class="credit">
 		    <hr class="separator" />
-		    Documentation generated on Thu, 22 Nov 2012 00:34:46 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+		    Documentation generated on Thu, 29 Nov 2012 23:13:03 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>
