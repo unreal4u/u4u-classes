@@ -96,6 +96,12 @@ class db_mysqli {
     private $rollback = false;
 
     /**
+     * Indicator for number of executed queries
+     * @var int
+     */
+    public $executedQueries = 0;
+
+    /**
      * Counter of failed connections to the database
      * @var int
      */
@@ -345,6 +351,7 @@ class db_mysqli {
             if ($executeQuery AND is_object($this->stmt)) {
                 $this->stmt->execute();
                 $this->stmt->store_result();
+                $this->executedQueries++;
             } elseif (!$this->error) {
                 $this->logError($sqlQuery, 0, 'non-fatal', 'General error: Bad query or no query at all');
             }
@@ -410,7 +417,6 @@ class db_mysqli {
                     'bind_result'
                 ), $params);
 
-                $i = 0;
                 while ($this->stmt->fetch()) {
                     foreach ($rows as $key => $val) {
                         $c[$key] = $val;
@@ -420,7 +426,6 @@ class db_mysqli {
                         }
                     }
                     $result[] = $c;
-                    $i++;
                 }
             } elseif ($this->stmt->errno == 0) {
                 $result = true;
@@ -470,10 +475,9 @@ class db_mysqli {
             $this->rollback = true;
         }
 
-        $query_num = count($this->dbLiveStats);
-        $this->dbErrors[$query_num] = array(
+        $this->dbErrors[$this->executedQueries] = array(
             'query'        => $query,
-            'query_number' => $query_num,
+            'query_number' => $this->executedQueries,
             'errno'        => $errno,
             'type'         => $type,
             'error'        => $complete_error

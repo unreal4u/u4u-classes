@@ -42,8 +42,6 @@
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---complex-example.php.html">complex-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_config.php.html">config.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_db_mysqli.class.php.html">db_mysqli.class.php</a></span><br />
-			<span style="padding-left: 1em;"><a href="../db_mysqli/_index2.php.html">index2.php</a></span><br />
-			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---reset-cache.php.html">reset-cache.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---simple-example.php.html">simple-example.php</a></span><br />
 			<span style="padding-left: 1em;"><a href="../db_mysqli/_documentation---transaction-example.php.html">transaction-example.php</a></span><br />
 	  </div>
@@ -96,7 +94,7 @@ Source Location: /db_mysqli.class.php<br /><br />
 						<a href="../db_mysqli/db_mysqli.html">db_mysqli</a>
 					</td>
 					<td>
-											Extended MySQLi Parametrized DB Class
+											
 										</td>
 				</tr>
 								<tr>
@@ -151,11 +149,136 @@ Source Location: /db_mysqli.class.php<br /><br />
 				|												<span class="disabled">Functions</span>
 		</div>
 		<div class="info-box-body">
-			<a name="functionexecute_result_array" id="functionexecute_result_array"><!-- --></a>
+			<a name="functioncastValues" id="functioncastValues"><!-- --></a>
 <div class="evenrow">
 
 	<div>
-		<span class="method-title">execute_result_array</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 385]</span>
+		<span class="method-title">castValues</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 281]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>array castValues(
+ $v, array $arg_array&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>Function that checks what type is the data we are trying to insert
+</strong></p>
+
+    		<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$arg_array:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> All values that the query will be handling</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$v:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+	
+<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns an array with a string of types and another one with the corrected values</td>
+  </tr>
+</table>
+<br />
+
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
+<a name="functionconnect_to_db" id="functionconnect_to_db"><!-- --></a>
+<div class="oddrow">
+
+	<div>
+		<span class="method-title">connect_to_db</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 253]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>boolean connect_to_db(
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>This method will open a connection to the database
+</strong></p>
+
+    
+<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns value indicating whether we are connected or not</td>
+  </tr>
+</table>
+<br />
+
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
+<a name="functionexecute_query" id="functionexecute_query"><!-- --></a>
+<div class="evenrow">
+
+	<div>
+		<span class="method-title">execute_query</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 318]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>boolean execute_query(
+[$arg_array 0 = array Contains the binded values]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>Function that prepares and binds the query
+</strong></p>
+
+    		<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">$arg_array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">0:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> array Contains the binded values</span>			</td></tr>
+				</table>
+	
+<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Whether we could execute the query or not</td>
+  </tr>
+</table>
+<br />
+
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
+<a name="functionexecute_result_array" id="functionexecute_result_array"><!-- --></a>
+<div class="oddrow">
+
+	<div>
+		<span class="method-title">execute_result_array</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 394]</span>
 	</div>
 <br />
 	<div class="function">
@@ -197,11 +320,60 @@ if($this-&amp;gt;stmt-&amp;gt;error], array $arg_array&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 	</div>
 	</div>
+<a name="functionexecute_result_info" id="functionexecute_result_info"><!-- --></a>
+<div class="evenrow">
+
+	<div>
+		<span class="method-title">execute_result_info</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 368]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>array execute_result_info(
+mixed 0, array $arg_array,  1&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>Returns data like the number of rows and last insert id
+</strong></p>
+
+    		<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">array</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$arg_array:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> Contains the binded values</span>			</td></tr>
+					<tr><td class="indent">
+				<span class="var-type"></span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">1:&nbsp;</span></td>
+				<td>
+							</td></tr>
+				</table>
+	
+<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Can return affected rows, number of rows or last id inserted.</td>
+  </tr>
+</table>
+<br />
+
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
 <a name="functionlogError" id="functionlogError"><!-- --></a>
 <div class="oddrow">
 
 	<div>
-		<span class="method-title">logError</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 460]</span>
+		<span class="method-title">logError</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 467]</span>
 	</div>
 <br />
 	<div class="function">
@@ -262,7 +434,7 @@ $query $query, $errno $errno, [$type $type = &#039;non-fatal&#039;], [$error $er
 <div class="evenrow">
 
 	<div>
-		<span class="method-title">logStatistics</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 495]</span>
+		<span class="method-title">logStatistics</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 501]</span>
 	</div>
 <br />
 	<div class="function">
@@ -335,7 +507,7 @@ $query $query, $errno $errno, [$type $type = &#039;non-fatal&#039;], [$error $er
 <div class="oddrow">
 
 	<div>
-		<span class="method-title">makeValuesReferenced</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 541]</span>
+		<span class="method-title">makeValuesReferenced</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 547]</span>
 	</div>
 <br />
 	<div class="function">
@@ -384,7 +556,7 @@ $arr $arr&nbsp;
 <div class="evenrow">
 
 	<div>
-		<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 443]</span>
+		<span class="method-title">throwException</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 450]</span>
 	</div>
 <br />
 	<div class="function">
@@ -435,12 +607,91 @@ $arr $arr&nbsp;
 	<div class="top">[ <a href="#top">Top</a> ]</div>
 	</div>
 	</div>
+<a name="functionversion" id="functionversion"><!-- --></a>
+<div class="oddrow">
+
+	<div>
+		<span class="method-title">version</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 233]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>string version(
+[boolean $clientInformation = false]&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>Will return MySQL version or client version
+</strong></p>
+
+    		<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">boolean</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$clientInformation:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> Set to true to return client information. Defaults to false</span>			</td></tr>
+				</table>
+	
+<br />
+	<strong>API Tags:</strong><br />
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="indent"><strong>Return:</strong>&nbsp;&nbsp;</td><td>Returns a string with the client version</td>
+  </tr>
+</table>
+<br />
+
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
+<a name="function__get" id="function__get"><!-- --></a>
+<div class="evenrow">
+
+	<div>
+		<span class="method-title">__get</span>&nbsp;&nbsp;<span class="smalllinenumber">[line 217]</span>
+	</div>
+<br />
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code-border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void __get(
+mixed[] $v&nbsp;
+)</code>
+    </td></tr></table>
+    </td></tr></table>
+
+		<p align="center" class="short-description"><strong>Magic get method.
+</strong></p>
+<span class="description"><p>Will always return the number of rows</p></span>
+    		<strong>Parameters:</strong><br />
+			<table border="0" cellspacing="0" cellpadding="0">
+					<tr><td class="indent">
+				<span class="var-type">mixed[]</span>&nbsp;&nbsp;</td>
+				<td>
+				<span class="var-name">$v:&nbsp;</span></td>
+				<td>
+				<span class="var-description"> Any that is supported by @link $this-&gt;execute_result_info()</span>			</td></tr>
+				</table>
+	
+<br />
+	
+
+		<br />
+	<div class="top">[ <a href="#top">Top</a> ]</div>
+	</div>
+	</div>
 		</div>
 	</div><br />
 
         <div class="credit">
 		    <hr class="separator" />
-		    Documentation generated on Thu, 29 Nov 2012 23:13:03 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+		    Documentation generated on Fri, 30 Nov 2012 00:14:17 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>
