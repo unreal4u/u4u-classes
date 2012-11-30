@@ -7,38 +7,43 @@ include('exceptions.class.php');
  * The main cache manager class which will call the child specified cache module
  *
  * @package Cache manager
- * @version 2.0
+ * @version 2.1
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
 class cacheManager {
+    /**
+     * Holds the child object
+     * @var object
+     */
     private $object  = null;
+
+    /**
+     * Container of all the public child methods
+     * @var array
+     */
     private $methods = array();
 
     /**
      * Time the cache is valid
-     *
      * @var int
      */
     protected $_ttl = 60;
 
 	/**
 	 * Whether to throw exceptions or not
-	 *
 	 * @var boolean Defaults to false
 	 */
 	protected $throwExceptions = true;
 
 	/**
 	 * Stores whether we have already checked that APC is enabled or not
-	 *
 	 * @var boolean Defaults to false
 	 */
 	protected $isChecked = false;
 
 	/**
 	 * Whether APC is enabled and ready to be used or not
-	 *
 	 * @var boolean Defaults to true
 	 */
 	public $isEnabled = true;
@@ -50,7 +55,7 @@ class cacheManager {
      * @throws cacheException If some functional problem ocurred, a cacheException will be thrown
      */
     public function __construct() {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+        if (version_compare(PHP_VERSION, '5.3.0', '<=')) {
             throw new versionException('This class will only work with PHP &gt;= 5.3.0');
         }
 
