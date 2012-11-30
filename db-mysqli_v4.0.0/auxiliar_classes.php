@@ -12,6 +12,24 @@ class databaseException extends ErrorException {
 }
 
 /**
+ * If there is an error within the query, the class will throw (optionally) this exception
+ *
+ * @package db_mysqli
+ * @author Camilo Sperberg - http://unreal4u.com/
+ */
+class queryException extends Exception {
+    public function __construct($query, $errstr, $errno) {
+        // Construct a error message and parent-construct the exception
+        $message = $errstr;
+        if (!empty($query)) {
+            $message .= '; Query: '.$query;
+        }
+
+        parent::__construct($message, $errno);
+    }
+}
+
+/**
  * This class will handle all errors for us
  *
  * @package db_mysqli

@@ -10,6 +10,7 @@ include('../db_mysqli.class.php');
 
 try {
     $db = new db_mysqli();
+    $db->throwQueryExceptions = true;
 } catch (databaseException $e) {
     exit($e->getMessage());
 }
@@ -28,6 +29,16 @@ try {
 try {
     $db->query();
 } catch (databaseException $e) {
+    var_dump($e->getMessage());
+} catch (queryException $e) {
+    var_dump($e->getMessage());
+}
+
+try {
+    $db->query('INSERT INTO b (nonexistant) VALUES (?)', 22);
+} catch (databaseException $e) {
+    var_dump($e->getMessage());
+} catch (queryException $e) {
     var_dump($e->getMessage());
 }
 

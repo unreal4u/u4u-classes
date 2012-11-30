@@ -45,6 +45,19 @@ try {
                                 'd',           0,          false,       null,               null,            null,             11.22,        null,              '2001-02-03 00:00:00', null,                                   null
     );
 
+    // Enable throwing query exceptions, useful for highly important queries
+    $db->throwQueryExceptions = true;
+    try {
+        $db->query('INSERT INTO t1 (string_valued, int_valued, bool_valued, string_null_valued, int_null_valued, bool_null_valued, float_valued, float_null_valued, datetime_valued, datetime_null_valued, timestamp_valued, timestamp_null_valued) VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),?)',
+                                    'e',           null,       null,        null,               null,            null,             null,         null,              null,            null,                                   null
+        );
+    } catch (queryException $e) {
+        print('We have captured a query exception!');
+        var_dump($e->getMessage());
+    }
+    // Disable throwing query exceptions again
+    $db->throwQueryExceptions = false;
+
     print('-------------------------- SELECT * FROM t1 --------------------------');
     $resultSet = $db->query('SELECT * FROM t1');
     if ($db->num_rows > 0) {
@@ -57,10 +70,21 @@ try {
 
     print("-------------------------- SELECT * FROM t1 WHERE string_valued = 'z' --------------------------");
     $resultSet = $db->query('SELECT * FROM t1 WHERE string_valued = ?', 'z');
+    // Should return empty array because query was correct but we have no results. num_rows should also be 0
     if ($db->num_rows > 0) {
+        print('<pre>num_rows is greater than 0</pre>');
         var_dump($resultSet);
     } else {
+        print('<pre>num_rows is 0</pre>');
         var_dump($resultSet);
+    }
+
+    print("-------------------------- SELECT * FROM t2 WHERE string_valued = 'z' --------------------------");
+    $resultSet = $db->query('SELECT * FROM t2 WHERE string_valued = ?', 'z');
+    // Should return false because table t2 doesn't exist. num_rows should be 0
+    var_dump($resultSet);
+    if ($db->num_rows == 0) {
+        print('<pre>num_rows is 0</pre>');
     }
 
     $db->query('DROP TABLE t1');

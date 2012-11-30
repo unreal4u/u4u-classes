@@ -48,6 +48,12 @@ class db_mysqli {
     public $supressErrors = false;
 
     /**
+     * Whether to throw errors on invalid queries
+     * @var boolean Defaults to false
+     */
+    public $throwQueryExceptions = false;
+
+    /**
      * The number of maximum failed attempts trying to connect to the database
      * @var int Defaults to 10
      */
@@ -151,23 +157,16 @@ class db_mysqli {
 
         switch ($method) {
             case 'num_rows':
-                if (!is_null($arg_array)) {
-                    $this->execute_query($arg_array);
-                    $resultInfo = $this->execute_result_info($arg_array);
-                    $result = $resultInfo['num_rows'];
-                }
-            break;
             case 'insert_id':
-                if (!is_null($arg_array)) {
-                    $this->execute_query($arg_array);
-                    $resultInfo = $this->execute_result_info();
-                    $result = $resultInfo['insert_id'];
-                }
-            break;
             case 'query':
+                $this->executedQueries++;
                 $this->execute_query($arg_array);
-                if (!$result = $this->execute_result_array($arg_array)) {
-                    $result = false;
+
+                if ($method == 'query') {
+                    $result = $this->execute_result_array($arg_array);
+                } else {
+                    $resultInfo = $this->execute_result_info($arg_array);
+                    $result = $resultInfo[$method];
                 }
             break;
             case 'begin_transaction':
@@ -318,11 +317,12 @@ class db_mysqli {
      */
     private function execute_query(array $arg_array=null) {
         $executeQuery = false;
+
         if ($this->connect_to_db()) {
             $sqlQuery = array_shift($arg_array);
 
             $tempArray = $this->castValues($arg_array);
-            $types = $tempArray['types'];
+            $types     = $tempArray['types'];
             $arg_array = $tempArray['arg_array'];
 
             if (isset($this->stmt)) {
@@ -351,7 +351,6 @@ class db_mysqli {
             if ($executeQuery AND is_object($this->stmt)) {
                 $this->stmt->execute();
                 $this->stmt->store_result();
-                $this->executedQueries++;
             } elseif (!$this->error) {
                 $this->logError($sqlQuery, 0, 'non-fatal', 'General error: Bad query or no query at all');
             }
@@ -393,7 +392,7 @@ class db_mysqli {
      * @return boolean
      */
     private function execute_result_array(array $arg_array) {
-        $result = 0;
+        $result = false;
 
         if (!$this->error) {
             $result = array();
@@ -457,6 +456,22 @@ class db_mysqli {
     }
 
     /**
+     * Throws exception on query error
+     *
+     * @param string $query
+     * @param string $mysqlErrorString
+     * @param int $mysqlErrno
+     * @throws queryException
+     */
+    protected function throwQueryException($query='', $mysqlErrorString='', $mysqlErrno=0) {
+        if (!empty($this->throwQueryExceptions)) {
+            throw new queryException($query, $mysqlErrorString, $mysqlErrno);
+        }
+
+        return false;
+    }
+
+    /**
      * Function that logs all errors
      *
      * @param $query string The query to log
@@ -475,7 +490,7 @@ class db_mysqli {
             $this->rollback = true;
         }
 
-        $this->dbErrors[$this->executedQueries] = array(
+        $this->dbErrors[] = array(
             'query'        => $query,
             'query_number' => $this->executedQueries,
             'errno'        => $errno,
@@ -485,6 +500,7 @@ class db_mysqli {
 
         if ($type == 'fatal') {
             $this->error = '[' . $errno . '] ' . $error;
+            $this->throwQueryException($query, $error, $errno);
         }
 
         return true;
