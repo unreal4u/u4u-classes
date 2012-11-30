@@ -5,33 +5,32 @@
  *
  * @package Misc
  * @author Camilo Sperberg
- * @copyright 2010 - 2012 Camilo Sperberg
+ * @copyright 2010 - 2013 Camilo Sperberg
  * @version 1.1
  * @license BSD License
  */
 class RUT {
     /**
      * Stores errors of the class
-     *
-     * @var array $errores
+     * @var array
      */
     public $errores = array();
+
     /**
-     * Indica de forma interna si ocurrió un error fatal o no
-     *
-     * @var bool $error
+     * Indicates whether we have errors or not
+     * @var boolean
      */
     private $error = false;
+
     /**
-     * Almacena los emails ya validados como una forma de cache
-     *
-     * @var array $validados
+     * Stores the already validated emails as a sort of cache
+     * @var array
      */
     private $validados = array();
+
     /**
-     * Almacena los RUT que no son válidos
-     *
-     * @var array $blacklist
+     * Blacklist of all those invalid RUTs
+     * @var array
      */
     private $blacklist = array(
         '111111111',
@@ -46,11 +45,11 @@ class RUT {
     );
 
     /**
-     * Función que logea los errores que se pudieran producir
+     * This function logs all errors the object generates
      *
-     * @param int - type of error
-     * @param string - error message
-     * @return bool TRUE
+     * @param int $type Type of error
+     * @param string $msg Error message
+     * @return boolean Returns always true
      */
     private function logError($type, $msg='') {
         if (!empty($type)) {
@@ -66,36 +65,44 @@ class RUT {
                     $tipo = 'NOT';
                 break;
             }
+
             $this->errores[] = array(
                 'type' => $tipo,
                 'msg' => $msg,
             );
         }
+
         return true;
     }
 
     /**
-     * Permite agregar ciertos RUTs a la blacklist
+     * Allows to add some RUT/RUNs to the blacklist in runtime
      *
-     * @param $add mixed List of blacklisted RUT.
+     * @param mixed $add List of blacklisted RUT, as an array or a string
      * @return bool Always returns TRUE
      */
     public function addToBlacklist($add) {
         if (!empty($add)) {
-            if (is_array($add))
-                foreach ($add as $a)
+            if (is_array($add)) {
+                foreach ($add AS $a) {
                     $this->blacklist[] = $a;
-            else
+                }
+            } else {
                 $this->blacklist[] = $add;
+            }
         }
+
         return true;
     }
 
     /**
-     * Retorna el tipo de RUT: si es persona natural o jurídica
+     * Returns the RUT type: whether it is a person or a juridic entity (companies)
      *
-     * @param $rut string El RUT del que se desea consultar su estado
-     * @return mixed Returns bool FALSE en case of invalid RUT, array otherwise
+     * This class will return the information in spanish: "empresa" means company, "natural" means regular person. These
+     * names are the correct ones to refer to in Chili
+     *
+     * @param string $rut The RUT for which we want to know
+     * @return mixed Returns boolean false in case of invalid RUT, array with data otherwise
      */
     public function tipoRUT($rut='') {
         $output = false;
@@ -103,42 +110,49 @@ class RUT {
             $rut = $this->formatRUT($rut);
             if ($rut !== false) {
                 $rut = substr($rut, 0, -1);
-                if ($rut < 100000000 and $rut > 50000000)
+                if ($rut < 100000000 and $rut > 50000000) {
                     $output = array(
                         'e',
                         'empresa',
                     );
-                elseif ($rut > 1000000 and $rut < 50000000)
+                } elseif ($rut > 1000000 and $rut < 50000000) {
                     $output = array(
                         'n',
                         'natural',
                     );
+                }
             }
         }
+
         return $output;
     }
 
     /**
-     * Aplica un filtro general al RUT y luego verifica el tamaño de la cadena, devuelve una cadena con un RUT
-     * formateado
+     * Applies a filter to the RUT and formats it according to chilean standards
      *
-     * @param $rut string El RUT que se quiere formatear
-     * @param $con_dv bool Si se quiere retornar el RUT con dígito verificar
-     * @return mixed string OR bool - FALSE en caso de RUT inválido, string con RUT en caso contrario
+     * @param string $rut The RUT we want to format
+     * @param boolean $con_dv Whether we want to print the verifier also. Defaults to true
+     * @return mixed Returns boolean false when RUT is invalid, string with the RUT otherwise
      */
     public function formatRUT($rut='', $con_dv=true) {
         $output = false;
         if (!empty($rut)) {
             $tmpRUT = preg_replace('/[^0-9kK]/', '', $rut);
-            if (strlen($tmpRUT) == 8)
+            if (strlen($tmpRUT) == 8) {
                 $tmpRUT = '0' . $tmpRUT;
-            if (strlen($tmpRUT) == 9)
+            }
+
+            if (strlen($tmpRUT) == 9) {
                 $output = str_replace('k', 'K', $tmpRUT);
-            else
+            } else {
                 $this->logError(1, 'RUT no cuenta con el tama&ntilde;o requerido');
-            if ($con_dv === false)
+            }
+
+            if ($con_dv === false) {
                 $output = substr($output, 0, -1);
+            }
         }
+
         return $output;
     }
 
@@ -155,19 +169,21 @@ class RUT {
             $suma = 0;
             for ($i = strlen($rut) - 1; $i >= 0; $i--) {
                 $suma = $suma + $rut[$i] * $multi;
-                if ($multi == 7)
+                if ($multi == 7) {
                     $multi = 2;
-                else
+                } else {
                     $multi++;
+                }
             }
             $resto = $suma % 11;
-            if ($resto == 1)
+            if ($resto == 1) {
                 $dvt = 'K';
-            else {
-                if ($resto == 0)
+            } else {
+                if ($resto == 0) {
                     $dvt = '0';
-                else
+                } else {
                     $dvt = 11 - $resto;
+                }
             }
         }
         return $dvt;
@@ -185,14 +201,19 @@ class RUT {
     public function isValidRUT($rut, $extensive_check=false, $return_boolean=true) {
         $output = false;
         if (!empty($rut)) {
-            if (!empty($this->validados[$rut]))
+            if (!empty($this->validados[$rut])) {
                 return $this->validados[$rut]['valid'];
+            }
+
             $rut = $this->formatRUT($rut, true);
             $sep['rut'] = substr($rut, 0, -1);
             $sep['dv'] = substr($rut, -1);
+
             if ($this->tipoRUT($rut) !== false) {
-                if (!is_numeric($sep['rut']))
+                if (!is_numeric($sep['rut'])) {
                     $this->logError(1, 'RUT no es num&eacute;rico');
+                }
+
                 if (!$this->error) {
                     $sep['dvt'] = $this->getVerificador($sep['rut']);
                     if ($sep['dvt'] != $sep['dv']) {
@@ -200,6 +221,7 @@ class RUT {
                     } else {
                         $output = true;
                     }
+
                     if ($extensive_check === true) {
                         if (in_array($sep['rut'] . $sep['dv'], $this->blacklist)) {
                             $output = false;
@@ -210,16 +232,18 @@ class RUT {
             } else {
                 $this->logError(2, 'El RUT no est&aacute; dentro del rango aceptable');
             }
+
             $this->validados[$rut] = array(
                 'valid' => $output,
-                'rut' => $sep['rut'],
-                'dv' => $sep['dv'],
-                'tipo' => $this->tipoRUT($rut),
+                'rut'   => $sep['rut'],
+                'dv'    => $sep['dv'],
+                'tipo'  => $this->tipoRUT($rut),
             );
         }
         if ($return_boolean === true) {
             return $output;
         }
+
         return $this->validados;
     }
 
@@ -232,16 +256,20 @@ class RUT {
      */
     public function c_javascript($echo=false, $with_headers=false) {
         $javascript = '';
+
         if ($with_headers === true) {
             $javascript .= '<script type="text/javascript">';
         }
         $javascript .= 'function vr(c){var r=false,d=c.value,t=d.replace(/\b[^0-9kK]+\b/g,\'\');if(t.length==8){t=0+t;};if(t.length==9){var a=t.substring(t.length-1,-1),b=t.charAt(t.length-1);if(b==\'k\'){b=\'K\'};if(!isNaN(a)){var s=0,m=2,x=\'0\',e=0;for(var i=a.length-1;i>=0;i--){s=s+a.charAt(i)*m;if(m==7){m=2;}else{m++;};}var y=s%11;if(y==1){x=\'K\';}else{if(y==0){x=\'0\';}else{e=11-y;x=e+\'\';};};if(x==b){r=true;c.value=a.substring(0,2)+\'.\'+a.substring(2,5)+\'.\'+a.substring(5,8)+\'-\'+b};}}return r;};';
+
         if ($with_headers === true) {
             $javascript .= '</script>';
         }
+
         if ($echo === true) {
             echo $javascript;
         }
+
         return $javascript;
     }
 }
