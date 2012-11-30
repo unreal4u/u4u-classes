@@ -69,7 +69,7 @@ class cacheManager {
                 if ($this->throwExceptions === true) {
                     throw new cacheException('Class don\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation');
                 }
-                trigger_error('Class don\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation', E_USER_ERROR);
+                trigger_error('Class doesn\'t implement cacheManager and/or doesn\'t extend cacheManager, aborting creation', E_USER_ERROR);
             }
 
             $rcMethods = $rc->getMethods(ReflectionMethod::IS_PUBLIC);
@@ -86,7 +86,7 @@ class cacheManager {
             }
         } else {
             if ($this->throwExceptions === true) {
-                throw new cacheException('Class does not exist');
+                throw new cacheException('Cache type "'.$objectName.'" does not exist');
             }
         }
     }
