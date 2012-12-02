@@ -9,4 +9,4 @@ define('HTMLUTILS', 'HTMLUtils_v1.0/html_utils.class.php');
 define('MESSAGESTACK', 'messageStack_v1.0.2/messageStack.class.php');
 define('MYSQL_PAGINATOR', 'mysql-paginator_v1.1/paginator.class.php');
 define('PID', 'pid_v1.2/pid.class.php');
-define('RUT', 'rut_v1.0/rut.class.php');
+define('RUT', 'rutverifier_v1.1/rutverifier.class.php');
