@@ -24,6 +24,12 @@ include(dirname(__FILE__).'/auxiliar_classes.php');
  */
 class db_mysqli {
     /**
+     * The version of this class
+     * @var string
+     */
+    private $classVersion = '4.0.0';
+
+    /**
      * Keep an informational array with all executed queries. Defaults to false
      * @var boolean Defaults to false
      */
@@ -212,9 +218,10 @@ class db_mysqli {
     /**
      * Magic get method. Will always return the number of rows
      *
-     * @param mixed[] $v Any that is supported by @link $this->execute_result_info()
+     * @param string $v Any identifier supported by @link $this->execute_result_info()
+     * @return array Returns an array with the requested index (supported by execute_result_info)
      */
-    public function __get($v) {
+    public function __get($v='') {
         $resultInfo = $this->execute_result_info();
 
         if (!isset($resultInfo[$v])) {
@@ -222,6 +229,15 @@ class db_mysqli {
         }
 
         return $resultInfo[$v];
+    }
+
+    /**
+     * Magic toString method. Will return current version of this class
+     *
+     * @return string
+     */
+    public function __toString() {
+        return 'db_mysqli.class.php v'.$this->classVersion.' by Camilo Sperberg - http://unreal4u.com/';
     }
 
     /**
@@ -275,6 +291,14 @@ class db_mysqli {
     /**
      * Function that checks what type is the data we are trying to insert
      *
+     * Supported bind types (http://php.net/manual/en/mysqli-stmt.bind-param.php):
+     * i 	corresponding variable has type integer
+     * d 	corresponding variable has type double
+     * s 	corresponding variable has type string
+     * b 	corresponding variable is a blob and will be sent in packets
+     *
+     * @TODO Support for blob type data (will now go through string type)
+     *
      * @param array $arg_array All values that the query will be handling
      * @return array Returns an array with a string of types and another one with the corrected values
      */
@@ -295,6 +319,7 @@ class db_mysqli {
                     break;
                     // Save a string typed data
                     case is_string($v):
+                    #default: // @FIXME Disabled until good testing of consequences
                         $types .= 's';
                     break;
                 }
@@ -324,6 +349,7 @@ class db_mysqli {
             $tempArray = $this->castValues($arg_array);
             $types     = $tempArray['types'];
             $arg_array = $tempArray['arg_array'];
+            unset($tempArray);
 
             if (isset($this->stmt)) {
                 unset($this->stmt);

@@ -98,3 +98,6 @@ try {
 } catch (databaseException $e) {
     print('Error: <strong>'.$e->getMessage().'</strong><br />File: '.$e->getFile().':'.$e->getLine());
 }
+
+print($db);
+
