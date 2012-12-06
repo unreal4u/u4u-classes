@@ -28,6 +28,10 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         parent::tearDown();
     }
 
+    public function test_logError() {
+        $this->markTestIncomplete('test_logError is still incomplete');
+    }
+
     /**
      * Data provider for test_addToBlacklist()
      *
@@ -62,6 +66,10 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         } else {
             $this->assertContains($rut, $elements);
         }
+    }
+
+    public function test_RUTType() {
+        $this->markTestIncomplete('test_RUTType is still incomplete');
     }
 
     /**
@@ -102,9 +110,11 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      * Tests rutverifier->formatRUT()
      *
      * @dataProvider provider_formatRUT
-     * @param unknown_type $rut
-     * @param unknown_type $con_dv
-     * @param unknown_type $expected
+     * @depends test_logError
+     *
+     * @param string $rut
+     * @param boolean $con_dv
+     * @param mixed $expected
      */
     public function test_formatRUT($rut='', $con_dv=true, $expected) {
         $result = $this->rutverifier->formatRUT($rut, $con_dv);
@@ -112,5 +122,44 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $result);
     }
 
+    public function test_getVerifier() {
+        $this->markTestIncomplete('test_getVerifier is still incomplete');
+    }
+
+    /**
+     * Data provider for test_isValidRUT
+     * @return array
+     */
+    public function provider_isValidRUT() {
+        $mapValues[] = array('146097324', true, true, true);
+        $mapValues[] = array('146097320', true, true, false);
+
+        return $mapValues;
+    }
+
+    /**
+     * Tests rutverifier->isValidRUT()
+     *
+     * @dataProvider provider_isValidRUT
+     * @depends test_formatRUT
+     * @depends test_getVerifier
+     * @depends test_logError
+     * @depends test_RUTType
+     *
+     * @param string $rut
+     * @param boolean $extensive_check
+     * @param boolean $return_boolean
+     * @param mixed $expected
+     */
+    public function test_isValidRUT($rut, $extensive_check=true, $return_boolean=true, $expected) {
+        $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
+        $this->assertEquals($expected, $result);
+
+        $this->markTestIncomplete('test_isValidRUT is still incomplete');
+    }
+
+    public function test_c_javascript() {
+        $this->markTestIncomplete('test_c_javascript is still incomplete');
+    }
 }
 

@@ -162,7 +162,7 @@ class rutverifier {
      * @param $rut string RUT sin dígito verificador
      * @return mixed string OR bool - FALSE en caso de RUT vacío, string con dv en caso contrario
      */
-    public function getVerificador($rut='') {
+    public function getVerifier($rut='') {
         $dvt = false;
         if (!empty($rut)) {
             $multi = 2;
@@ -186,19 +186,19 @@ class rutverifier {
                 }
             }
         }
+
         return $dvt;
     }
 
     /**
-     * Esta función hace la magia definitiva: revisa si el RUT es válido o no.
+     * This function will check whether the RUT/RUN is effectively valid or not
      *
-     * @param $rut string RUT a verificar
-     * @param $extensive_check bool Si se desea una revisión adicional en el blacklist o no
-     * @param $return_boolean bool Si se desea retornar sólo un tipo booleano o un resumen con la info
-     * @return mixed bool OR array - TRUE en caso de RUT válido, FALSE en caso contrario, array - Arreglo con todo tipo
-     * de información con respecto al RUT consultado
+     * @param string $rut RUT/RUN that will be checked
+     * @param boolean $extensive_check Whether to also check on blacklist. Defaults to true
+     * @param boolean $return_boolean Whether to return true or false or array with data
+     * @return mixed Returns boolean true if RUT/RUN is valid, false otherwise. Returns array with data if selected so
      */
-    public function isValidRUT($rut, $extensive_check=false, $return_boolean=true) {
+    public function isValidRUT($rut, $extensive_check=true, $return_boolean=true) {
         $output = false;
         if (!empty($rut)) {
             if (!empty($this->validados[$rut])) {
@@ -215,7 +215,7 @@ class rutverifier {
                 }
 
                 if (!$this->error) {
-                    $sep['dvt'] = $this->getVerificador($sep['rut']);
+                    $sep['dvt'] = $this->getVerifier($sep['rut']);
                     if ($sep['dvt'] != $sep['dv']) {
                         $this->logError(2, 'El RUT (' . $sep['rut'] . ') y el d&iacute;gito verificador (' . $sep['dv'] . ') no coinciden');
                     } else {
