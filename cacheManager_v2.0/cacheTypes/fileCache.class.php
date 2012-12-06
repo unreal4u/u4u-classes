@@ -8,7 +8,7 @@
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class fileCache extends cacheManagerClass implements cacheManager {
+class fileCache extends cacheManager implements cacheManagerInterface {
     /**
      * Contains the actual directory
      *

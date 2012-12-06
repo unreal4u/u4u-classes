@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>README for cacheManager.class.php</title>
+</head>
+<body>
+    <h1>README for cache manager</h1>
+<h2>CREDITS:</h2>
+<p>This class is made by unreal4u (Camilo Sperberg). &lt;<a href="http://unreal4u.com/">unreal4u.com</a>&gt;</p>
+
+<h2>ABOUT THIS CLASS:</h2>
+<h3>In a glinch:</h3>
+<ul><li>Can be used to cache different things</li>
+    <li>Anything you choose, it will cache.</li>
+    <li>Change quickly from one type of cache to another (Included: file and APC).</li>
+    <li>Write your own wrappers!</li>
+    <li>With APC cache, you can delete a part of the cache, all of it or just one entry very easily</li>
+</ul>
+<h3>Detailed:</h3>
+<p>This package will use the cache engine of your choice to save things to cache.<br /><br />
+
+There are many other very good engines out there (ZendCache / fluxBB-cache) that are probably better but this one is
+made with speed, ease of use and stability in mind. It will also give you the capability to write your very own cache
+mechanism and implement it very quickly as all calls are identical.<br />
+Besides, it was a nice exercise to learn something about reflection and some other stuff, but therefore <strong>this
+class will need PHP 5.3.0 as minimum</strong>.<br /><br />
+
+This package has been extensivily tested with xdebug, APC and Suhosin so that no errors are present.</p>
+
+<h2>USAGE:</h2>
+<ul><li>This class was made with simplicity, speed and security in mind:<br>
+
+<pre>include('cacheManager.class.php');
+try {
+    $cache = new cacheManagerClass('apc');
+} catch (cacheException $e) {
+    print('Exception caught! Message: "'.$e-&gt;getMessage().'"');
+} catch (versionException $e) {
+    die($e-&gt;getMessage());
+}
+$secondExample = $cache-&gt;load('secondExample', array('en_US'));
+if (empty($secondExample)) {
+    // If empty, it means we don't have that cache yet or it is too old, create it
+    $secondExample = 'Some very long process that would be useful to cache';
+    // Save for 120 seconds
+    $cache-&gt;save($secondExample, 'secondExample', null, 120);
+}
+</pre></li>
+    <li>Congratulations! Everything is now properly saved in cache! Sit back and watch your server going nuts serving requests.</li>
+    <li><strong>Please see examples for more options and advanced usage</strong></li>
+</ul>
+
+<h2>PENDING:</h2>
+<ul>
+  <li>None.</li>
+</ul>
+
+<h2>VERSION HISTORY:</h2>
+<ul><li>1.1 : 
+    <ul><li>Tested on production</li>
+    </ul>
+</li></ul>
+<ul><li>2.0:
+    <ul><li>It is now possible to make wrappers</li>
+        <li>Documentation improved (Created this README actually)</li>
+        <li>file-based cache</li>
+        <li>Exception enhancing</li>
+    </ul>
+</li></ul>
+    
+</body>
+</html>
