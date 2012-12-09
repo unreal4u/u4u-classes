@@ -14,7 +14,7 @@ class rutverifier {
      * Stores errors of the class
      * @var array
      */
-    public $errores = array();
+    public $errors = array();
 
     /**
      * Indicates whether we have errors or not
@@ -66,7 +66,7 @@ class rutverifier {
                 break;
             }
 
-            $this->errores[] = array(
+            $this->errors[] = array(
                 'type' => $tipo,
                 'msg' => $msg,
             );
@@ -148,7 +148,7 @@ class rutverifier {
                 $this->logError(1, 'RUT no cuenta con el tama&ntilde;o requerido');
             }
 
-            if ($withVerifier === false) {
+            if ($withVerifier === false AND empty($this->error)) {
                 $output = substr($output, 0, -1);
             }
         }
@@ -157,37 +157,37 @@ class rutverifier {
     }
 
     /**
-     * Calcula cuál es el dígito verificador para un RUT dado (sin dv)
+     * Calculates the verifier for a given RUT/RUN which must be provided without verifier
      *
-     * @param $rut string RUT sin dígito verificador
-     * @return mixed string OR bool - FALSE en caso de RUT vacío, string con dv en caso contrario
+     * @param string $rut RUT/RUN without verifier
+     * @return mixed Returns false if RUT/RUN is empty, or string with verifier otherwise
      */
     public function getVerifier($rut='') {
-        $dvt = false;
-        if (!empty($rut)) {
+        $return = false;
+        if (!empty($rut) AND is_string($rut)) {
             $multi = 2;
-            $suma = 0;
+            $sum = 0;
             for ($i = strlen($rut) - 1; $i >= 0; $i--) {
-                $suma = $suma + $rut[$i] * $multi;
+                $sum = $sum + $rut[$i] * $multi;
                 if ($multi == 7) {
                     $multi = 2;
                 } else {
                     $multi++;
                 }
             }
-            $resto = $suma % 11;
-            if ($resto == 1) {
-                $dvt = 'K';
+            $rest = $sum % 11;
+            if ($rest == 1) {
+                $return = 'K';
             } else {
-                if ($resto == 0) {
-                    $dvt = '0';
+                if ($rest == 0) {
+                    $return = '0';
                 } else {
-                    $dvt = 11 - $resto;
+                    $return = 11 - $rest;
                 }
             }
         }
 
-        return $dvt;
+        return $return;
     }
 
     /**
@@ -260,7 +260,7 @@ class rutverifier {
         if ($with_headers === true) {
             $javascript .= '<script type="text/javascript">';
         }
-        $javascript .= 'function vr(c){var r=false,d=c.value,t=d.replace(/\b[^0-9kK]+\b/g,\'\');if(t.length==8){t=0+t;};if(t.length==9){var a=t.substring(t.length-1,-1),b=t.charAt(t.length-1);if(b==\'k\'){b=\'K\'};if(!isNaN(a)){var s=0,m=2,x=\'0\',e=0;for(var i=a.length-1;i>=0;i--){s=s+a.charAt(i)*m;if(m==7){m=2;}else{m++;};}var y=s%11;if(y==1){x=\'K\';}else{if(y==0){x=\'0\';}else{e=11-y;x=e+\'\';};};if(x==b){r=true;c.value=a.substring(0,2)+\'.\'+a.substring(2,5)+\'.\'+a.substring(5,8)+\'-\'+b};}}return r;};';
+        $javascript .= 'function rutVerification(c){var r=false,d=c.value,t=d.replace(/\b[^0-9kK]+\b/g,\'\');if(t.length==8){t=0+t;};if(t.length==9){var a=t.substring(t.length-1,-1),b=t.charAt(t.length-1);if(b==\'k\'){b=\'K\'};if(!isNaN(a)){var s=0,m=2,x=\'0\',e=0;for(var i=a.length-1;i>=0;i--){s=s+a.charAt(i)*m;if(m==7){m=2;}else{m++;};}var y=s%11;if(y==1){x=\'K\';}else{if(y==0){x=\'0\';}else{e=11-y;x=e+\'\';};};if(x==b){r=true;c.value=a.substring(0,2)+\'.\'+a.substring(2,5)+\'.\'+a.substring(5,8)+\'-\'+b};}}return r;};';
 
         if ($with_headers === true) {
             $javascript .= '</script>';

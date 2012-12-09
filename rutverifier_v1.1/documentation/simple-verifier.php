@@ -4,7 +4,10 @@ include('../rutverifier.class.php');
 
 $rutVerifier = new rutverifier();
 
-var_dump($rutVerifier->isValidRUT('14609732-4'));
-var_dump($rutVerifier->isValidRUT('14.609.732-4'));
-var_dump($rutVerifier->isValidRUT('146097324'));
-var_dump($rutVerifier->isValidRUT('14609732-2'));
+var_dump($rutVerifier->isValidRUT('30.686.957-4'));
+var_dump($rutVerifier->isValidRUT('30686957-4'));
+var_dump($rutVerifier->isValidRUT('306869574'));
+
+var_dump($rutVerifier->isValidRUT('30.686.957-0'));
+
+var_dump($rutVerifier->formatRUT(false));

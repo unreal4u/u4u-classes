@@ -28,10 +28,6 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         parent::tearDown();
     }
 
-    public function test_logError() {
-        $this->markTestIncomplete('test_logError is still incomplete');
-    }
-
     /**
      * Data provider for test_addToBlacklist()
      *
@@ -39,7 +35,7 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      */
     public function provider_addToBlacklist() {
         $mapValues[] = array(123456789, 10);
-        $mapValues[] = array(array(123456780, 123456781), 11);
+        $mapValues[] = array(array(123456789, 123456780), 11);
 
         return $mapValues;
     }
@@ -68,40 +64,48 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function test_RUTType() {
-        $this->markTestIncomplete('test_RUTType is still incomplete');
-    }
-
     /**
      * Data provider for test_formatRUT
      *
      * @return array
      */
     public function provider_formatRUT() {
-        $mapValues[] = array('14.609.732-4', true, '146097324');
-        $mapValues[] = array('14.609.732-4', false, '14609732');
-        $mapValues[] = array('146097324', true, '146097324');
-        $mapValues[] = array('146097324', false, '14609732');
-        $mapValues[] = array('14609732-4', true, '146097324');
-        $mapValues[] = array('14609732-4', false, '14609732');
-        $mapValues[] = array('14.609.7324', true, '146097324');
-        $mapValues[] = array('14.609.7324', false, '14609732');
-        $mapValues[] = array('14609.732-4', true, '146097324');
-        $mapValues[] = array('14609.732-4', false, '14609732');
-        $mapValues[] = array('14.609732-4', true, '146097324');
-        $mapValues[] = array('14.609732-4', false, '14609732');
-        $mapValues[] = array('4.609.732-4', true, '046097324');
-        $mapValues[] = array('4.609.732-4', false, '04609732');
-        $mapValues[] = array('46097324', true, '046097324');
-        $mapValues[] = array('46097324', false, '04609732');
-        $mapValues[] = array('4609732-4', true, '046097324');
-        $mapValues[] = array('4609732-4', false, '04609732');
-        $mapValues[] = array('4.609.7324', true, '046097324');
-        $mapValues[] = array('4.609.7324', false, '04609732');
-        $mapValues[] = array('4609.732-4', true, '046097324');
-        $mapValues[] = array('4609.732-4', false, '04609732');
-        $mapValues[] = array('4.609732-4', true, '046097324');
-        $mapValues[] = array('4.609732-4', false, '04609732');
+        $mapValues[] = array('30.686.957-4', true, '306869574');
+        $mapValues[] = array('30.686.957-4', false, '30686957');
+        $mapValues[] = array('306869574', true, '306869574');
+        $mapValues[] = array('306869574', false, '30686957');
+        $mapValues[] = array('30686957-4', true, '306869574');
+        $mapValues[] = array('30686957-4', false, '30686957');
+        $mapValues[] = array('30.686.9574', true, '306869574');
+        $mapValues[] = array('30.686.9574', false, '30686957');
+        $mapValues[] = array('30686.957-4', true, '306869574');
+        $mapValues[] = array('30686.957-4', false, '30686957');
+        $mapValues[] = array('30.686957-4', true, '306869574');
+        $mapValues[] = array('30.686957-4', false, '30686957');
+        $mapValues[] = array('3.686.957-4', true, '036869574');
+        $mapValues[] = array('3.686.957-4', false, '03686957');
+        $mapValues[] = array('36869574', true, '036869574');
+        $mapValues[] = array('36869574', false, '03686957');
+        $mapValues[] = array('3686957-4', true, '036869574');
+        $mapValues[] = array('3686957-4', false, '03686957');
+        $mapValues[] = array('3.686.9574', true, '036869574');
+        $mapValues[] = array('3.686.9574', false, '03686957');
+        $mapValues[] = array('3686.957-4', true, '036869574');
+        $mapValues[] = array('3686.957-4', false, '03686957');
+        $mapValues[] = array('3.686957-4', true, '036869574');
+        $mapValues[] = array('3.686957-4', false, '03686957');
+        $mapValues[] = array('', true, false);
+        $mapValues[] = array('', false, false);
+        $mapValues[] = array(true, true, false);
+        $mapValues[] = array(true, false, false);
+        $mapValues[] = array(false, true, false);
+        $mapValues[] = array(false, false, false);
+        $mapValues[] = array(null, true, false);
+        $mapValues[] = array(null, false, false);
+        $mapValues[] = array(array(), true, false);
+        $mapValues[] = array(123456, false, false);
+        $mapValues[] = array(123.456, true, false);
+        $mapValues[] = array(123.456, false, false);
 
         return $mapValues;
     }
@@ -110,7 +114,6 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      * Tests rutverifier->formatRUT()
      *
      * @dataProvider provider_formatRUT
-     * @depends test_logError
      *
      * @param string $rut
      * @param boolean $con_dv
@@ -119,11 +122,64 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
     public function test_formatRUT($rut='', $con_dv=true, $expected) {
         $result = $this->rutverifier->formatRUT($rut, $con_dv);
 
+        if ($expected === false) {
+            $this->assertFalse($result);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
+    }
+
+    /**
+     * Data provider for test_RUTType
+     * @return array
+     */
+    public function provider_RUTType() {
+        $mapValues[] = array('11.111.111-1', array('n', 'natural'));
+        $mapValues[] = array('77.777.777-7', array('e', 'empresa'));
+
+        return $mapValues;
+    }
+
+    /**
+     * Tests rutverifier->RUTType
+     *
+     * @depends test_formatRUT
+     * @dataProvider provider_RUTType
+     */
+    public function test_RUTType($rut='', $expected='') {
+        $result = $this->rutverifier->RUTType($rut);
         $this->assertEquals($expected, $result);
     }
 
-    public function test_getVerifier() {
-        $this->markTestIncomplete('test_getVerifier is still incomplete');
+    /**
+     * Data provider for test_getVerifier()
+     */
+    public function provider_getVerifier() {
+        $mapValues[] = array('30686957', '4');
+        $mapValues[] = array('11111112', 'K');
+        $mapValues[] = array('', false);
+        $mapValues[] = array(false, false);
+        $mapValues[] = array(1, false);
+        $mapValues[] = array(0, false);
+        $mapValues[] = array(true, false);
+        $mapValues[] = array(array(), false);
+
+
+        return $mapValues;
+    }
+
+    /**
+     * Tests rutverifier->getVerifier
+     *
+     * @dataProvider provider_getVerifier()
+     */
+    public function test_getVerifier($rut='', $expected) {
+        $result = $this->rutverifier->getVerifier($rut);
+        if ($expected === false) {
+            $this->assertFalse($result);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
     }
 
     /**
@@ -131,8 +187,8 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      * @return array
      */
     public function provider_isValidRUT() {
-        $mapValues[] = array('146097324', true, true, true);
-        $mapValues[] = array('146097320', true, true, false);
+        $mapValues[] = array('306869574', true, true, true);
+        $mapValues[] = array('306869570', true, true, false);
 
         return $mapValues;
     }
@@ -143,7 +199,6 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      * @dataProvider provider_isValidRUT
      * @depends test_formatRUT
      * @depends test_getVerifier
-     * @depends test_logError
      * @depends test_RUTType
      *
      * @param string $rut
@@ -154,12 +209,14 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
     public function test_isValidRUT($rut, $extensive_check=true, $return_boolean=true, $expected) {
         $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
         $this->assertEquals($expected, $result);
-
-        $this->markTestIncomplete('test_isValidRUT is still incomplete');
     }
 
     public function test_c_javascript() {
-        $this->markTestIncomplete('test_c_javascript is still incomplete');
+        $result = $this->rutverifier->c_javascript(false, false);
+        $this->assertStringStartsWith('function rutVerification(c){', $result);
+
+        $result = $this->rutverifier->c_javascript(false, true);
+        $this->assertStringStartsWith('<script type="text/javascript">function rutVerification(c){', $result);
     }
 }
 
