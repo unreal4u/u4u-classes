@@ -2,7 +2,6 @@
 require_once '../rutverifier.class.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
-
 /**
  * rutverifier test case.
  */
@@ -106,6 +105,10 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $mapValues[] = array(123456, false, false);
         $mapValues[] = array(123.456, true, false);
         $mapValues[] = array(123.456, false, false);
+        $mapValues[] = array(1, true, false);
+        $mapValues[] = array(1, false, false);
+        $mapValues[] = array(0, true, false);
+        $mapValues[] = array(0, false, false);
 
         return $mapValues;
     }
@@ -137,6 +140,15 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $mapValues[] = array('11.111.111-1', array('n', 'natural'));
         $mapValues[] = array('77.777.777-7', array('e', 'empresa'));
 
+        $mapValues[] = array(777777777, false);
+        $mapValues[] = array('', false);
+        $mapValues[] = array(1, false);
+        $mapValues[] = array(0, false);
+        $mapValues[] = array(false, false);
+        $mapValues[] = array(true, false);
+        $mapValues[] = array(null, false);
+        $mapValues[] = array(array(), false);
+
         return $mapValues;
     }
 
@@ -148,7 +160,11 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      */
     public function test_RUTType($rut='', $expected='') {
         $result = $this->rutverifier->RUTType($rut);
-        $this->assertEquals($expected, $result);
+        if ($expected === false) {
+            $this->assertFalse($result);
+        } else {
+            $this->assertEquals($expected, $result);
+        }
     }
 
     /**
@@ -157,13 +173,14 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
     public function provider_getVerifier() {
         $mapValues[] = array('30686957', '4');
         $mapValues[] = array('11111112', 'K');
+
         $mapValues[] = array('', false);
-        $mapValues[] = array(false, false);
         $mapValues[] = array(1, false);
         $mapValues[] = array(0, false);
         $mapValues[] = array(true, false);
+        $mapValues[] = array(false, false);
+        $mapValues[] = array(null, false);
         $mapValues[] = array(array(), false);
-
 
         return $mapValues;
     }

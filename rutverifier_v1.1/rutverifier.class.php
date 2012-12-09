@@ -106,7 +106,7 @@ class rutverifier {
      */
     public function RUTType($rut='') {
         $output = false;
-        if (!empty($rut)) {
+        if (!empty($rut) AND is_string($rut)) {
             $rut = $this->formatRUT($rut);
             if ($rut !== false) {
                 $rut = substr($rut, 0, -1);
