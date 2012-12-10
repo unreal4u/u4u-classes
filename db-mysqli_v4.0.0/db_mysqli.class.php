@@ -663,6 +663,7 @@ class mysql_connect {
     public function __destruct() {
         if ($this->isConnected === true) {
             $this->db->close();
+            $this->isConnected = false;
         }
     }
 }
