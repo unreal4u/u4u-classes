@@ -3,6 +3,17 @@
 /**
  * Chilean RUT or RUN verifier
  *
+ * A chilean RUT/RUN is any number between 1.000.000 and 99.999.999, where the first 50 million are reserved for normal
+ * persons (RUN - Rol único nacional), and the last 50 millions are reserved for enterprise usage (RUT - Rol único
+ * tributario). This number has also a basic verifier that is the last digit in the following secuence:
+ * 12.345.678-9
+ * So, the above example corresponds to a natural person, with run number 12.345.678 and verifier 9.
+ *
+ * This class can be used to check whether a RUT or RUN is a valid one, filtering some common invalid RUTs/RUNs out and
+ * with the option to add more to this blacklist. Additionally, it is also capable of delivering a basic JavaScript
+ * version which will return true or false depending on the RUT/RUN being valid or not. However, this JavaScript version
+ * does not check blacklist and other more advanced stuff.
+ *
  * @package RUTVerifier
  * @author Camilo Sperberg
  * @copyright 2010 - 2013 Camilo Sperberg
@@ -23,10 +34,10 @@ class rutverifier {
     private $error = false;
 
     /**
-     * Stores the already validated emails as a sort of cache
+     * Stores the already validated emails as a sort of fast cache
      * @var array
      */
-    private $validados = array();
+    private $validated = array();
 
     /**
      * Blacklist of all those invalid RUTs
@@ -99,7 +110,9 @@ class rutverifier {
      * Returns the RUT type: whether it is a person or a juridic entity (companies)
      *
      * This class will return the information in spanish: "empresa" means company, "natural" means regular person. These
-     * names are the correct ones to refer to in Chili
+     * names are the correct ones to refer to in Chili.
+     * Important: This function doesn't verify that the RUT/RUN is valid! For that, check $this->isValidRUT
+     * @see $this->isValidRUT()
      *
      * @param string $rut The RUT for which we want to know
      * @return mixed Returns boolean false in case of invalid RUT, array with data otherwise
@@ -128,11 +141,11 @@ class rutverifier {
     }
 
     /**
-     * Applies a filter to the RUT and formats it according to chilean standards
+     * Applies a filter to the RUT/RUN and formats it for internal class usage
      *
-     * @param string $rut The RUT we want to format
+     * @param string $rut The RUT/RUN we want to format
      * @param boolean $withVerifier Whether we want to print the verifier also. Defaults to true
-     * @return mixed Returns boolean false when RUT is invalid, string with the RUT otherwise
+     * @return mixed Returns boolean false when RUT/RUN is invalid, string with the RUT/RUN otherwise
      */
     public function formatRUT($rut='', $withVerifier=true) {
         $output = false;
@@ -145,7 +158,7 @@ class rutverifier {
             if (strlen($tmpRUT) == 9) {
                 $output = str_replace('k', 'K', $tmpRUT);
             } else {
-                $this->logError(1, 'RUT no cuenta con el tama&ntilde;o requerido');
+                $this->logError(1, 'RUT/RUN doesn\'t have the required size');
             }
 
             if ($withVerifier === false AND empty($this->error)) {
@@ -201,8 +214,8 @@ class rutverifier {
     public function isValidRUT($rut, $extensive_check=true, $return_boolean=true) {
         $output = false;
         if (!empty($rut)) {
-            if (!empty($this->validados[$rut])) {
-                return $this->validados[$rut]['valid'];
+            if (!empty($this->validated[$rut])) {
+                return $this->validated[$rut]['valid'];
             }
 
             $rut = $this->formatRUT($rut, true);
@@ -211,13 +224,13 @@ class rutverifier {
 
             if ($this->RUTType($rut) !== false) {
                 if (!is_numeric($sep['rut'])) {
-                    $this->logError(1, 'RUT no es num&eacute;rico');
+                    $this->logError(1, 'RUT/RUN "'.$sep['rut'].'" isn\'t numeric');
                 }
 
                 if (!$this->error) {
                     $sep['dvt'] = $this->getVerifier($sep['rut']);
                     if ($sep['dvt'] != $sep['dv']) {
-                        $this->logError(2, 'El RUT (' . $sep['rut'] . ') y el d&iacute;gito verificador (' . $sep['dv'] . ') no coinciden');
+                        $this->logError(2, 'RUT/RUN (' . $sep['rut'] . ') and verifier (' . $sep['dv'] . ')  don\'t match');
                     } else {
                         $output = true;
                     }
@@ -225,26 +238,26 @@ class rutverifier {
                     if ($extensive_check === true) {
                         if (in_array($sep['rut'] . $sep['dv'], $this->blacklist)) {
                             $output = false;
-                            $this->logError(2, 'El RUT est&aacute; ingresado en blacklist');
+                            $this->logError(2, 'The entered RUT/RUN "'.$sep['rut'].$sep['dv'].'" is in blacklist');
                         }
                     }
                 }
             } else {
-                $this->logError(2, 'El RUT no est&aacute; dentro del rango aceptable');
+                $this->logError(2, 'RUT/RUN isn\'t within range of natural person and/or enterprise');
             }
 
-            $this->validados[$rut] = array(
-                'valid' => $output,
-                'rut'   => $sep['rut'],
-                'dv'    => $sep['dv'],
-                'tipo'  => $this->RUTType($rut),
+            $this->validated[$rut] = array(
+                'isValid'  => $output,
+                'rut'      => $sep['rut'],
+                'verifier' => $sep['dv'],
+                'type'     => $this->RUTType($rut),
             );
         }
         if ($return_boolean === true) {
             return $output;
         }
 
-        return $this->validados;
+        return $this->validated;
     }
 
     /**

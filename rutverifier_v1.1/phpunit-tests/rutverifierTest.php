@@ -207,6 +207,25 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $mapValues[] = array('306869574', true, true, true);
         $mapValues[] = array('306869570', true, true, false);
 
+        $mapValues[] = array('24852023-k', true, true, true);
+        $mapValues[] = array('22784591-0', true, true, true);
+        $mapValues[] = array('10434293-0', true, true, true);
+        $mapValues[] = array('9800110-7', true, true, true);
+        $mapValues[] = array('16362258-0', true, true, true);
+        $mapValues[] = array('8958540-6', true, true, true);
+        $mapValues[] = array('14540887-3', true, true, true);
+        $mapValues[] = array('15136146-3', true, true, true);
+        $mapValues[] = array('12209777-3', true, true, true);
+        $mapValues[] = array('23643499-0', true, true, true);
+
+        $mapValues[] = array('', true, true, false);
+        $mapValues[] = array(1, true, true, false);
+        $mapValues[] = array(0, true, true, false);
+        $mapValues[] = array(true, true, true, false);
+        $mapValues[] = array(false, true, true, false);
+        $mapValues[] = array(null, true, true, false);
+        $mapValues[] = array(array(), true, true, false);
+
         return $mapValues;
     }
 
