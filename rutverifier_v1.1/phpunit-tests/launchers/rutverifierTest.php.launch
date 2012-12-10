@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.zend.php.phpunit.PHPUnitLaunchConfigurationType">
+<stringAttribute key="ATTR_FILE" value="/Applications/Zend Studio 2.app/Contents/Resources/Java/plugins/com.zend.php.phpunit_9.0.1.201112141951/resources/ZendPHPUnit.php"/>
+<stringAttribute key="ATTR_FILE_FULL_PATH" value="/Applications/Zend Studio 2.app/Contents/Resources/Java/plugins/com.zend.php.phpunit_9.0.1.201112141951/resources/ZendPHPUnit.php"/>
+<stringAttribute key="ATTR_INI_LOCATION" value="/private/etc/php.ini"/>
+<stringAttribute key="ATTR_LOCATION" value="/usr/bin/php"/>
+<stringAttribute key="ATTR_PROJECT_NAME" value="u4u-classes"/>
+<stringAttribute key="ATTR_WORKING_DIRECTORY" value="u4u-classes"/>
+<stringAttribute key="ZEND_PHPUNIT_TESTS_CONTAINER_TYPE" value="SCRIPT_SOURCE"/>
+<booleanAttribute key="com.zend.php.phpunit.code_coverage" value="false"/>
+<stringAttribute key="com.zend.php.phpunit.container" value="rutverifier_v1.1/phpunit-tests/rutverifierTest.php"/>
+<booleanAttribute key="com.zend.php.phpunit.is_suite" value="true"/>
+<booleanAttribute key="com.zend.php.phpunit.logXml" value="false"/>
+<stringAttribute key="com.zend.php.phpunit.phpunitPath" value="u4u-classes/rutverifier_v1.1/phpunit-tests/phpunit.xml"/>
+<stringAttribute key="com.zend.php.phpunit.project" value="u4u-classes"/>
+<stringAttribute key="debugOutputEncoding" value="UTF-8"/>
+<stringAttribute key="debugTransferEncoding" value="UTF-8"/>
+<booleanAttribute key="firstLineBreakpoint" value="false"/>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="ZEND_PHPUNIT_LOG_XML" value=""/>
+<mapEntry key="ZEND_PHPUNIT_PORT" value="7478"/>
+<mapEntry key="ZEND_PHPUNIT_PROJECT_LOCATION" value="/Users/unreal4u/html/u4u-classes"/>
+<mapEntry key="ZEND_PHPUNIT_TESTS_LOCATION" value="/var/folders/yc/njgdz6jj7hn9n3ngrzjf56w80000gq/T/unreal4u.phpunit.rutverifierTest.php.697038030360273359.php"/>
+</mapAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.php.debug.core.PHP_CONTAINER" value="org.eclipse.php.debug.core.PHP_CONTAINER/org.eclipse.php.debug.core.xdebugDebugger/php5.3.15"/>
+<stringAttribute key="org.eclipse.php.debug.core.PHP_Project" value="/u4u-classes"/>
+<booleanAttribute key="org.eclipse.php.debug.core.RunWithDebugInfo" value="true"/>
+<stringAttribute key="org.eclipse.php.debug.coreconfiguration_delegate_class" value="org.eclipse.php.internal.debug.core.launching.XDebugExeLaunchConfigurationDelegate"/>
+<stringAttribute key="org.eclipse.php.debug.corephp_debugger_id" value="org.eclipse.php.debug.core.xdebugDebugger"/>
+<stringAttribute key="php_debug_type" value="php_exe_script_debug"/>
+</launchConfiguration>
