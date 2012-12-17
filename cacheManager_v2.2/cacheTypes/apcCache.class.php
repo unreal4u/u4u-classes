@@ -48,7 +48,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $funcArgs array Optional extra arguments to differentiate cache
      * @param $ttl int The time the cache will be valid
      */
-    public function save($data=false, $identifier='', array $funcArgs=null, $ttl=null) {
+    public function save($data=false, $identifier='', $funcArgs=null, $ttl=null) {
         if (is_int($ttl)) {
             $this->_setTtl($ttl);
         }
@@ -65,7 +65,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $funcArgs array Optional extra arguments to differentiate cache
      * @return mixed Returns the data or false if no cache was found
      */
-    public function load($identifier='', array $funcArgs=null) {
+    public function load($identifier='', $funcArgs=null) {
         $data = apc_fetch($this->_cacheId($identifier, $funcArgs), $return);
         if (!empty($return)) {
             $return = $data;
@@ -81,7 +81,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $identifier string A unique name to use
      * @param $funcArgs array Optional extra arguments to differentiate cache
      */
-    public function delete($identifier='', array $funcArgs=null) {
+    public function delete($identifier='', $funcArgs=null) {
         $return = apc_delete($this->_cacheId($identifier, $funcArgs));
 
         return $return;

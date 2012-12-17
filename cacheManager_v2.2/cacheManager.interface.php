@@ -33,7 +33,7 @@ interface cacheManagerInterface {
      * @param int $ttl The time the cache will be valid
      * @return boolean Returns true when the cache could be saved, false otherwise
      */
-    public function save($data=false, $identifier='', array $funcArgs=null, $ttl=null);
+    public function save($data=false, $identifier='', $funcArgs=null, $ttl=null);
 
     /**
      * Rescues data from cache
@@ -44,7 +44,7 @@ interface cacheManagerInterface {
      * @param array $funcArgs Optional extra arguments to differentiate cache options
      * @return mixed Returns the data or false if no cache was found
      */
-    public function load($identifier='', array $funcArgs=null);
+    public function load($identifier='', $funcArgs=null);
 
    	/**
    	 * Physically removes a cache entry from memory
@@ -53,7 +53,7 @@ interface cacheManagerInterface {
    	 * @param array $funcArgs Optional extra arguments to differentiate cache options
    	 * @return boolean Returns true when the cache could be deleted successfully, false otherwise
    	 */
-    public function delete($identifier='', array $funcArgs=null);
+    public function delete($identifier='', $funcArgs=null);
 
    	/**
    	 * Deletes the entire cache

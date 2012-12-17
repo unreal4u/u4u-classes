@@ -13,10 +13,16 @@ include('exceptions.class.php');
  */
 class cacheManager {
     /**
+     * The version of this class
+     * @var string
+     */
+    private $version = '2.2';
+
+    /**
      * Holds the child object
      * @var object
      */
-    private $object  = null;
+    private $object = null;
 
     /**
      * Container of all the public child methods
@@ -71,10 +77,11 @@ class cacheManager {
             $this->object = $rc->newInstanceArgs($args);
 
             if ((!$rc->implementsInterface('cacheManagerInterface')) OR !$rc->isSubclassOf('cacheManager')) {
+                $errorMessage = 'Class doesn\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation';
                 if ($this->throwExceptions === true) {
-                    throw new cacheException('Class don\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation');
+                    throw new cacheException($errorMessage);
                 }
-                trigger_error('Class doesn\'t implement cacheManager and/or doesn\'t extend cacheManager, aborting creation', E_USER_ERROR);
+                trigger_error($errorMessage, E_USER_ERROR);
             }
 
             $rcMethods = $rc->getMethods(ReflectionMethod::IS_PUBLIC);
@@ -143,7 +150,7 @@ class cacheManager {
 	 * @param array $funcArgs Unique extra optional arguments
 	 * @return string Returns an unique md5 string
 	 */
-	protected function _cacheId($identifier='', array $funcArgs=null) {
+	protected function _cacheId($identifier='', $funcArgs=null) {
 		// Any empty value (0, NULL, false) will be converted to an empty array
 		if (empty($funcArgs)) {
 			$funcArgs = array();
@@ -167,5 +174,9 @@ class cacheManager {
 	 */
 	protected function _setTtl($ttl=60) {
 		return $this->_ttl = $ttl;
+	}
+
+	public function getVersion() {
+	    return $this->version;
 	}
 }

@@ -133,7 +133,7 @@ class fileCache extends cacheManager implements cacheManagerInterface {
      *
      * @see cacheManager::save()
      */
-    public function save($data=false, $identifier='', array $funcArgs=null, $ttl=null) {
+    public function save($data=false, $identifier='', $funcArgs=null, $ttl=null) {
         if (is_int($ttl)) {
             $this->_setTtl($ttl);
         }
@@ -154,7 +154,7 @@ class fileCache extends cacheManager implements cacheManagerInterface {
      *
      * @see cacheManager::load()
      */
-    public function load($identifier='', array $funcArgs=null) {
+    public function load($identifier='', $funcArgs=null) {
         $return = false;
         $filename = $this->getCacheFilename($this->_cacheId($identifier, $funcArgs));
         if (is_readable($filename)) {
@@ -176,7 +176,7 @@ class fileCache extends cacheManager implements cacheManagerInterface {
      *
      * @see cacheManager::delete()
      */
-    public function delete($identifier='', array $funcArgs=null) {
+    public function delete($identifier='', $funcArgs=null) {
         $result = false;
         $filename = $this->getCacheFilename($this->_cacheId($identifier, $funcArgs));
         $result = $this->deleteCacheFile($filename);
