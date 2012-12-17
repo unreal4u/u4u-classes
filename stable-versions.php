@@ -1,12 +1,12 @@
 <?php
 
-define('AUTOMATIC_DB_UPDATER', 'Automatic-DB-Updater_v0.1/db_updater.class.php');
-define('CACHE_MANAGER', 'cacheManager_v2.1/cacheManager.class.php');
-define('CSSTACKER', 'CSStacker_v1.3/css.class.php');
-define('DB_MYSQLI', 'db-mysqli_v4.0.0/db_mysqli.class.php');
-define('EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');
-define('HTMLUTILS', 'HTMLUtils_v1.0/html_utils.class.php');
-define('MESSAGESTACK', 'messageStack_v1.0.2/messageStack.class.php');
-define('MYSQL_PAGINATOR', 'mysql-paginator_v1.1/paginator.class.php');
-define('PID', 'pid_v1.2/pid.class.php');
-define('RUT', 'rutverifier_v1.1/rutverifier.class.php');
+define('U4U_DB_UPDATER', 'Automatic-DB-Updater_v0.1/db_updater.class.php');
+define('U4U_CACHEMANAGER', 'cacheManager_v2.1/cacheManager.class.php');
+define('U4U_CSS', 'CSStacker_v1.3/css.class.php');
+define('U4U_DB_MYSQLI', 'db-mysqli_v4.0.0/db_mysqli.class.php');
+define('U4U_EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');
+define('U4U_HTML_UTILS', 'HTMLUtils_v1.0/html_utils.class.php');
+define('U4U_MESSAGESTACK', 'messageStack_v1.0.2/messageStack.class.php');
+define('U4U_PAGINATOR', 'mysql-paginator_v1.1/paginator.class.php');
+define('U4U_PID', 'pid_v1.2/pid.class.php');
+define('U4U_RUTVERIFIER', 'rutverifier_v1.1/rutverifier.class.php');
