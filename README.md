@@ -12,6 +12,7 @@ Classes description
 
 * *Automatic-DB-Updater_v0.1*: Outdated class. Will not be updated anymore.
 * *CSStacker_v1.3*: Outdated class. May or may not be updated in the future.
+* *CSStacker_v1.4*: A little more updated class. Will be updated soon.
 * *HTMLUtils_v1.0*: Outdated class. May or may not be updated in the future.
 * *cacheManager_v2.0*: See cacheManager_v2.1
 * *cacheManager_v2.1*: This class will enable you to use APC or file based cache module based on a name and a few
