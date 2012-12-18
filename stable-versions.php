@@ -10,3 +10,19 @@ define('U4U_MESSAGESTACK', 'messageStack_v1.0.2/messageStack.class.php');
 define('U4U_PAGINATOR', 'mysql-paginator_v1.1/paginator.class.php');
 define('U4U_PID', 'pid_v1.2/pid.class.php');
 define('U4U_RUTVERIFIER', 'rutverifier_v1.1/rutverifier.class.php');
+
+/*
+ * With this function, you will be able to load my classes as:
+ *
+ * $css = new csstacker();
+ */
+function u4u_autoload_handler($class) {
+    $return = false;
+    if (is_readable(dirname(__FILE__).'/'.constant('U4U_'.strtoupper($class)))) {
+        include(dirname(__FILE__).'/'.constant('U4U_'.strtoupper($class)));
+        $return = true;
+    }
+
+    return $return;
+}
+spl_autoload_register('u4u_autoload_handler');
