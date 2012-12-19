@@ -1,4 +1,4 @@
-<?php if(!isset($proc)) die('Sorry, no direct access allowed!');
+<?php
 
 class HTMLUtils {
 /*********
@@ -17,7 +17,7 @@ Initializing some variables we're going to need.
 /*********
 The __construct function, gets and/or sets the language used.
 Is public because... well, methods should always be public.
-*********/ 
+*********/
   public function __construct() {
     if (strlen(setlocale(LC_ALL,0)) < 2) $this->language = setlocale(LC_ALL,LOCALE);
     else $this->language = setlocale(LC_ALL,0);
@@ -29,7 +29,7 @@ Is public because... well, methods should always be public.
     if ($this->html_closed === FALSE) echo $this->c_closehtml();
   }
 /*********
-This function checks whether we're using xhtml or html and is able to establish the 
+This function checks whether we're using xhtml or html and is able to establish the
 ending tag for each case.
 It is a private function and should NOT be used for general public.
 *********/
@@ -45,7 +45,7 @@ It is a private function and should NOT be used for general public.
   }
 
 /**********
-This function finds out whether the src is an external or internal file. If internal, 
+This function finds out whether the src is an external or internal file. If internal,
 it also checks whether it is readable.
 **********/
   private function external($src) {
@@ -76,9 +76,9 @@ class generated during its execution.
         case 2 : $type_string = 'WARNING'; break;
         case 3 : $type_string = 'NOTICE';  break;
         default: $type_string = 'UNKNOWN'; break;
-      }   
+      }
       $HTMLErrors[] = array('type' => $type_string, 'msg' => $msg);
-    }   
+    }
   }
 
 /*********
@@ -123,7 +123,7 @@ This function creates the basic output of the html tag and the rulesets.
           else $url .= 'strict';
           $html = '';
           break;
-        default      : 
+        default      :
           $output = FALSE;
           break;
       }
@@ -199,7 +199,7 @@ This function allows us to embed javascript code.
   }
 
 /**********
-This function creates all necesary output for the "title" tag. 
+This function creates all necesary output for the "title" tag.
 
 @title : The title of the document
 **********/
@@ -255,7 +255,7 @@ This function allows us to create all header code with just one call and one arr
   }
 
 /**********
-This function creates an "img" tag, with all necesary sintaxis that finally allows us to create a valid image with very little code. 
+This function creates an "img" tag, with all necesary sintaxis that finally allows us to create a valid image with very little code.
 
 @ruta      : route to the file. Can be absolute or relative, external or internal.
 @alt       : alternative text to display in case the image couldn't be found.
@@ -334,7 +334,7 @@ This function creates an "a" tag.
   }
 
 /**********
-Function that allows us to create the html asociated with it. 
+Function that allows us to create the html asociated with it.
 Allowed tags:
   <br>
   <hr>
@@ -372,7 +372,7 @@ Allowed tags:
         case 'br': case 'hr':
           $output .= '<'.$tag.$properties.$this->endtag($tag);
           break;
-       default: 
+       default:
           $this->logError(2,'Sorry, tag "'.$tag.'" not allowed.');
           $output = FALSE;
           break;

@@ -2,7 +2,7 @@
 $proc = TRUE; // Create this variable to avoid direct access to parts that your users shouldn't have to.
 
 include('config.php'); // Including the configuration
-include('html_utils.class.php'); // Including the main class.
+include('HTMLUtils.class.php'); // Including the main class.
 
 $he = new HTMLUtils(); // Creating the object.
 
