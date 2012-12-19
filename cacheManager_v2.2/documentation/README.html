@@ -47,7 +47,8 @@ if (empty($secondExample)) {
     $cache-&gt;save($secondExample, 'secondExample', null, 120);
 }
 </pre></li>
-    <li>Congratulations! Everything is now properly saved in cache! Sit back and watch your server going nuts serving requests.</li>
+    <li>Congratulations! Everything is now properly saved in cache! Sit back and watch your server going nuts serving
+    requests.</li>
     <li><strong>Please see examples for more options and advanced usage</strong></li>
 </ul>
 
@@ -74,7 +75,9 @@ if (empty($secondExample)) {
     </ul>
 </li></ul>
 <ul><li>2.2:
-    <ul><li>Type hinting</li>
+    <ul><li>Type hinting where possible</li>
+        <li>There is now a toggle debug mode function. When debug mode is enabled, it means that no calls are actually
+        made to the cache functions, making this class rather useless, but very useful for debugging.</li>
     </ul>
 </li></ul>
     

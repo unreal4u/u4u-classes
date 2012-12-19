@@ -54,6 +54,12 @@ class cacheManager {
 	 */
 	public $isEnabled = true;
 
+	/**
+	 * Whether the class is in debug mode or not
+	 * @var boolean
+	 */
+	public $debugMode = false;
+
     /**
      * Constructor, initializes the object
      *
@@ -114,7 +120,7 @@ class cacheManager {
     public function __call($methodName, $args) {
         $return = null;
 
-        if (in_array($methodName, $this->methods)) {
+        if (!$this->debugMode AND in_array($methodName, $this->methods)) {
             try {
                 $return = false;
                 if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
@@ -167,6 +173,16 @@ class cacheManager {
 	}
 
 	/**
+	 * Allows to toggle between debug mode (no caching at all) and production mode
+	 *
+	 * @return boolean Returns true if debug mode is enabled, false otherwise
+	 */
+	public function toggleDebugMode() {
+	    $this->debugMode = !$this->debugMode;
+	    return $this->debugMode;
+	}
+
+	/**
 	 * Sets the total time to live for a cache
 	 *
 	 * @param int $ttl The total time to live setting
@@ -176,6 +192,9 @@ class cacheManager {
 		return $this->_ttl = $ttl;
 	}
 
+	/**
+	 * Returns the current version
+	 */
 	public function getVersion() {
 	    return $this->version;
 	}
