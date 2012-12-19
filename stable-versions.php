@@ -5,7 +5,7 @@ define('U4U_CACHEMANAGER',   'cacheManager_v2.1/cacheManager.class.php');
 define('U4U_CSSTACKER',      'CSStacker_v1.4/csstacker.class.php');
 define('U4U_DB_MYSQLI',      'db-mysqli_v4.0.0/db_mysqli.class.php');
 define('U4U_EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');
-define('U4U_HTML_UTILS',     'HTMLUtils_v1.0/html_utils.class.php');
+define('U4U_HTMLUTILS',      'HTMLUtils_v1.0/HTMLUtils.class.php');
 define('U4U_MESSAGESTACK',   'messageStack_v1.0.2/messageStack.class.php');
 define('U4U_PAGINATOR',      'mysql-paginator_v1.1/paginator.class.php');
 define('U4U_PID',            'pid_v1.2/pid.class.php');
