@@ -215,7 +215,7 @@ class rutverifier {
         $output = false;
         if (!empty($rut)) {
             if (!empty($this->validated[$rut])) {
-                return $this->validated[$rut]['valid'];
+                return $this->validated[$rut]['isValid'];
             }
 
             $rut = $this->formatRUT($rut, true);

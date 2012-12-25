@@ -12,11 +12,18 @@ define('U4U_PID',            'pid_v1.2/pid.class.php');
 define('U4U_RUTVERIFIER',    'rutverifier_v1.1/rutverifier.class.php');
 
 /**
- * With this little class, you will be able to load my classes as:
+ * With this little class, you will be able to easily load my classes
  *
+ * If you want to instantiate my classes as:
  * $css = new csstacker();
  * $cache = new cacheManager();
  * etc...
+ *
+ * Then you must call this class as:
+ * $u4u_autoloader = new u4u_autoloader();
+ *
+ * @package u4u-classes
+ * @author Camilo Sperberg - http://unreal4u.com/
  */
 class u4u_autoloader {
     /**
@@ -51,6 +58,3 @@ class u4u_autoloader {
         return $return;
     }
 }
-
-// Instantiate the class in order to enable autoloader:
-//$u4u_autoloader = new u4u_autoloader();
