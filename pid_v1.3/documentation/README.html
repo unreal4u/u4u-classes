@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>README for pid.class.php</title>
+</head>
+<body>
+    <h1>README for pid</h1>
+<h2>CREDITS:</h2>
+<p>This class is made by unreal4u (Camilo Sperberg). &lt;<a href="http://unreal4u.com/">unreal4u.com</a>&gt;</p>
+
+<h2>ABOUT THIS CLASS:</h2>
+<h3>In a glinch:</h3>
+<ul><li>Can be used to verify whether a process is already running or not.</li>
+    <li>Can be used in Windows or Linux. In both, they will call OS specific functions to find out whether the process is running or not.</li>
+    <li>It does not detect previous fatal errors, but it can omit the previous PID file if a given time has passed since the creation.</li>
+</ul>
+<h3>Detailed:</h3>
+<p>This package will check if a certain PID file is present or not, and depending on that will:<br /><br />
+
+Create a PID file.<br />
+If it already exists, will ask the OS to check whether it is still a running process.<br />
+If for whatever reason, the OS still thinks the process is running and too much time has passed, the class can overwrite the previous PID file.<br />
+
+This package has been extensivily tested with xdebug, APC, PHPUnit testing and Suhosin so that no errors are present.</p>
+
+<h2>USAGE:</h2>
+<ul><li>This class was made with simplicity, speed and security in mind:<br>
+
+<pre>include('pid.class.php');
+$pid = new pid();
+if ($pid-&gt;already_running) {
+    echo 'Process is already running. Dying now would be a good option';
+}
+</pre></li>
+    <li>$pid-&gt;already_running will show you if process is already running or not.</li>
+    <li>$pid-&gt;pid will show you the pid number.</li>
+    <li><strong>Please see examples for more options and advanced usage</strong></li>
+</ul>
+
+<h2>PENDING:</h2>
+<ul>
+  <li>None.</li>
+</ul>
+
+<h2>VERSION HISTORY:</h2>
+<ul><li>1.0 : 
+    <ul><li>Initial version</li>
+    </ul>
+</li></ul>
+<ul><li>1.1:
+    <ul><li>Support for Windows PID check</li>
+    </ul>
+</li></ul>
+<ul><li>1.3:
+    <ul><li>PHPUnit testing</li>
+        <li>Documentation improved (Created this README actually)</li>
+        <li>More examples</li>
+    </ul>
+</li></ul>
+    
+</body>
+</html>

@@ -1,6 +1,5 @@
 <?php
-namespace org\bovigo\vfs\example;
-use org\bovigo\vfs\vfsStream;
+require_once 'vfsStream/vfsStream.php';
 
 require_once '../pid.class.php';
 require_once 'PHPUnit/Framework/TestCase.php';
@@ -15,12 +14,18 @@ class pidTest extends \PHPUnit_Framework_TestCase {
     private $pid;
 
     /**
+     * Holds the file system
+     * @var object
+     */
+    private $fileSystem;
+
+    /**
      * Prepares the environment before running a test.
      */
     protected function setUp() {
         parent::setUp();
 
-        $this->fileSystem = vfsStream::setup(sys_get_temp_dir());
+        $this->fileSystem = vfsStreamWrapper::register();
     }
 
     /**
@@ -52,6 +57,10 @@ class pidTest extends \PHPUnit_Framework_TestCase {
         $this->pid = new pid($directory, $filename, $timeout, $checkOnConstructor);
         $this->assertEquals($expected, $this->pid->pid);
         $this->assertFalse($this->pid->already_running);
+
+        $this->pid = new pid($directory, $filename, $timeout, $checkOnConstructor);
+        $this->assertEquals($expected, $this->pid->pid);
+        $this->assertTrue($this->pid->already_running);
     }
 }
 
