@@ -1,7 +1,7 @@
 <?php
 
 define('AUTOMATIC_DB_UPDATER', 'Automatic-DB-Updater_v0.1/db_updater.class.php');
-define('CACHE_MANAGER', 'cacheManager_v2.2/cacheManager.class.php');
+define('CACHE_MANAGER', 'cacheManager_v2.1/cacheManager.class.php');
 define('CSSTACKER', 'CSStacker_v1.3/css.class.php');
 define('DB_MYSQLI', 'db-mysqli_v4.0.0/db_mysqli.class.php');
 define('EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');

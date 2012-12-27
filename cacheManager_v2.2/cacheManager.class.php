@@ -173,12 +173,22 @@ class cacheManager {
 	}
 
 	/**
-	 * Allows to toggle between debug mode (no caching at all) and production mode
+	 * Enabled debug mode (make this class a bit useless, but useful for testing)
 	 *
-	 * @return boolean Returns true if debug mode is enabled, false otherwise
+	 * @return boolean Returns always true
 	 */
-	public function toggleDebugMode() {
-	    $this->debugMode = !$this->debugMode;
+	public function enableDebugMode() {
+	    $this->debugMode = true;
+	    return $this->debugMode;
+	}
+
+	/**
+	 * Disables debug mode and make this class work again
+	 *
+	 * @return boolean Returns always false
+	 */
+	public function disableDebugMode() {
+	    $this->debugMode = false;
 	    return $this->debugMode;
 	}
 
