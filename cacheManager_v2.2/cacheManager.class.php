@@ -120,15 +120,17 @@ class cacheManager {
     public function __call($methodName, $args) {
         $return = null;
 
-        if (!$this->debugMode AND in_array($methodName, $this->methods)) {
-            try {
-                $return = false;
-                if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
-                    $return = call_user_func_array(array($this->object, $methodName), $args);
-                }
-            } catch (Exception $e) {
-                if ($this->throwExceptions) {
-                    throw new cacheException($e->getMessage());
+        if (in_array($methodName, $this->methods)) {
+            $return = false;
+            if (!$this->debugMode) {
+                try {
+                    if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
+                        $return = call_user_func_array(array($this->object, $methodName), $args);
+                    }
+                } catch (Exception $e) {
+                    if ($this->throwExceptions) {
+                        throw new cacheException($e->getMessage());
+                    }
                 }
             }
         } else {
