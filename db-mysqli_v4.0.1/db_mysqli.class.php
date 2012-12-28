@@ -16,9 +16,9 @@ include(dirname(__FILE__).'/auxiliar_classes.php');
  * @license BSD License
  * @copyright 2009 - 2013 Camilo Sperberg
  *
- * @method int num_rows() num_rows(...) Returns the number of results from the query
- * @method mixed[] insert_id() insert_id(...) Returns the insert id of the query
- * @method mixed[] query() query(...) Returns false if query could not be executed, resultset otherwise
+ * @method int num_rows() num_rows() Returns the number of results from the query
+ * @method mixed[] insert_id() insert_id($query) Returns the insert id of the query
+ * @method mixed[] query() query($query) Returns false if query could not be executed, resultset otherwise
  * @method boolean begin_transaction() begin_transaction() Returns always true
  * @method boolean end_transaction() end_transaction() Commits the changes to the database. If rollback is needed, this will return false, otherwise true
  */
@@ -292,10 +292,10 @@ class db_mysqli {
      * Function that checks what type is the data we are trying to insert
      *
      * Supported bind types (http://php.net/manual/en/mysqli-stmt.bind-param.php):
-     * i 	corresponding variable has type integer
-     * d 	corresponding variable has type double
-     * s 	corresponding variable has type string
-     * b 	corresponding variable is a blob and will be sent in packets
+     *  i   corresponding variable has type integer
+     *  d   corresponding variable has type double
+     *  s   corresponding variable has type string
+     *  b   corresponding variable is a blob and will be sent in packets
      *
      * @TODO Support for blob type data (will now go through string type)
      *
@@ -415,7 +415,7 @@ class db_mysqli {
      * Establishes the $result array: the data itself
      *
      * @param array $arg_array
-     * @return boolean
+     * @return mixed Returns the array with data, false if there was an error present or int with errno if an error at this stage happens
      */
     private function execute_result_array(array $arg_array) {
         $result = false;
@@ -446,6 +446,7 @@ class db_mysqli {
                     foreach ($rows as $key => $val) {
                         $c[$key] = $val;
                         // Fix for boolean data types: hard-detect these and set them explicitely as boolean
+                        // @TODO Check if data types get interpreted correctly, ideal would be use PHP's DateTime object
                         if ($dataTypes[$key] == 16) {
                             $c[$key] = (bool)$val;
                         }
@@ -462,9 +463,6 @@ class db_mysqli {
         return $result;
     }
 
-    /*
-     * All functionality that handles with logs, exceptions and other stuff
-     */
     /**
      * Throws an exception if these are enabled
      *
@@ -500,11 +498,11 @@ class db_mysqli {
     /**
      * Function that logs all errors
      *
-     * @param $query string The query to log
-     * @param $errno int The error number to log
-     * @param $type string Whether the error is fatal or non-fatal
-     * @param $error string The error description
-     * @return boolean Always returns TRUE.
+     * @param string $query The query to log
+     * @param int $errno The error number to log
+     * @param string $type Whether the error is fatal or non-fatal
+     * @param string $error The error description
+     * @return boolean Always returns true.
      */
     private function logError($query, $errno, $type='non-fatal', $error=null) {
         if (empty($error)) {
@@ -539,7 +537,7 @@ class db_mysqli {
      * @param array $arg_array
      * @param array $result
      * @param mixed[] $error
-     * @return boolean Always returns TRUE.
+     * @return boolean Returns true if logentry could be made, false otherwise
      */
     private function logStatistics(array $stats, array $arg_array, $result, $error) {
         $return = false;
@@ -561,6 +559,7 @@ class db_mysqli {
             }
 
             $resultInfo = $this->execute_result_info($arg_array);
+            $query      = reset($arg_array);
 
             $this->dbLiveStats[] = array(
                 'query'              => $query,
@@ -577,14 +576,11 @@ class db_mysqli {
         return $return;
     }
 
-    /*
-     * Misc functions
-     */
     /**
      * Creates an referenced representation of an array
      *
      * @author Hugo Simon http://www.phpclasses.org/discuss/package/5812/thread/5/
-     * @param $arr array The array that creates a referenced copy
+     * @param array $arr The array that creates a referenced copy
      * @return array A referenced copy of the original array
      */
     private function makeValuesReferenced($arr) {
