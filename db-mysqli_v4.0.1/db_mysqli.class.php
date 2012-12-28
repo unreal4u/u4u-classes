@@ -307,6 +307,11 @@ class db_mysqli {
         if (!empty($arg_array)) {
             foreach ($arg_array as $v) {
                 switch ($v) {
+                    // @TODO Check the following condition very well!
+                    // Empty STRING
+                    case '':
+                        $types .= 's';
+                    break;
                     // All "integer" types
                     case is_null($v):
                     case is_bool($v):
