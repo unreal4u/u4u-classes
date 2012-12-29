@@ -120,6 +120,12 @@ class db_mysqli {
     private $failedConnectionsCount = 0;
 
     /**
+     * Provides a flag for knowing if we are in our own custom handler or not
+     * @var boolean
+     */
+    private $isWithinCustomErrorHandler = false;
+
+    /**
      * When constructed we could enter transaction mode
      *
      * @param boolean $inTransaction Whether to begin a transaction, defaults to false
@@ -150,7 +156,7 @@ class db_mysqli {
      */
     public function __call($method, array $arg_array) {
         // Sets our own error handler (Defined in config)
-        set_error_handler(array('databaseErrorHandler', 'handleError'));
+        $this->enableCustomErrorHandler();
 
         $this->error = false;
         $logAction   = true;
@@ -176,7 +182,7 @@ class db_mysqli {
                 }
             break;
             case 'begin_transaction':
-                $this->connect_to_db();
+                $this->registerConnection();
                 if ($this->inTransaction === false) {
                     $this->inTransaction = true;
                     $this->db->autocommit(false);
@@ -209,7 +215,7 @@ class db_mysqli {
         }
 
         // Restore whatever error handler we had before calling this class
-        restore_error_handler();
+        $this->restoreErrorHandler();
 
         // Finally, return our result
         return $result;
@@ -253,7 +259,7 @@ class db_mysqli {
                 $result = $result[0]['VERSION()'];
             }
         } else {
-            $this->connect_to_db();
+            $this->registerConnection();
             $temp = explode(' ', $this->db->client_info);
             $result = $temp[1];
         }
@@ -262,16 +268,60 @@ class db_mysqli {
     }
 
     /**
+     * If you want to open another connection, use this method and provide the necesary credentials.
+     *
+     * Non provided credentials will overwrite default values. Note that database name is in first place!
+     *
+     * @param string $database The database name
+     * @param string $host The host of the MySQL server
+     * @param string $username The username
+     * @param string $passwd The password
+     * @param int $port The port to which MySQL is listening to
+     * @return boolean Returns true if connection is established, false otherwise
+     */
+    public function registerConnection($database='', $host='', $username='', $passwd='', $port=0) {
+        $return = false;
+
+        if ($this->isConnected === false) {
+            $this->enableCustomErrorHandler();
+            if (empty($host)) {
+                $host = DB_MYSQLI_HOST;
+            }
+
+            if (empty($username)) {
+                $username = DB_MYSQLI_USER;
+            }
+
+            if (empty($passwd)) {
+                $passwd = DB_MYSQLI_PASS;
+            }
+
+            if (empty($database)) {
+                $database = DB_MYSQLI_NAME;
+            }
+
+            if (empty($port)) {
+                $port = DB_MYSQLI_PORT;
+            }
+
+            $this->connectToDatabase($host, $username, $passwd, $database, $port);
+            $this->restoreErrorHandler();
+        }
+
+        return $this->isConnected;
+    }
+
+    /**
      * This method will open a connection to the database
      *
      * @return boolean Returns value indicating whether we are connected or not
      */
-    private function connect_to_db() {
+    private function connectToDatabase($host, $username, $passwd, $database, $port) {
         if ($this->isConnected === false) {
             if ($this->failedConnectionsCount < $this->failedConnectionsTreshold) {
                 try {
                     // Always capture all errors from the singleton connection
-                    $db_connect = mysql_connect::getInstance();
+                    $db_connect = mysql_connect::getInstance($host, $username, $passwd, $database, $port);
                     $this->db = $db_connect->db;
                     $this->isConnected = true;
                 } catch (databaseException $e) {
@@ -348,7 +398,7 @@ class db_mysqli {
     private function execute_query(array $arg_array=null) {
         $executeQuery = false;
 
-        if ($this->connect_to_db()) {
+        if ($this->registerConnection()) {
             $sqlQuery = array_shift($arg_array);
 
             $tempArray = $this->castValues($arg_array);
@@ -451,7 +501,7 @@ class db_mysqli {
                     foreach ($rows as $key => $val) {
                         $c[$key] = $val;
                         // Fix for boolean data types: hard-detect these and set them explicitely as boolean
-                        // @TODO Check if data types get interpreted correctly, ideal would be use PHP's DateTime object
+                        // @TODO Check if date types get interpreted correctly, ideal would be use PHP's DateTime object
                         if ($dataTypes[$key] == 16) {
                             $c[$key] = (bool)$val;
                         }
@@ -466,6 +516,43 @@ class db_mysqli {
         }
 
         return $result;
+    }
+
+    /**
+     * Enables our own intern error handler
+     *
+     * @link http://php.net/manual/en/function.set-error-handler.php Documentation on returned values
+     * @link http://www.tyrael.hu/2011/06/26/performance-of-error-handling-in-php/ Benchmark on set_error_handler
+     *
+     * Conclusion: (...) the overhead of having a custom error handler is almost negligible if it isn’t called.
+     * If your queries do have a lot of errors, then this will slow things down. Otherwise, you can capture them and do
+     * whatever you want, such as logging them or mailing the faulty queries to yourself.
+     *
+     * @return mixed Returns whatever value set_error_handler returns or false if custom error handler is already set
+     */
+    private function enableCustomErrorHandler() {
+        $return = false;
+        if ($this->isWithinCustomErrorHandler === false) {
+            $this->isWithinCustomErrorHandler = true;
+            $return = set_error_handler(array('databaseErrorHandler', 'handleError'));
+        }
+
+        return $return;
+    }
+
+    /**
+     * Restores the previous setted error handler
+     *
+     * @return boolean Returns always true (which is what restore_error_handler returns) or false if no custom error handler has been previously set
+     */
+    private function restoreErrorHandler() {
+        $return = false;
+        if ($this->isWithinCustomErrorHandler === true) {
+            $this->isWithinCustomErrorHandler = false;
+            $return = restore_error_handler();
+        }
+
+        return $return;
     }
 
     /**
@@ -565,6 +652,9 @@ class db_mysqli {
 
             $resultInfo = $this->execute_result_info($arg_array);
             $query      = reset($arg_array);
+            if (!isset($resultInfo['num_rows'])) {
+                $resultInfo['num_rows'] = 0;
+            }
 
             $this->dbLiveStats[] = array(
                 'query'              => $query,
@@ -605,20 +695,21 @@ class db_mysqli {
  * @package db_mysqli
  */
 class mysql_connect {
-    private static $instance;
+    private static $instance = array();
     private $isConnected = false;
     private $supressErrors = false;
 
     /**
      * Get a singleton instance
      */
-    public static function getInstance() {
-        if (!isset(self::$instance)) {
+    public static function getInstance($host, $username, $passwd, $database, $port) {
+        $identifier = md5($host.$username.$passwd.$database.$port);
+        if (!isset(self::$instance[$identifier])) {
             $c = __CLASS__;
-            self::$instance = new $c();
+            self::$instance[$identifier] = new $c($host, $username, $passwd, $database, $port);
         }
 
-        return self::$instance;
+        return self::$instance[$identifier];
     }
 
     /**
@@ -635,14 +726,18 @@ class mysql_connect {
      *
      * @throws Exception If any problem with the database
      */
-    public function __construct() {
-        $this->db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_NAME, MYSQL_PORT);
-        if (mysqli_connect_error()) {
+    public function __construct($host, $username, $passwd, $database, $port) {
+        try {
+            $this->db = new mysqli($host, $username, $passwd, $database, $port);
+            if (mysqli_connect_error()) {
+                $this->throwException(mysqli_connect_error(), __LINE__);
+            }
+        } catch (Exception $e) {
             $this->throwException(mysqli_connect_error(), __LINE__);
         }
 
         $this->isConnected = true;
-        $this->db->set_charset(MYSQL_CHAR);
+        $this->db->set_charset(DB_MYSQLI_CHAR);
     }
 
     /**

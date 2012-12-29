@@ -10,34 +10,34 @@
  * Defines the DB host
  * @var string
  */
-define('MYSQL_HOST', 'localhost');    // your db's host
+define('DB_MYSQLI_HOST', 'localhost');    // your db's host
 
 /**
  * Defines the DB port
  * @var int
  */
-define('MYSQL_PORT', 3306);           // your db's port
+define('DB_MYSQLI_PORT', 3306);           // your db's port
 
 /**
  * Defines the DB username
  * @var string
  */
-define('MYSQL_USER', 'db_mysqli_v4'); // your db's username
+define('DB_MYSQLI_USER', 'db_mysqli_v4'); // your db's username
 
 /**
  * Defines the DB password
  * @var string
  */
-define('MYSQL_PASS', 'db_mysqli_v4'); // your db's password
+define('DB_MYSQLI_PASS', 'db_mysqli_v4'); // your db's password
 
 /**
  * Defines the DB name
  * @var string
  */
-define('MYSQL_NAME', 'db_mysqli_v4'); // your db's database name
+define('DB_MYSQLI_NAME', 'db_mysqli_v4'); // your db's database name
 
 /**
  * Defines the used database charset
  * @var string
  */
-define('MYSQL_CHAR', 'utf8');         // the used charset
+define('DB_MYSQLI_CHAR', 'utf8');         // the used charset
