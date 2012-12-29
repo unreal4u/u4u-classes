@@ -23,15 +23,15 @@ This package will use the cache engine of your choice to save things to cache.
 There are many other very good engines out there (ZendCache / fluxBB-cache) that are probably better but this one is
 made with speed, ease of use and stability in mind. It will also give you the capability to write your very own cache
 mechanism and implement it very quickly as all calls are identical.
-Besides, it was a nice exercise to learn something about reflection and some other stuff, but therefore *this class will 
-need PHP 5.3.0 as minimum*.
+Besides, it was a nice exercise to learn something about reflection and some other stuff, but therefore **this class 
+will need PHP 5.3.0 as minimum**.
 
 This package has been extensivily tested with xdebug, APC and Suhosin so that no errors are present.
 
 Basic usage
 ----------
 
-`include('cacheManager.class.php');
+<pre>include('cacheManager.class.php');
 try {
     $cache = new cacheManagerClass('apc');
 } catch (cacheException $e) {
@@ -45,7 +45,7 @@ if (empty($secondExample)) {
     $secondExample = 'Some very long process that would be useful to cache';
     // Save for 120 seconds
     $cache-&gt;save($secondExample, 'secondExample', null, 120);
-}`
+}</pre>
 
 * Congratulations! Everything is now properly saved in cache! Sit back and watch your server going nuts serving requests.
 * Please see examples for more options and advanced usage
