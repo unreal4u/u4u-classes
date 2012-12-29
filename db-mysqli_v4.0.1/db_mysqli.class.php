@@ -524,7 +524,10 @@ class db_mysqli {
      * @link http://php.net/manual/en/function.set-error-handler.php Documentation on returned values
      * @link http://www.tyrael.hu/2011/06/26/performance-of-error-handling-in-php/ Benchmark on set_error_handler
      *
-     * Conclusion: (...) the overhead of having a custom error handler is almost negligible if it isn’t called.
+     * Conclusion: (...) the overhead of having a custom error handler is almost negligible if it isn’t called. (...) if
+     * you have an error and a custom error handler which gets executed, that yields for a ~10X performance loss,
+     * regardless of using the suppression operator or not.
+     *
      * If your queries do have a lot of errors, then this will slow things down. Otherwise, you can capture them and do
      * whatever you want, such as logging them or mailing the faulty queries to yourself.
      *
