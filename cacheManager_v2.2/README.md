@@ -35,7 +35,7 @@ Basic usage
 try {
     $cache = new cacheManagerClass('apc');
 } catch (cacheException $e) {
-    print('Exception caught! Message: "'.$e-&gt;getMessage().'"');
+    print('Exception caught! Message: "'.$e->getMessage().'"');
 } catch (versionException $e) {
     die($e->getMessage());
 }
