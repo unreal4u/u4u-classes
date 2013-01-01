@@ -26,11 +26,6 @@ $CSStack->printme();
 </pre>
 
 * Congratulations! This code will print the CSS of `first-css.css` and `second-css.css` combined and optimized.
-* Now you can do anything you want with the array, one of the easiest methods to go trough it is a foreach:
-<pre>foreach($aResult AS $a) {
-  echo 'The id of the user named '.$a['username'].' is: '.$a['id'].'<br />';
-}</pre>
-* In case of large queries, don't forget to unset the results in order to save PHP's memory for later: `unset($aResult);`
 * **Please see index.php for more options and advanced usage**
 
 Pending

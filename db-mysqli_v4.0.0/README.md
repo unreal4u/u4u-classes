@@ -41,7 +41,7 @@ $aResult = $dbLink->query('SELECT id,username FROM users WHERE id = ? AND userna
 * Congratulations! `$aResult` haves the result of your query!
 * Now you can do anything you want with the array, one of the easiest methods to go trough it is a foreach:
 <pre>foreach($aResult AS $a) {
-  echo 'The id of the user named '.$a['username'].' is: '.$a['id'].'<br />';
+  echo 'The id of the user named '.$a['username'].' is: '.$a['id']."\n";
 }</pre>
 * In case of large queries, don't forget to unset the results in order to save PHP's memory for later: `unset($aResult);`
 * **Please see index.php for more options and advanced usage**

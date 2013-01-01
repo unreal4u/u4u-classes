@@ -33,8 +33,8 @@ if ($pid->already_running) {
     echo 'Process is already running. Dying now would be a good option';
 }
 </pre>
-* $pid->already_running will show you if process is already running or not.
-* $pid->pid will show you the pid number.
+* `$pid->already_running` will show you if process is already running or not.
+* `$pid->pid` will show you the pid number.
 * **Please see examples for more options and advanced usage**
 
 Pending
