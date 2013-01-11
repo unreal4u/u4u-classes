@@ -17,8 +17,8 @@ include(dirname(__FILE__).'/auxiliar_classes.php');
  * @copyright 2009 - 2013 Camilo Sperberg
  *
  * @method int num_rows() num_rows() Returns the number of results from the query
- * @method mixed[] insert_id() insert_id($query) Returns the insert id of the query
- * @method mixed[] query() query($query) Returns false if query could not be executed, resultset otherwise
+ * @method mixed[] insert_id() insert_id($query, $args) Returns the insert id of the query
+ * @method mixed[] query() query($query, $args) Returns false if query could not be executed, resultset otherwise
  * @method boolean begin_transaction() begin_transaction() Returns always true
  * @method boolean end_transaction() end_transaction() Commits the changes to the database. If rollback is needed, this will return false, otherwise true
  */
@@ -155,7 +155,7 @@ class db_mysqli {
      * @param array $arg_array The data, such as the query. Can also by empty
      */
     public function __call($method, array $arg_array) {
-        // Sets our own error handler (Defined in config)
+        // Sets our own error handler (Defined in auxiliar_classes.php)
         $this->enableCustomErrorHandler();
 
         $this->error = false;
@@ -268,18 +268,21 @@ class db_mysqli {
     }
 
     /**
-     * If you want to open another connection, use this method and provide the necesary credentials.
+     * Opens a new connection to a MySQL database
      *
-     * Non provided credentials will overwrite default values. Note that database name is in first place!
+     * If you want to open another connection, use this method and provide the necesary credentials. Provided
+     * credentials will overwrite default values. Note that database name is in first place!
+     * This function will immediatly establish a connection to the database and won't wait for the first query to be
+     * executed.
      *
-     * @param string $database The database name
+     * @param string $databaseName The database name
      * @param string $host The host of the MySQL server
      * @param string $username The username
      * @param string $passwd The password
      * @param int $port The port to which MySQL is listening to
      * @return boolean Returns true if connection is established, false otherwise
      */
-    public function registerConnection($database='', $host='', $username='', $passwd='', $port=0) {
+    public function registerConnection($databaseName='', $host='', $username='', $passwd='', $port=0) {
         $return = false;
 
         if ($this->isConnected === false) {
@@ -296,15 +299,15 @@ class db_mysqli {
                 $passwd = DB_MYSQLI_PASS;
             }
 
-            if (empty($database)) {
-                $database = DB_MYSQLI_NAME;
+            if (empty($databaseName)) {
+                $databaseName = DB_MYSQLI_NAME;
             }
 
             if (empty($port)) {
                 $port = DB_MYSQLI_PORT;
             }
 
-            $this->connectToDatabase($host, $username, $passwd, $database, $port);
+            $this->connectToDatabase($host, $username, $passwd, $databaseName, $port);
             $this->restoreErrorHandler();
         }
 
