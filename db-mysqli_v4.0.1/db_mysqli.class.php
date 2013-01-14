@@ -19,8 +19,6 @@ include(dirname(__FILE__).'/auxiliar_classes.php');
  * @method int num_rows() num_rows() Returns the number of results from the query
  * @method mixed[] insert_id() insert_id($query, $args) Returns the insert id of the query
  * @method mixed[] query() query($query, $args) Returns false if query could not be executed, resultset otherwise
- * @method boolean begin_transaction() begin_transaction() Returns always true
- * @method boolean end_transaction() end_transaction() Commits the changes to the database. If rollback is needed, this will return false, otherwise true
  */
 class db_mysqli {
     /**
@@ -159,7 +157,6 @@ class db_mysqli {
         $this->enableCustomErrorHandler();
 
         $this->error = false;
-        $logAction   = true;
 
         // Some custom statistics
         $this->stats = array(
@@ -181,38 +178,12 @@ class db_mysqli {
                     $result = $resultInfo[$method];
                 }
             break;
-            case 'begin_transaction':
-                $this->registerConnection();
-                if ($this->inTransaction === false) {
-                    $this->inTransaction = true;
-                    $this->db->autocommit(false);
-                }
-                $logAction = false;
-                $result = true;
-            break;
-            case 'end_transaction':
-                $result = true;
-                if ($this->inTransaction === true) {
-                    if ($this->rollback === false) {
-                        $this->db->commit();
-                    } else {
-                        $this->db->rollback();
-                        $this->rollback = false;
-                        $result = false;
-                    }
-                    $this->db->autocommit(true);
-                    $this->inTransaction = false;
-                }
-                $logAction = false;
-            break;
             default:
                 $result = 'Method not supported!';
             break;
         }
 
-        if (!empty($logAction)) {
-            $this->logStatistics($this->stats, $arg_array, $result, $this->error);
-        }
+        $this->logStatistics($this->stats, $arg_array, $result, $this->error);
 
         // Restore whatever error handler we had before calling this class
         $this->restoreErrorHandler();
@@ -265,6 +236,45 @@ class db_mysqli {
         }
 
         return $result;
+    }
+
+    /**
+     * Begins a transaction
+     *
+     * Note: this function will register a connection with the default values! This will soon be fixed however
+     *
+     * @return boolean Returns whether we are or not in a transaction
+     */
+    public function begin_transaction() {
+        $this->registerConnection();
+        if ($this->inTransaction === false) {
+            $this->inTransaction = true;
+            $this->throwQueryExceptions = true;
+            $this->db->autocommit(false);
+        }
+
+        return $this->inTransaction;
+    }
+
+    /**
+     * Ends a transaction
+     *
+     * @return boolean Returns whether we are or not in a transaction
+     */
+    public function end_transaction() {
+        if ($this->inTransaction === true) {
+            if ($this->rollback === false) {
+                $this->db->commit();
+            } else {
+                $this->db->rollback();
+                $this->rollback = false;
+                $result = false;
+            }
+            $this->db->autocommit(true);
+            $this->inTransaction = false;
+        }
+
+        return $this->inTransaction;
     }
 
     /**
