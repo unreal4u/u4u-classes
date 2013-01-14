@@ -74,13 +74,6 @@ function debugFile($message='', $filename='') {
 }
 
 /**
- * Returns the exact time, useful for benchmarks
- */
-function getExactTime() {
-	return microtime(true);
-}
-
-/**
  * Returns current memory usage and peak memory usage
  *
  * @param boolean $print Whether to print to screen immediatly. Defaults to false
