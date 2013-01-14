@@ -74,21 +74,6 @@ function debugFile($message='', $filename='') {
 }
 
 /**
- * Returns current memory usage and peak memory usage
- *
- * @param boolean $print Whether to print to screen immediatly. Defaults to false
- * @return string Returns the string
- */
-function getMemoryFootprint($print=false) {
-	$return = 'Typ. '.round(memory_get_usage() / 1024).'KiB / Peak: '.round(memory_get_peak_usage() / 1024).'KiB<br />'."\n";
-	if (!empty($print)) {
-		echo $return;
-	}
-
-	return $return;
-}
-
-/**
  * Throws an exception
  *
  * @param int $errno

@@ -24,6 +24,8 @@ Classes description
 * *extended-pgsql_v1.1.0*: The postgres implementation for db-mysqli_v3.1.1. Expect very soon a newer improved version!
   Based on PDO.
 * *HTMLUtils_v1.0*: Outdated class. May or may not be updated in the future.
+* *benchmark_v0.1*: This class can be used to measure times of several variables at the same time. It will also log
+  memory usage for those same variables.
 * *messageStack_v1.0.2*: _Very_ outdated class. May or may not be updated.
 * *mysql-paginator_v1.1*: Another outdated class. Will not be updated anymore.
 * *pid_v1.2*: Outdated class. See pid_v1.3.
