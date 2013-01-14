@@ -10,6 +10,7 @@ define('U4U_MESSAGESTACK',   'messageStack_v1.0.2/messageStack.class.php');
 define('U4U_PAGINATOR',      'mysql-paginator_v1.1/paginator.class.php');
 define('U4U_PID',            'pid_v1.3/pid.class.php');
 define('U4U_RUTVERIFIER',    'rutverifier_v1.1/rutverifier.class.php');
+define('U4U_BENCHMARK',      'benchmark_v0.1/benchmark.class.php');
 
 /**
  * With this little class, you will be able to easily load my classes
