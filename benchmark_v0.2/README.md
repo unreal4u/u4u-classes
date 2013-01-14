@@ -31,7 +31,7 @@ print('Time difference: '.$benchmark->endCounter('bigProcess'));
 
 Pending
 ---------
-* None
+* Pass an array with names to begin or end those at the same time
 
 Version History
 ----------
