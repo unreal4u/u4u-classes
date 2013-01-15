@@ -83,12 +83,14 @@ class db_mysqli {
 
     /**
      * Keep an informational array with all executed queries. Defaults to false
-     * @var boolean Defaults to false
+     * @var boolean
      */
     public $keepLiveLog = false;
 
     /**
-     * Maintains statistics of the executed queries
+     * Maintains statistics of the executed queries, but only if $this->keepLiveLog is set to true
+     *
+     * @see $this->keepLiveLog
      * @var array
      */
     public $dbLiveStats = array();
@@ -241,22 +243,26 @@ class db_mysqli {
     }
 
     /**
-     * Begins a transaction
+     * Begins a transaction, optionally with other credentials
      *
-     * Note: This function will register a connection only with the default values! This will soon be fixed however.
      * Note: This function will set throwQueryExceptions to true because without it we have no way of knowing that the
      * transaction actually succeeded or not.
      *
+     * @param string $databaseName The database name
+     * @param string $host The host of the MySQL server
+     * @param string $username The username
+     * @param string $passwd The password
+     * @param int $port The port to which MySQL is listening to
+     *
      * @return boolean Returns whether we are or not in a transaction
      */
-    public function begin_transaction() {
+    public function begin_transaction($databaseName='', $host='', $username='', $passwd='', $port=0) {
         if ($this->inTransaction === false) {
-            if (empty($this->isConnected)) {
-                $this->registerConnection();
+            if ($this->registerConnection($databaseName, $host, $username, $passwd, $port)) {
+                $this->inTransaction = true;
+                $this->throwQueryExceptions = true;
+                $this->db->autocommit(false);
             }
-            $this->inTransaction = true;
-            $this->throwQueryExceptions = true;
-            $this->db->autocommit(false);
         }
 
         return $this->inTransaction;
@@ -785,3 +791,4 @@ class mysql_connect {
         }
     }
 }
+

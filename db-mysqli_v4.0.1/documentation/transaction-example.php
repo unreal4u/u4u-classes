@@ -4,11 +4,10 @@ include('../config.php');
 include('../db_mysqli.class.php');
 
 include('../../stable-versions.php');
-include('../../functions.php');
-$u4uLoader = new u4u_autoloader();
-$bench = new benchmark('databaseCalls');
 
-$db = new db_mysqli();
+$u4uLoader = new u4u_autoloader();
+$bench     = new benchmark('databaseCalls');
+$db        = new db_mysqli();
 
 echo '<pre>';
 
@@ -21,10 +20,10 @@ try {
     $db->query('INSERT INTO t VALUES (?)',2);
     $db->end_transaction();
 } catch (queryException $e) {
-    print_r($e->getMessage().'<br />');
+    printf($e->getMessage().'<br />');
 }
 $bench->endCounter('newTable');
-print_r('<em>First transaction ended, starting with second (which will be the one to fail)</em><br />');
+printf('<em>First transaction ended, starting with second (which will be the one to fail)</em><br />');
 
 $bench->beginCounter('databaseException');
 try {
@@ -35,10 +34,10 @@ try {
     $db->query('INSERT INTO t VALUES (?)',5);
     $db->end_transaction();
 } catch (queryException $e) {
-    print_r('Transaction failed! The message delivered by the database is: '.$e->getMessage().'<br />');
+    printf('Transaction failed! The message delivered by the database is: '.$e->getMessage().'<br />');
 }
 $bench->endCounter('databaseException');
-print_r('<em>Second transaction ended, error check:</em><br />');
+printf('<em>Second transaction ended, error check:</em><br />');
 
 print_r($db->dbErrors);
 
@@ -53,7 +52,7 @@ try {
 $bench->endCounter('databaseVersion');
 $bench->endCounter('databaseCalls');
 
-print_r('End of execution<br />');
+printf('End of execution<br />');
 printf('Total time: %f<br />', $bench->getDiff('databaseCalls'));
 printf('New table creation: %f<br />', $bench->getDiff('newTable'));
 printf('Exception time: %f<br />', $bench->getDiff('databaseException'));
