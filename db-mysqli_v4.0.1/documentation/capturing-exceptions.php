@@ -1,10 +1,5 @@
 <?php
-/**
- * Capturing exceptions of the class
- *
- * @package db_mysqli
- * @author Camilo Sperberg - http://unreal4u.com/
- */
+
 include('../config.php');
 include('../db_mysqli.class.php');
 

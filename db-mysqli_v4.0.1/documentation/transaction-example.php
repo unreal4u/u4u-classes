@@ -1,18 +1,13 @@
 <?php
-/**
- * Example of transactions
- *
- * @package db_mysqli
- * @author Camilo Sperberg - http://unreal4u.com/
- */
 
 include('../config.php');
 include('../db_mysqli.class.php');
 
 include('../../stable-versions.php');
+include('../../functions.php');
 $u4uLoader = new u4u_autoloader();
-
 $bench = new benchmark('databaseCalls');
+
 $db = new db_mysqli();
 
 echo '<pre>';
@@ -29,7 +24,7 @@ try {
     print_r($e->getMessage().'<br />');
 }
 $bench->endCounter('newTable');
-print_r('<em>First transaction ended, starting with second (which is the one to fail)</em><br />');
+print_r('<em>First transaction ended, starting with second (which will be the one to fail)</em><br />');
 
 $bench->beginCounter('databaseException');
 try {
@@ -59,8 +54,8 @@ $bench->endCounter('databaseVersion');
 $bench->endCounter('databaseCalls');
 
 print_r('End of execution<br />');
-print('Total time: '.$bench->getDiff('databaseCalls').'<br />');
-print('New table creation: '.$bench->getDiff('newTable').'<br />');
-print('Exception time: '.$bench->getDiff('databaseException').'<br />');
-print('Version time: '.$bench->getDiff('databaseVersion').'<br />');
+printf('Total time: %f<br />', $bench->getDiff('databaseCalls'));
+printf('New table creation: %f<br />', $bench->getDiff('newTable'));
+printf('Exception time: %f<br />', $bench->getDiff('databaseException'));
+printf('Version time: %f<br />', $bench->getDiff('databaseVersion'));
 echo '</pre>';

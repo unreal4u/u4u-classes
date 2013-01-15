@@ -1,11 +1,4 @@
 <?php
-/**
- * A very simple usage example
- *
- * @package db_mysqli
- * @author Camilo Sperberg - http://unreal4u.com/
- */
-include('../../functions.php');
 
 include('../config.php');
 include('../db_mysqli.class.php');
@@ -17,4 +10,6 @@ echo $db->version();
 
 $db->query('SELECT * FROM a');
 
-debug($db->dbLiveStats);
+echo '<pre>';
+print_r($db->dbLiveStats);
+echo '</pre>';

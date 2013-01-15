@@ -28,6 +28,60 @@ class db_mysqli {
     private $classVersion = '4.0.1';
 
     /**
+     * Contains the actual DB connection instance
+     * @var object
+     */
+    private $db = null;
+
+    /**
+     * Contains the prepared statement
+     * @var object
+     */
+    private $stmt = null;
+
+    /**
+     * Internal indicator indicating whether we are connected to the database or not. Defaults to false
+     * @var boolean
+     */
+    private $isConnected = false;
+
+    /**
+     * Internal statistics collector
+     * @var array
+     */
+    private $stats = array();
+
+    /**
+     * Saves the last known error. Can be boolean false or string with error otherwise. Defaults to false
+     * @var mixed[]
+     */
+    private $error = false;
+
+    /**
+     * Internal indicator to know whether we are in a transaction or not. Defaults to false
+     * @var boolean
+     */
+    private $inTransaction = false;
+
+    /**
+     * Internal indicator to know whether we should rollback the current transaction or not. Defaults to false
+     * @var boolean
+     */
+    private $rollback = false;
+
+    /**
+     * Counter of failed connections to the database. Defaults to 0
+     * @var int
+     */
+    private $failedConnectionsCount = 0;
+
+    /**
+     * Provides a flag for knowing if we are in our own custom handler or not. Defaults to false
+     * @var boolean
+     */
+    private $isWithinCustomErrorHandler = false;
+
+    /**
      * Keep an informational array with all executed queries. Defaults to false
      * @var boolean Defaults to false
      */
@@ -46,82 +100,28 @@ class db_mysqli {
     public $dbErrors = array();
 
     /**
-     * Whether to disable throwing exceptions
-     * @var boolean Defaults to false
+     * Whether to disable throwing exceptions. Defaults to false
+     * @var boolean
      */
     public $supressErrors = false;
 
     /**
-     * Whether to throw errors on invalid queries
-     * @var boolean Defaults to false
+     * Whether to throw errors on invalid queries. Defaults to false
+     * @var boolean
      */
     public $throwQueryExceptions = false;
 
     /**
-     * The number of maximum failed attempts trying to connect to the database
-     * @var int Defaults to 10
+     * The number of maximum failed attempts trying to connect to the database. Defaults to 10
+     * @var int
      */
     public $failedConnectionsTreshold = 10;
 
     /**
-     * Contains the actual DB connection instance
-     * @var object
-     */
-    private $db = null;
-
-    /**
-     * Contains the prepared statement
-     * @var object
-     */
-    private $stmt = null;
-
-    /**
-     * Internal indicator indicating whether we are connected to the database or not
-     * @var boolean
-     */
-    private $isConnected = false;
-
-    /**
-     * Internal statistics collector
-     * @var array
-     */
-    private $stats = array();
-
-    /**
-     * Saves the last known error. Can be boolean false or string with error otherwise
-     * @var mixed[]
-     */
-    private $error = false;
-
-    /**
-     * Internal indicator to know whether we are in a transaction or not
-     * @var boolean
-     */
-    private $inTransaction = false;
-
-    /**
-     * Internal indicator to know whether we should rollback the current transaction or not
-     * @var boolean
-     */
-    private $rollback = false;
-
-    /**
-     * Indicator for number of executed queries
+     * Indicator for number of executed queries. Defaults to 0
      * @var int
      */
     public $executedQueries = 0;
-
-    /**
-     * Counter of failed connections to the database
-     * @var int
-     */
-    private $failedConnectionsCount = 0;
-
-    /**
-     * Provides a flag for knowing if we are in our own custom handler or not
-     * @var boolean
-     */
-    private $isWithinCustomErrorHandler = false;
 
     /**
      * When constructed we could enter transaction mode
@@ -141,7 +141,7 @@ class db_mysqli {
      * Ends a transaction if needed committing remaining changes
      */
     public function __destruct() {
-        if ($this->isConnected === true AND $this->inTransaction === true) {
+        if ($this->isConnected === true OR $this->inTransaction === true) {
             $this->end_transaction();
         }
     }
@@ -224,6 +224,8 @@ class db_mysqli {
      * @return string Returns a string with the client version
      */
     public function version($clientInformation=false) {
+        $result = false;
+
         if (empty($clientInformation)) {
             $result = $this->query('SELECT VERSION()');
             if (!empty($result)) {
@@ -241,13 +243,17 @@ class db_mysqli {
     /**
      * Begins a transaction
      *
-     * Note: this function will register a connection with the default values! This will soon be fixed however
+     * Note: This function will register a connection only with the default values! This will soon be fixed however.
+     * Note: This function will set throwQueryExceptions to true because without it we have no way of knowing that the
+     * transaction actually succeeded or not.
      *
      * @return boolean Returns whether we are or not in a transaction
      */
     public function begin_transaction() {
-        $this->registerConnection();
         if ($this->inTransaction === false) {
+            if (empty($this->isConnected)) {
+                $this->registerConnection();
+            }
             $this->inTransaction = true;
             $this->throwQueryExceptions = true;
             $this->db->autocommit(false);
@@ -541,8 +547,8 @@ class db_mysqli {
      * you have an error and a custom error handler which gets executed, that yields for a ~10X performance loss,
      * regardless of using the suppression operator or not.
      *
-     * If your queries do have a lot of errors, then this will slow things down. Otherwise, you can capture them and do
-     * whatever you want, such as logging them or mailing the faulty queries to yourself.
+     * AKA: If your queries do have a lot of errors, then this will slow things down. Otherwise, you can capture them
+     * and do whatever you want, such as logging them or mailing the faulty queries to yourself.
      *
      * @return mixed Returns whatever value set_error_handler returns or false if custom error handler is already set
      */
@@ -559,7 +565,7 @@ class db_mysqli {
     /**
      * Restores the previous setted error handler
      *
-     * @return boolean Returns always true (which is what restore_error_handler returns) or false if no custom error handler has been previously set
+     * @return boolean Returns true if error handler has been restored or false if no custom error handler had been previously set
      */
     private function restoreErrorHandler() {
         $return = false;
