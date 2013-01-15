@@ -3,7 +3,7 @@
 define('U4U_DB_UPDATER',     'Automatic-DB-Updater_v0.1/db_updater.class.php');
 define('U4U_CACHEMANAGER',   'cacheManager_v2.1/cacheManager.class.php');
 define('U4U_CSSTACKER',      'CSStacker_v1.4/csstacker.class.php');
-define('U4U_DB_MYSQLI',      'db-mysqli_v4.0.0/db_mysqli.class.php');
+define('U4U_DB_MYSQLI',      'db-mysqli_v4.0.1/db_mysqli.class.php');
 define('U4U_EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');
 define('U4U_HTMLUTILS',      'HTMLUtils_v1.0/HTMLUtils.class.php');
 define('U4U_MESSAGESTACK',   'messageStack_v1.0.2/messageStack.class.php');

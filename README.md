@@ -28,7 +28,8 @@ Classes description
 * *CSStacker_v1.3*: Outdated class. See CSStacker v1.4.
 * *CSStacker_v1.4*: A little more updated class. Will be updated soon.
 * *db-mysqli_v3.1.1*: Outdated class. See db-mysqli_v4.0.0
-* *db-mysqli_v4.0.0*: My very own class to do queries to MySQL using the mysqli connector. It can do paramatrized
+* *db-mysqli_v4.0.0*: Outdated class. See db-mysqli_v4.0.1
+* *db-mysqli_v4.0.1*: My very own class to do queries to MySQL using the mysqli connector. It can do paramatrized
   queries and many other things.
 * *extended-pgsql_v1.1.0*: The postgres implementation for db-mysqli_v3.1.1. Expect very soon a newer improved version!
   Based on PDO.
