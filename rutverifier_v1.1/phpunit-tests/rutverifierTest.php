@@ -173,6 +173,7 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
     public function provider_getVerifier() {
         $mapValues[] = array('30686957', '4');
         $mapValues[] = array('11111112', 'K');
+        $mapValues[] = array('33333333', '3');
 
         $mapValues[] = array('', false);
         $mapValues[] = array(1, false);
@@ -206,6 +207,7 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
     public function provider_isValidRUT() {
         $mapValues[] = array('306869574', true, true, true);
         $mapValues[] = array('306869570', true, true, false);
+        $mapValues[] = array('306869574', true, false, array('306869574' => array('isValid' => true, 'rut' => '30686957', 'verifier' => '4', 'type' => array(0 => 'n', 1 => 'natural'))));
 
         $mapValues[] = array('24852023-k', true, true, true);
         $mapValues[] = array('22784591-0', true, true, true);
@@ -218,7 +220,15 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $mapValues[] = array('12209777-3', true, true, true);
         $mapValues[] = array('23643499-0', true, true, true);
 
+        $mapValues[] = array('11111111-1', true, true, false);
+        $mapValues[] = array('11111111-1', false, true, true);
+
+        $mapValues[] = array('11111111-m', true, true, false);
+        $mapValues[] = array('11111111-m', false, true, false);
+
         $mapValues[] = array('', true, true, false);
+        $mapValues[] = array('random-string', true, true, false);
+        $mapValues[] = array('random-string', false, true, false);
         $mapValues[] = array(1, true, true, false);
         $mapValues[] = array(0, true, true, false);
         $mapValues[] = array(true, true, true, false);
@@ -243,8 +253,18 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      * @param mixed $expected
      */
     public function test_isValidRUT($rut, $extensive_check=true, $return_boolean=true, $expected) {
-        $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
-        $this->assertEquals($expected, $result);
+        if ($return_boolean === true) {
+            $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
+            $this->assertEquals($expected, $result);
+            // Testing inbuild cache module
+            if ($rut == '306869574') {
+                $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
+                $this->assertEquals($expected, $result);
+            }
+        } else {
+            $result = $this->rutverifier->isValidRUT($rut, $extensive_check, $return_boolean);
+            $this->assertEquals(serialize($expected), serialize($result));
+        }
     }
 
     public function test_c_javascript() {
@@ -253,6 +273,11 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
 
         $result = $this->rutverifier->c_javascript(false, true);
         $this->assertStringStartsWith('<script type="text/javascript">function rutVerification(c){', $result);
+
+        ob_start();
+        $result = $this->rutverifier->c_javascript(true, true);
+        $this->assertStringStartsWith('<script type="text/javascript">function rutVerification(c){', $result);
+        ob_clean();
     }
 }
 

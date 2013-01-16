@@ -180,7 +180,8 @@ class rutverifier {
         if (!empty($rut) AND is_string($rut)) {
             $multi = 2;
             $sum = 0;
-            for ($i = strlen($rut) - 1; $i >= 0; $i--) {
+            $strlenRut = strlen($rut);
+            for ($i = $strlenRut - 1; $i >= 0; $i--) {
                 $sum = $sum + $rut[$i] * $multi;
                 if ($multi == 7) {
                     $multi = 2;
@@ -215,7 +216,7 @@ class rutverifier {
         $output = false;
         if (!empty($rut)) {
             if (!empty($this->validated[$rut])) {
-                return $this->validated[$rut]['valid'];
+                return $this->validated[$rut]['isValid'];
             }
 
             $rut = $this->formatRUT($rut, true);
@@ -223,23 +224,17 @@ class rutverifier {
             $sep['dv'] = substr($rut, -1);
 
             if ($this->RUTType($rut) !== false) {
-                if (!is_numeric($sep['rut'])) {
-                    $this->logError(1, 'RUT/RUN "'.$sep['rut'].'" isn\'t numeric');
+                $sep['dvt'] = $this->getVerifier($sep['rut']);
+                if ($sep['dvt'] != $sep['dv']) {
+                    $this->logError(2, 'RUT/RUN (' . $sep['rut'] . ') and verifier (' . $sep['dv'] . ')  don\'t match');
+                } else {
+                    $output = true;
                 }
 
-                if (!$this->error) {
-                    $sep['dvt'] = $this->getVerifier($sep['rut']);
-                    if ($sep['dvt'] != $sep['dv']) {
-                        $this->logError(2, 'RUT/RUN (' . $sep['rut'] . ') and verifier (' . $sep['dv'] . ')  don\'t match');
-                    } else {
-                        $output = true;
-                    }
-
-                    if ($extensive_check === true) {
-                        if (in_array($sep['rut'] . $sep['dv'], $this->blacklist)) {
-                            $output = false;
-                            $this->logError(2, 'The entered RUT/RUN "'.$sep['rut'].$sep['dv'].'" is in blacklist');
-                        }
+                if ($extensive_check === true) {
+                    if (in_array($sep['rut'] . $sep['dv'], $this->blacklist)) {
+                        $output = false;
+                        $this->logError(2, 'The entered RUT/RUN "'.$sep['rut'].$sep['dv'].'" is in blacklist');
                     }
                 }
             } else {
