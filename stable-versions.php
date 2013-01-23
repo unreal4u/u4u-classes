@@ -45,7 +45,7 @@ class u4u_autoloader {
      * @param string $class
      * @return boolean Returns false or true depending on failure or success of included file
      */
-    private function includeClass($class) {
+    final private function includeClass($class) {
         $return = false;
 
         $class = strtoupper($class);
