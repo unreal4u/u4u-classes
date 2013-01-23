@@ -102,7 +102,7 @@ class mysql_connect {
      * @return boolean Returns always false (only when supressErrors is active)
      */
     private function throwException($msg, $line=0) {
-        throw new databaseException($msg, $line, __FILE__);
+        throw new databaseException('Check database server is running. MySQL error: '.$msg, $line, __FILE__);
 
         return false;
     }
