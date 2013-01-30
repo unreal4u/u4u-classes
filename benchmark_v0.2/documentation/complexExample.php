@@ -19,14 +19,17 @@ $a = myProcess();
 $benchmark->beginCounter('bigProcess2');
 $b = myProcess();
 $benchmark->endCounter('bigProcess1');
+
 $benchmark->beginCounter('bigProcess3');
 $c = myProcess();
 $benchmark->endCounter('bigProcess2');
 $benchmark->endCounter('bigProcess3');
 
+$benchmark->beginCounter(array('print1', 'print2', 'print3'));
 for($i = 1; $i < 4; $i++) {
     printf('The total time for process #%d was %.'.$benchmark->decimals.'f<br />', $i, $benchmark->getDiff('bigProcess'.$i));
 }
+$benchmark->endCounter('print1');
 
 print('Results should be: 1 very close to 2 and 3 only half of the time of 1<br /><br />');
 
@@ -38,4 +41,10 @@ printf('Memory usage after unsetting $b: %d Kilobytes (%d Kibibytes)<br />', $be
 unset($c);
 printf('Memory usage after unsetting $c: %d Kibibytes. Peak usage: %d Mebibytes<br />', $benchmark->getMemoryUsage('KiB'), $benchmark->getPeakMemoryUsage('MiB'));
 
-printf('Important: Difference between mebibytes and megabytes explained <a href="http://en.wikipedia.org/wiki/Units_of_information">in this article</a>');
+printf('Important: Difference between mebibytes and megabytes explained <a href="http://en.wikipedia.org/wiki/Units_of_information">in this article</a><br />');
+$benchmark->endCounter('print2');
+$benchmark->endCounter('print3');
+
+printf('Time print1: '.$benchmark->getDiff('print1').'<br />');
+printf('Time print2: '.$benchmark->getDiff('print2').'<br />');
+printf('Time print3: '.$benchmark->getDiff('print3').'<br />');

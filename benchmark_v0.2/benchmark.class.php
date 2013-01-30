@@ -78,22 +78,22 @@ class benchmark {
         switch($format) {
             case 'KB':
                 $multiplier = 1000;
-                break;
+            break;
             case 'KiB':
                 $multiplier = 1024;
-                break;
+            break;
             case 'MB':
                 $multiplier = 1000 * 1000;
-                break;
+            break;
             case 'MiB':
                 $multiplier = 1024 * 1024;
-                break;
+            break;
             case 'GB':
                 $multiplier = 1000 * 1000 * 1000;
-                break;
+            break;
             case 'GiB':
                 $multiplier = 1024 * 1024 * 1024;
-                break;
+            break;
         }
 
         return round($number / $multiplier);
@@ -105,13 +105,19 @@ class benchmark {
      * @param string $identifier The identifier of the data we want to return
      * @return boolean Returns always true
      */
-    public function beginCounter($identifier='') {
+    public function beginCounter($identifier) {
         // First step: get the current exact time
         $time = $this->getExactTime();
         if (!empty($identifier)) {
-            $this->data[$identifier]['startTime'] = $time;
-            $this->data[$identifier]['startMemorySize'] = $this->getMemoryUsage();
-            $this->data[$identifier]['startMemoryPeakSize'] = $this->getPeakMemoryUsage();
+            if (!is_array($identifier)) {
+                $identifier = array($identifier);
+            }
+
+            foreach($identifier AS $id) {
+                $this->data[$id]['startTime'] = $time;
+                $this->data[$id]['startMemorySize'] = memory_get_usage();
+                $this->data[$id]['startMemoryPeakSize'] = memory_get_peak_usage();
+            }
         }
 
         return true;
@@ -123,7 +129,7 @@ class benchmark {
      * @param string $identifier The identifier of the data we want to return
      * @return float Returns a float containing the difference between start and end time
      */
-    public function endCounter($identifier) {
+    public function endCounter($identifier='') {
         // First step: get the current exact time
         $time = $this->getExactTime();
 
@@ -131,8 +137,8 @@ class benchmark {
             $totalTime = $this->data[$identifier]['endTime'] - $this->data[$identifier]['startTime'];
         } else if (array_key_exists($identifier, $this->data)) {
             $this->data[$identifier]['endTime'] = $time;
-            $this->data[$identifier]['endMemorySize'] = $this->getMemoryUsage();
-            $this->data[$identifier]['endMemoryPeakSize'] = $this->getPeakMemoryUsage();
+            $this->data[$identifier]['endMemorySize'] = memory_get_usage();
+            $this->data[$identifier]['endMemoryPeakSize'] = memory_get_peak_usage();
         }
 
         return $this->getDiff($identifier);
