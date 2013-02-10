@@ -158,7 +158,7 @@ class pid {
             $this->_timeout = 30;
             $maxExecutionTime = ini_get('max_execution_time');
             if (!empty($maxExecutionTime)) {
-                $this->_timeout = ini_get('max_execution_time');
+                $this->_timeout = $maxExecutionTime;
             }
         }
         return $this->_timeout;
