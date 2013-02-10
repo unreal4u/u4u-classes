@@ -8,8 +8,13 @@ $timeout = 15;
 // Calling the pid class without it checking on load if we are running
 $pid = new pid(null, null, null, false);
 
+try {
 // Manual call to a PID check
-$pid->checkPid('','',($timeout * 2));
+    $pid->getTSpidFile();
+    $pid->checkPid('','',($timeout * 2));
+} catch (pidException $e) {
+    die('Captured exception: '.$e->getMessage().PHP_EOL);
+}
 
 if (!$pid->already_running) {
     for ($i = 1; $i != $timeout; $i++) {

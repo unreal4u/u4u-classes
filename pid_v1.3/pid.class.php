@@ -154,6 +154,12 @@ class pid {
     public function setTimeout($ttl=30) {
         if (is_numeric($ttl)) {
             $this->_timeout = $ttl;
+        } else {
+            $this->_timeout = 30;
+            $maxExecutionTime = ini_get('max_execution_time');
+            if (!empty($maxExecutionTime)) {
+                $this->_timeout = ini_get('max_execution_time');
+            }
         }
         return $this->_timeout;
     }
