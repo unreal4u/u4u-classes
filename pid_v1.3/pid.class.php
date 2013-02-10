@@ -1,5 +1,7 @@
 <?php
 
+include(dirname(__FILE__).'/auxiliar_classes.php');
+
 /**
  * Determines in Windows or other OS whether the script is already running or not
  *
@@ -9,6 +11,7 @@
  * @author http://www.electrictoolbox.com/check-php-script-already-running/
  * @version 1.3
  * @license BSD License. Feel free to modify
+ * @throws pidException
  */
 class pid {
 
@@ -19,7 +22,7 @@ class pid {
     protected $_filename = '';
 
     /**
-     * After how many time we consider the pid file to be stalled
+     * After how many time we can consider the pid file to be stalled
      * @var int $timeout
      */
     protected $_timeout = 30;
@@ -37,6 +40,12 @@ class pid {
     public $pid = 0;
 
     /**
+     * Whether we want to supress exception throwing or not. Defaults to false
+     * @var boolean
+     */
+    public $supressErrors = false;
+
+    /**
      * The main function that does it all
      *
      * @param $directory string The directory where the PID file goes to, without trailing slash
@@ -46,6 +55,17 @@ class pid {
     public function __construct($directory='', $filename='', $timeout=null, $checkOnConstructor=true) {
         if ($checkOnConstructor === true) {
             $this->checkPid($directory, $filename, $timeout);
+        }
+    }
+
+    /**
+     * Destroys the PID file
+     */
+    public function __destruct() {
+        if (!empty($this->_filename)) {
+            if (is_writable($this->_filename) and !$this->already_running) {
+                unlink($this->_filename);
+            }
         }
     }
 
@@ -67,7 +87,7 @@ class pid {
         }
 
         $this->setTimeout($timeout);
-        $this->_filename = $directory . '/' . $filename . '.pid';
+        $this->_filename = rtrim($directory, '/').'/'.$filename.'.pid';
 
         if (is_writable($this->_filename) || is_writable($directory)) {
             if (file_exists($this->_filename)) {
@@ -101,7 +121,7 @@ class pid {
                 }
             }
         } else {
-            //throw new Exception('Cannot write to pid file "'.$this->_filename.'". Program execution halted.'."\n");
+            $this->throwException('Cannot write to pid file "'.$this->_filename.'".', __LINE__);
             return 1;
         }
 
@@ -119,11 +139,18 @@ class pid {
      * @return int Returns the timestamp
      */
     public function getTSpidFile() {
+        if (empty($this->_filename)) {
+            $this->throwException('You must execute checkPid() function first', __LINE__);
+        }
         return filemtime($this->_filename);
     }
 
     /**
      * Sets a timeout
+     *
+     * If a numeric value is provided, it will set it to that timeout. In other case, it will set it to current time
+     * limit. This will however be 0 in CLI mode, so that value will defeat the purpose of this class entirely. In that
+     * case, the script will set a default timeout time of 30 seconds.
      *
      * @param $ttl int
      * @return int Returns the timeout to what is was set
@@ -131,18 +158,29 @@ class pid {
     public function setTimeout($ttl=30) {
         if (is_numeric($ttl)) {
             $this->_timeout = $ttl;
+        } else {
+            $this->_timeout = 30;
+            $maxExecutionTime = ini_get('max_execution_time');
+            if (!empty($maxExecutionTime)) {
+                $this->_timeout = $maxExecutionTime;
+            }
         }
         return $this->_timeout;
     }
 
     /**
-     * Destroys the PID file
+     * Can throw exceptions for us
+     *
+     * @param string $msg The message we want to throw
+     * @param int $line The line in which the error ocurred
+     * @return boolean Will return false if exception isn't thrown
+     * @throws pidException
      */
-    public function __destruct() {
-        if (is_writable($this->_filename) and !$this->already_running) {
-            unlink($this->_filename);
+    protected function throwException($msg='', $line=0) {
+        if (empty($this->supressErrors)) {
+            throw new pidException($msg, $line, __FILE__);
         }
 
-        return true;
+        return false;
     }
 }
