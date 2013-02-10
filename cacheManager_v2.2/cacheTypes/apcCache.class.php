@@ -12,7 +12,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
     /**
      * Constructor
      *
-     * @param $throwExceptionOnDisabled boolean Whether to throw exception on disabled APC cache module. Defaults to false
+     * @param boolean $throwExceptionOnDisabled Whether to throw exception on disabled APC cache module. Defaults to false
      */
     public function __construct($throwExceptions=true) {
         $this->throwExceptions($throwExceptions);
@@ -43,10 +43,10 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * Saves a cache into memory. Sets a time and the unique identifier
      *
      * @see cacheManager::save()
-     * @param $data mixed The data we want to save
-     * @param $identifier string A unique name to use
-     * @param $funcArgs array Optional extra arguments to differentiate cache
-     * @param $ttl int The time the cache will be valid
+     * @param mixed $data The data we want to save
+     * @param string $identifier A unique name to use
+     * @param array $funcArgs Optional extra arguments to differentiate cache
+     * @param int $ttl The time the cache will be valid
      */
     public function save($data=false, $identifier='', $funcArgs=null, $ttl=null) {
         if (is_int($ttl)) {
@@ -61,8 +61,8 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * Rescues a cache from memory
      *
      * @see cacheManager::load()
-     * @param $identifier string A unique name to use
-     * @param $funcArgs array Optional extra arguments to differentiate cache
+     * @param string $identifier A unique name to use
+     * @param array $funcArgs Optional extra arguments to differentiate cache
      * @return mixed Returns the data or false if no cache was found
      */
     public function load($identifier='', $funcArgs=null) {
@@ -78,8 +78,8 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * Physically removes a cache from memory
      *
      * @see cacheManager::delete()
-     * @param $identifier string A unique name to use
-     * @param $funcArgs array Optional extra arguments to differentiate cache
+     * @param string $identifier A unique name to use
+     * @param array $funcArgs Optional extra arguments to differentiate cache
      */
     public function delete($identifier='', $funcArgs=null) {
         $return = apc_delete($this->_cacheId($identifier, $funcArgs));
@@ -91,7 +91,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * Deletes the entire cache
      *
      * @see cacheManager::purgeCache()
-     * @param $onlyUserSpace boolean Whether to delete only user space. Defaults to false
+     * @param boolean $onlyUserSpace Whether to delete only user space. Defaults to false
      * @return boolean Returns true when cache could be deleted, false otherwise
      */
     public function purgeCache($onlyUserSpace=false) {
@@ -117,7 +117,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * Gets cache information
      * If $type is "user", it will return user space cache information. Otherwise, it will return the system space
      *
-     * @param $type string Can be "user" or empty
+     * @param string $type Can be "user" or empty
      */
     public function getCacheInformation($type=null) {
         if (!empty($type)) {

@@ -166,8 +166,7 @@ class cacheManager {
 
 		// If we have a non-array object, convert it to a serializable array
 		if (!is_array($funcArgs)) {
-		    $tmpFuncArgs[] = $funcArgs;
-		    $funcArgs = $tmpFuncArgs;
+		    $funcArgs = array($funcArgs);
 		}
 
 		// Returning the unique hash

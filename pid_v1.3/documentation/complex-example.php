@@ -9,8 +9,7 @@ $timeout = 15;
 $pid = new pid(null, null, null, false);
 
 try {
-// Manual call to a PID check
-    $pid->getTSpidFile();
+    // Manual call to a PID check, assume default directory and filename.
     $pid->checkPid('','',($timeout * 2));
 } catch (pidException $e) {
     die('Captured exception: '.$e->getMessage().PHP_EOL);
