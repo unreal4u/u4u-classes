@@ -6,10 +6,10 @@ $pid = new pid();
 
 if (!$pid->already_running) {
     for ($i = 1; $i != $howmany; $i++) {
-        echo 'Pausing execution: '.$i . "/" . $howmany . ". Execute this script again within the time limit to test PID presence.\n";
+        echo 'Pausing execution: ' . $i . "/" . $howmany . ". Execute this script again within the time limit to test PID presence." . PHP_EOL;
         sleep(1);
     }
 } else {
     // Ok, you should never call die or exit within your script, but this is a simple example file
-    die('Already running!' . "\n");
+    die('Already running!' . PHP_EOL);
 }

@@ -148,6 +148,10 @@ class pid {
     /**
      * Sets a timeout
      *
+     * If a numeric value is provided, it will set it to that timeout. In other case, it will set it to current time
+     * limit. This will however be 0 in CLI mode, so that value will defeat the purpose of this class entirely. In that
+     * case, the script will set a default timeout time of 30 seconds.
+     *
      * @param $ttl int
      * @return int Returns the timeout to what is was set
      */
