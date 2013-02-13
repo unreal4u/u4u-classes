@@ -97,4 +97,20 @@ class debugInfo {
     public static function throw_exceptions() {
         set_error_handler('debugInfo::exception_error_handler');
     }
+
+    /**
+     * Redirects the user to another location
+     *
+     * @param string $newUrl The new url to which redirect the user to
+     * @param int $redirectType Choose between 301 and 302. Defaults to 301
+     * @return boolean Returns false if invalid URL was given
+     */
+    public static function redirect($newUrl='', $redirectType=301) {
+        if (!empty($newUrl)) {
+            header('Location: '.$newUrl);
+            exit();
+        }
+
+        return false;
+    }
 }

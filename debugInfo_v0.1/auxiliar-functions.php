@@ -29,3 +29,9 @@ if (!function_exists('throw_exceptions')) {
         debugInfo::throw_exceptions();
     }
 }
+
+if (!function_exists('redirect')) {
+    function redirect($newUrl='', $redirectType=301) {
+        debugInfo::redirect($newUrl, $redirectType);
+    }
+}
