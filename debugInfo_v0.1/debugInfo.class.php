@@ -105,10 +105,17 @@ class debugInfo {
      * @param int $redirectType Choose between 301 and 302. Defaults to 301
      * @return boolean Returns false if invalid URL was given
      */
-    public static function redirect($newUrl='', $redirectType=301) {
+    public static function redirect($newUrl='', $message='', $redirectType=301) {
+    	$msg = '';
+    	if (!empty($message)) {
+    		$msg = '('.$message.')';
+    	}
+    	
         if (!empty($newUrl)) {
-            header('Location: '.$newUrl);
-            exit();
+        	header('Pragma: no-cache');
+        	header('Cache-Control: no-cache');
+            header('Location: '.$newUrl, true, $tipo);
+            exit($msg);
         }
 
         return false;

@@ -2,6 +2,10 @@
 
 include('../debugInfo.class.php');
 
+if (!empty($_GET['redirectToComplex'])) {
+    redirect('complex-example.php', 'Message if redirect is unsuccessfull');
+}
+
 debug('hello!');
 
 debug(str_repeat('-', 80));
@@ -30,3 +34,5 @@ var_dump($array);
 
 print('HTML strings with debug function: ');
 debug($array);
+
+printf('<a href="%s">Click here</a> to go to complex examples (will redirect first to this script and then complex-example.php)', 'simple-example.php?redirectToComplex=true');
