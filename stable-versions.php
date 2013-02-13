@@ -86,10 +86,12 @@ define('U4U_RUTVERIFIER',    'rutverifier_v1.1/rutverifier.class.php');
  *
  * This will instantiate the autoLoader: no more worries for you!
  *
+ * Additionally you can also include only the files, calling includeClass of this class
+ *
  * @package u4u-classes
  * @author Camilo Sperberg - http://unreal4u.com/
  */
-class u4u_autoloader {
+final class u4u_autoloader {
     /**
      * Container of the already included classes
      * @var array
@@ -104,11 +106,12 @@ class u4u_autoloader {
     }
 
     /**
-     * Includes the actual class file
+     * Includes the given class file if it exists and isn't already loaded
+     *
      * @param string $class
      * @return boolean Returns false or true depending on failure or success of included file
      */
-    final private function includeClass($class) {
+    final public function includeClass($class) {
         $return = false;
 
         $class = strtoupper($class);
@@ -135,7 +138,7 @@ class u4u_autoloader {
      * @param array $parameters The parameters we want to pass to the constructor, in array form
      * @return object Returns the object that we want to initialize
      */
-    public function instantiateClass($class, array $parameters=null) {
+    final public function instantiateClass($class, array $parameters=null) {
         $rc = new ReflectionClass($class);
         $object = $rc->newInstanceArgs($parameters);
         return $object;
