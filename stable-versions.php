@@ -104,12 +104,34 @@ final class u4u_autoloader {
     private $includedClasses = array();
 
     /**
-     * Registers a new autoload register
+     * Automatically load the code from the following classes on __construct
+     * @var array
      */
-    function __construct() {
-        spl_autoload_register(array($this, 'includeClass'));
+    private $includeOnLoad = array('debugInfo');
+
+    /**
+     * Registers a new autoload register
+     *
+     * @param boolean $registerAutoLoader Whether we should register the autoloader on __construct or not. Defaults to true
+     */
+    function __construct($registerAutoLoader=true) {
+        if ($registerAutoLoader === true) {
+            $this->registerAutoLoader();
+        }
+
+        foreach($this->includeOnLoad AS $includeClass) {
+            $this->includeClass($includeClass);
+        }
     }
 
+    /**
+     * Registers the autoloader
+     *
+     * @return boolean Returns always true
+     */
+    final public function registerAutoLoader() {
+        return spl_autoload_register(array($this, 'includeClass'));
+    }
     /**
      * Includes the given class file if it exists and isn't already loaded
      *
@@ -145,7 +167,6 @@ final class u4u_autoloader {
      */
     final public function instantiateClass($class, array $parameters=null) {
         $rc = new ReflectionClass($class);
-        $object = $rc->newInstanceArgs($parameters);
-        return $object;
+        return $rc->newInstanceArgs($parameters);
     }
 }
