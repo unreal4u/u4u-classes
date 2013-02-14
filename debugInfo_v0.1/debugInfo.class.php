@@ -1,7 +1,5 @@
 <?php
 
-include('auxiliar-functions.php');
-
 class debugInfo {
     /**
      * Prints a message with a HTML break (<br />) and a chr(13|10|13+10) break
@@ -110,7 +108,7 @@ class debugInfo {
     	if (!empty($message)) {
     		$msg = '('.$message.')';
     	}
-    	
+
         if (!empty($newUrl)) {
         	header('Pragma: no-cache');
         	header('Cache-Control: no-cache');
@@ -121,3 +119,5 @@ class debugInfo {
         return false;
     }
 }
+
+include('auxiliar-functions.php');
