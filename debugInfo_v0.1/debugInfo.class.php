@@ -1,4 +1,5 @@
 <?php
+namespace u4u\debugInfo;
 
 class debugInfo {
     /**
@@ -86,7 +87,7 @@ class debugInfo {
      */
     public static function exception_error_handler($errno, $errstr, $errfile, $errline) {
         // @TODO Do something with severity other than to pass just the errno
-        throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
+        throw new \ErrorException($errstr, $errno, $errno, $errfile, $errline);
     }
 
     /**

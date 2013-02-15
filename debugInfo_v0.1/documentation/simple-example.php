@@ -9,7 +9,7 @@ if (!empty($_GET['redirectToComplex'])) {
 debug('hello!');
 
 debug(str_repeat('-', 80));
-$a = new debugInfo();
+$a = new u4u\debugInfo\debugInfo();
 
 print('object printing with var_dump: ');
 var_dump($a);

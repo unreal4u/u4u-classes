@@ -4,7 +4,7 @@ include('stable-versions.php');
 
 $definedConstants = get_defined_constants(true);
 
-$autoLoader = new u4u_autoloader();
+$autoLoader = new u4u\u4u_autoloader();
 // Either way is valid, I prefer second method as it is simpler
 //$cacheManager = $autoLoader->instantiateClass('cacheManager', array('apc'));
 $cacheManager = new cacheManager('apc');

@@ -13,72 +13,73 @@ namespace u4u;
  * Defines latest stable release of "Automatic database updater" class
  * @var string
  */
-define('U4U_DB_UPDATER', 'Automatic-DB-Updater_v0.1/db_updater.class.php');
+const U4U_DB_UPDATER = 'Automatic-DB-Updater_v0.1/db_updater.class.php';
 
 /**
  * Defines latest stable release of "benchmark" class
  * @var string
  */
-define('U4U_BENCHMARK', 'benchmark_v0.2/benchmark.class.php');
+const U4U_BENCHMARK = 'benchmark_v0.2/benchmark.class.php';
 
 /**
  * Defines latest stable release of "cacheManager" class
  * @var string
  */
-define('U4U_CACHEMANAGER', 'cacheManager_v2.1/cacheManager.class.php');
+const U4U_CACHEMANAGER = 'cacheManager_v2.1/cacheManager.class.php';
 
 /**
  * Defines latest stable release of "CSS Stacker" class
  * @var string
  */
-define('U4U_CSSTACKER', 'CSStacker_v1.4/csstacker.class.php');
+const U4U_CSSTACKER = 'CSStacker_v1.4/csstacker.class.php';
 
 /**
  * Defines latest stable release of "Extended MySQLi" class
  * @var string
  */
-define('U4U_DB_MYSQLI', 'db-mysqli_v4.0.1/db_mysqli.class.php');
+const U4U_DB_MYSQLI = 'db-mysqli_v4.0.1/db_mysqli.class.php';
 
 /**
  * Defines latest stable release of "debugInfo" class
  * @var string
  */
-define('U4U_DEBUGINFO', 'debugInfo_v0.1/debugInfo.class.php');
+const U4U_DEBUGINFO = 'debugInfo_v0.1/debugInfo.class.php';
+
 /**
  * Defines latest stable release of "Extended PGSQL" class
  * @var string
  */
-define('U4U_EXTENDED_PGSQL', 'extended-pgsql_v1.1.0/extended_pgsql.class.php');
+const U4U_EXTENDED_PGSQL = 'extended-pgsql_v1.1.0/extended_pgsql.class.php';
 
 /**
  * Defines latest stable release of "HTML Utilities" class
  * @var string
  */
-define('U4U_HTMLUTILS', 'HTMLUtils_v1.0/HTMLUtils.class.php');
+const U4U_HTMLUTILS = 'HTMLUtils_v1.0/HTMLUtils.class.php';
 
 /**
  * Defines latest stable release of "Message Stacker" class
  * @var string
  */
-define('U4U_MESSAGESTACK', 'messageStack_v1.0.2/messageStack.class.php');
+const U4U_MESSAGESTACK = 'messageStack_v1.0.2/messageStack.class.php';
 
 /**
  * Defines latest stable release of "MySQL paginator" class
  * @var string
  */
-define('U4U_PAGINATOR', 'mysql-paginator_v1.1/paginator.class.php');
+const U4U_PAGINATOR = 'mysql-paginator_v1.1/paginator.class.php';
 
 /**
  * Defines latest stable release of "PID process identifier" class
  * @var string
  */
-define('U4U_PID', 'pid_v1.3/pid.class.php');
+const U4U_PID = 'pid_v1.3/pid.class.php';
 
 /**
  * Defines latest stable release of "RUT Verifier" class
  * @var string
  */
-define('U4U_RUTVERIFIER', 'rutverifier_v1.1/rutverifier.class.php');
+const U4U_RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
 
 /**
  * With this little class, you will be able to very easily load my classes
@@ -145,8 +146,8 @@ final class u4u_autoloader {
 
         $class = strtoupper($class);
         // Prevent double inclusion and check if file exists
-        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant('\\U4U_'.$class))) {
-            include(dirname(__FILE__).'/'.constant('\\U4U_'.$class));
+        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\U4U_'.$class))) {
+            include(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\U4U_'.$class));
             $this->includedClasses[] = $class;
             $return = true;
         }
