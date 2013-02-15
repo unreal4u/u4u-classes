@@ -95,7 +95,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @return boolean Returns true when cache could be deleted, false otherwise
      */
     public function purgeCache($onlyUserSpace=false) {
-        if (!empty($onlyUser)) {
+        if (!empty($onlyUserSpace)) {
             apc_clear_cache();
         }
         $return = apc_clear_cache('user');

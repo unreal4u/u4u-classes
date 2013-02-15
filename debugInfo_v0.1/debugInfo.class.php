@@ -112,7 +112,7 @@ class debugInfo {
         if (!empty($newUrl)) {
         	header('Pragma: no-cache');
         	header('Cache-Control: no-cache');
-            header('Location: '.$newUrl, true, $tipo);
+            header('Location: '.$newUrl, true, $redirectType);
             exit($msg);
         }
 
