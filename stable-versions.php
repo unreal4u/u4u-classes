@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * This file states the stable release of each class and defines the autoLoader
  *
