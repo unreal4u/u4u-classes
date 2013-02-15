@@ -145,8 +145,8 @@ final class u4u_autoloader {
 
         $class = strtoupper($class);
         // Prevent double inclusion and check if file exists
-        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant('U4U_'.$class))) {
-            include(dirname(__FILE__).'/'.constant('U4U_'.$class));
+        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant('\\U4U_'.$class))) {
+            include(dirname(__FILE__).'/'.constant('\\U4U_'.$class));
             $this->includedClasses[] = $class;
             $return = true;
         }
@@ -168,7 +168,7 @@ final class u4u_autoloader {
      * @return object Returns the object that we want to initialize
      */
     final public function instantiateClass($class, array $parameters=null) {
-        $rc = new ReflectionClass($class);
+        $rc = new \ReflectionClass($class);
         return $rc->newInstanceArgs($parameters);
     }
 }

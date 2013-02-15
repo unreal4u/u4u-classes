@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u\cacheManager;
+
 include('cacheManager.interface.php');
 include('exceptions.class.php');
 
@@ -79,7 +81,7 @@ class cacheManager {
         if (is_readable($route)) {
             include_once($route);
 
-            $rc = new ReflectionClass($objectName);
+            $rc = new \ReflectionClass($objectName);
             $this->object = $rc->newInstanceArgs($args);
 
             if ((!$rc->implementsInterface('cacheManagerInterface')) OR !$rc->isSubclassOf('cacheManager')) {
@@ -90,14 +92,14 @@ class cacheManager {
                 trigger_error($errorMessage, E_USER_ERROR);
             }
 
-            $rcMethods = $rc->getMethods(ReflectionMethod::IS_PUBLIC);
+            $rcMethods = $rc->getMethods(\ReflectionMethod::IS_PUBLIC);
             foreach($rcMethods AS $rcMethod) {
                 $this->methods[] = $rcMethod->getName();
             }
 
             try {
                 $this->object->checkIsEnabled();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 if ($this->throwExceptions === true) {
                     throw new cacheException($e->getMessage());
                 }
@@ -127,7 +129,7 @@ class cacheManager {
                     if (empty($this->isChecked) OR (!empty($this->isChecked) AND !empty($this->isEnabled))) {
                         $return = call_user_func_array(array($this->object, $methodName), $args);
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     if ($this->throwExceptions) {
                         throw new cacheException($e->getMessage());
                     }

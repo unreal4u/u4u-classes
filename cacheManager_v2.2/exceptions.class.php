@@ -1,4 +1,7 @@
 <?php
+
+namespace u4u\cacheManager;
+
 /**
  * If there is a problem that disrupts normal operation, a cacheException will be thrown
  *
@@ -7,7 +10,7 @@
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class cacheException extends Exception {}
+class cacheException extends \Exception {}
 
 /**
  * If the minimum PHP version isn't run, a versionException will be thrown
@@ -17,4 +20,4 @@ class cacheException extends Exception {}
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class versionException extends Exception {}
+class versionException extends \Exception {}

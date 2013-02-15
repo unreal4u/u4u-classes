@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u\cacheManager;
+
 /**
  * The interface that all childs must implement
  *
