@@ -23,3 +23,6 @@ try {
         debug('Captured exception 2: "'.$e->getMessage().'"');
     }
 }
+
+$debugInfo = new debugInfo();
+print($debugInfo);

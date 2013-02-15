@@ -41,7 +41,7 @@ define('U4U_DB_MYSQLI', 'db-mysqli_v4.0.1/db_mysqli.class.php');
  * Defines latest stable release of "debugInfo" class
  * @var string
  */
-define('U4U_DEBUGINFO', 'debugInfo_v0.1/debugInfo.class.php');
+define('U4U_DEBUGINFO', 'debugInfo_v0.2/debugInfo.class.php');
 /**
  * Defines latest stable release of "Extended PGSQL" class
  * @var string

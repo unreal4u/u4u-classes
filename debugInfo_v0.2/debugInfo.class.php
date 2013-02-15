@@ -1,6 +1,27 @@
 <?php
 
+/**
+ * Class that joins all
+ *
+ * @package debugInfo
+ * @author Camilo Sperberg - http://unreal4u.com/
+ */
 class debugInfo {
+    /**
+     * Version of this class
+     * @var string
+     */
+    private $version = '0.2';
+
+    /**
+     * Magic function
+     *
+     * @return string
+     */
+    public function __toString() {
+        return 'debugInfo v'.$this->version.' by unreal4u - http://unreal4u.com/';
+    }
+
     /**
      * Prints a message with a HTML break (<br />) and a chr(13|10|13+10) break
      *
