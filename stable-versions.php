@@ -99,7 +99,7 @@ const RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
  * @package u4u-classes
  * @author Camilo Sperberg - http://unreal4u.com/
  */
-final class u4u_autoloader {
+final class autoLoader {
     /**
      * Container of the already included classes
      * @var array
