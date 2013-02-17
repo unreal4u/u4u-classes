@@ -1,6 +1,6 @@
 <?php
 
-namespace u4u\cacheManager;
+namespace u4u;
 
 /**
  * If there is a problem that disrupts normal operation, a cacheException will be thrown

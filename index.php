@@ -1,13 +1,19 @@
 <?php
 
 include('stable-versions.php');
+$autoLoader = new u4u\u4u_autoloader();
+
+$benchmark = new u4u\benchmark();
+$benchmark->beginCounter('constantsLoad');
 
 $definedConstants = get_defined_constants(true);
+$benchmark->endCounter('constantsLoad');
 
-$autoLoader = new u4u\u4u_autoloader();
+debug($benchmark->getDiff('constantsLoad', 'memory'));
+
 // Either way is valid, I prefer second method as it is simpler
-//$cacheManager = $autoLoader->instantiateClass('cacheManager', array('apc'));
-$cacheManager = new cacheManager('apc');
+$cacheManager = $autoLoader->instantiateClass('cacheManager', array('apc'));
+#$cacheManager = new u4u\cacheManager('apc');
 
 $output = $cacheManager->load('definedU4UClasses', $definedConstants['user']);
 if ($output === false) {

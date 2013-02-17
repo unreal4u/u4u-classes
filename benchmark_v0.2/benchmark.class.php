@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * This class will save data regarding times and memory sizes
  *

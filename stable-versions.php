@@ -144,7 +144,7 @@ final class u4u_autoloader {
     final public function includeClass($class) {
         $return = false;
 
-        $class = strtoupper($class);
+        $class = str_replace(strtoupper(__NAMESPACE__).'\\', '', strtoupper($class));
         // Prevent double inclusion and check if file exists
         if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\'.$class))) {
             include(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\'.$class));
@@ -169,7 +169,7 @@ final class u4u_autoloader {
      * @return object Returns the object that we want to initialize
      */
     final public function instantiateClass($class, array $parameters=null) {
-        $rc = new \ReflectionClass($class);
+        $rc = new \ReflectionClass(__NAMESPACE__.'\\'.$class);
         return $rc->newInstanceArgs($parameters);
     }
 }

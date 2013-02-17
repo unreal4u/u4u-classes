@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 include('cacheManager.interface.php');
 include('exceptions.class.php');
 
@@ -68,7 +70,7 @@ class cacheManager {
      */
     public function __construct() {
         if (version_compare(PHP_VERSION, '5.3.0', '<=')) {
-            throw new versionException('This class will only work with PHP &gt;= 5.3.0');
+            throw new u4u\versionException('This class will only work with PHP &gt;= 5.3.0');
         }
 
         $args       = func_get_args();
@@ -82,10 +84,10 @@ class cacheManager {
             $rc = new \ReflectionClass($objectName);
             $this->object = $rc->newInstanceArgs($args);
 
-            if ((!$rc->implementsInterface('cacheManagerInterface')) OR !$rc->isSubclassOf('cacheManager')) {
+            if ((!$rc->implementsInterface('u4u\\cacheManagerInterface')) OR !$rc->isSubclassOf('u4u\\cacheManager')) {
                 $errorMessage = 'Class doesn\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation';
                 if ($this->throwExceptions === true) {
-                    throw new cacheException($errorMessage);
+                    throw new u4u\cacheException($errorMessage);
                 }
                 trigger_error($errorMessage, E_USER_ERROR);
             }
@@ -99,12 +101,12 @@ class cacheManager {
                 $this->object->checkIsEnabled();
             } catch (\Exception $e) {
                 if ($this->throwExceptions === true) {
-                    throw new cacheException($e->getMessage());
+                    throw new u4u\cacheException($e->getMessage());
                 }
             }
         } else {
             if ($this->throwExceptions === true) {
-                throw new cacheException('Cache type "'.$objectName.'" does not exist');
+                throw new u4u\cacheException('Cache type "'.$objectName.'" does not exist');
             }
         }
     }
