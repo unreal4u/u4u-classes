@@ -1,7 +1,5 @@
 <?php
 
-include('../../functions.php');
-
 // To be able to print strange characters
 header('Content-Type: text/html; charset=UTF-8');
 

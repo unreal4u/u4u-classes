@@ -66,6 +66,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @return mixed Returns the data or false if no cache was found
      */
     public function load($identifier='', $funcArgs=null) {
+        $return = false;
         $data = apc_fetch($this->_cacheId($identifier, $funcArgs), $return);
         if (!empty($return)) {
             $return = $data;
@@ -95,7 +96,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @return boolean Returns true when cache could be deleted, false otherwise
      */
     public function purgeCache($onlyUserSpace=false) {
-        if (!empty($onlyUser)) {
+        if (!empty($onlyUserSpace)) {
             apc_clear_cache();
         }
         $return = apc_clear_cache('user');

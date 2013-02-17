@@ -25,7 +25,7 @@ const BENCHMARK = 'benchmark_v0.2/benchmark.class.php';
  * Defines latest stable release of "cacheManager" class
  * @var string
  */
-const CACHEMANAGER = 'cacheManager_v2.1/cacheManager.class.php';
+const CACHEMANAGER = 'cacheManager_v2.2/cacheManager.class.php';
 
 /**
  * Defines latest stable release of "CSS Stacker" class

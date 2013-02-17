@@ -1,7 +1,5 @@
 <?php
 
-include('../../functions.php');
-
 $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 
 include('../cacheManager.class.php');

@@ -92,7 +92,7 @@ class apcCache extends cacheManager implements cacheManagerInterface {
      * @param $onlyUserSpace boolean Whether to delete only user space. Defaults to false
      */
     public function purgeCache($onlyUserSpace=false) {
-        if (!empty($onlyUser)) {
+        if (!empty($onlyUserSpace)) {
             apc_clear_cache();
         }
         $return = apc_clear_cache('user');

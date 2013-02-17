@@ -5,8 +5,6 @@
  * @package db_mysqli
  * @author Camilo Sperberg - http://unreal4u.com/
  */
-include('../../functions.php');
-
 include('../config.php');
 include('../db_mysqli.class.php');
 
