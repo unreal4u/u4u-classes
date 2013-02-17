@@ -19,7 +19,7 @@ const DB_UPDATER = 'Automatic-DB-Updater_v0.1/db_updater.class.php';
  * Defines latest stable release of "benchmark" class
  * @var string
  */
-const BENCHMARK = 'benchmark_v0.2/benchmark.class.php';
+const BENCHMARK = 'benchmark_v0.3/benchmark.class.php';
 
 /**
  * Defines latest stable release of "cacheManager" class
