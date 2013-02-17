@@ -148,21 +148,27 @@ class benchmark {
      * Delivers the memory difference of a identifier
      *
      * @param string $identifier The identifier of the data we want to return
-     * @param string $type Can be "time", "memory" or "peakmemory". Defaults to "time"
+     * @param string $type Can be "time", "memory", "peakmemory" or "all". Defaults to "all"
      */
-    public function getDiff($identifier, $type='time') {
+    public function getDiff($identifier, $type='all') {
         $return = false;
 
         if (!empty($identifier) AND !empty($this->data[$identifier]['endMemorySize'])) {
             switch($type) {
                 case 'time':
                     $return = sprintf('%.'.$this->decimals.'f', $this->data[$identifier]['endTime'] - $this->data[$identifier]['startTime']);
-                    break;
+                break;
                 case 'memory':
                     $return = $this->data[$identifier]['endMemorySize'] - $this->data[$identifier]['startMemorySize'];
                 break;
                 case 'peakmemory':
                     $return = $this->data[$identifier]['endMemoryPeakSize'] - $this->data[$identifier]['startMemoryPeakSize'];
+                break;
+                case 'all':
+                    $return = array();
+                    $return['time'] = $this->getDiff($identifier, 'time');
+                    $return['memory'] = $this->getDiff($identifier, 'memory');
+                    $return['peakmemory'] = $this->getDiff($identifier, 'peakmemory');
                 break;
             }
         }

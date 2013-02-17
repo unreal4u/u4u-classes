@@ -17,7 +17,7 @@ define('U4U_DB_UPDATER', 'Automatic-DB-Updater_v0.1/db_updater.class.php');
  * Defines latest stable release of "benchmark" class
  * @var string
  */
-define('U4U_BENCHMARK', 'benchmark_v0.2/benchmark.class.php');
+define('U4U_BENCHMARK', 'benchmark_v0.3/benchmark.class.php');
 
 /**
  * Defines latest stable release of "cacheManager" class
