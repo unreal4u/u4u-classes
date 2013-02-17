@@ -13,7 +13,7 @@ $output = $cacheManager->load('definedU4UClasses', $definedConstants['user']);
 if ($output === false) {
     $output = '';
     foreach($definedConstants['user'] AS $definedConstantKey => $definedConstantValue) {
-        $output .= '<p>Go to class: <a href="./'.dirname($definedConstantValue).'/">'.str_replace('u4u_', '', strtolower($definedConstantKey)).'</a></p>';
+        $output .= '<p>Go to class: <a href="./'.dirname($definedConstantValue).'/">'.str_replace('u4u\\', '', strtolower($definedConstantKey)).'</a></p>';
     }
 
     $cacheManager->save($output, 'definedU4UClasses', $definedConstants['user'], 3600);

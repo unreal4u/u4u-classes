@@ -1,7 +1,5 @@
 <?php
 
-namespace u4u\cacheManager;
-
 include('cacheManager.interface.php');
 include('exceptions.class.php');
 
