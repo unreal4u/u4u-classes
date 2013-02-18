@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class that joins all
+ * Common used functions when debugging applications
  *
  * @package debugInfo
  * @author Camilo Sperberg - http://unreal4u.com/
