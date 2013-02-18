@@ -256,11 +256,10 @@ class rutverifier {
     }
 
     /**
-     * Retorna una función en JavaScript, más simple que su simil en PHP para verificar que el RUT está ingresado
-     * correctamente o no.
+     * Return or prints a JavaScript function that is a bit simpler than its counterpart in PHP to do a basic check
      *
-     * @param $echo bool Para que se imprima la cadena inmediatamente dentro de la función
-     * @param $with_headers bool Para que se imprima la cadena con sus respectivas cabeceras.
+     * @param boolean $echo Whether to echo immediatly from this function. Defaults to false
+     * @param boolean $with_headers bool To print the "script" tags. Defaults to false
      */
     public function c_javascript($echo=false, $with_headers=false) {
         $javascript = '';
