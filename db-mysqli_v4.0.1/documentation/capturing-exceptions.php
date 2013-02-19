@@ -4,9 +4,9 @@ include('../config.php');
 include('../db_mysqli.class.php');
 
 try {
-    $db = new db_mysqli();
+    $db = new \u4u\db_mysqli();
     $db->throwQueryExceptions = true;
-} catch (databaseException $e) {
+} catch (\u4u\databaseException $e) {
     exit($e->getMessage());
 }
 

@@ -146,8 +146,8 @@ final class autoLoader {
 
         $class = str_replace(strtoupper(__NAMESPACE__).'\\', '', strtoupper($class));
         // Prevent double inclusion and check if file exists
-        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\'.$class))) {
-            include(dirname(__FILE__).'/'.constant(__NAMESPACE__.'\\'.$class));
+        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant('\\'.__NAMESPACE__.'\\'.$class))) {
+            include(dirname(__FILE__).'/'.constant('\\'.__NAMESPACE__.'\\'.$class));
             $this->includedClasses[] = $class;
             $return = true;
         }
@@ -156,20 +156,26 @@ final class autoLoader {
     }
 
     /**
-     * Instantiates the class for us
+     * Instantiates the class for us, will register the autoloader implicitly!
      *
      * The usage for this method is quite easy:
      * <code>$u4uLoader = new u4u_autoloader();
-     * $cacheManager = $u4uLoader->instantiateClass('cacheManager', array('apc'));</code>
+     * $cacheManager = $u4uLoader->instantiateClass('cacheManager', array('apc'));
+     * $benchmark = $u4uLoader->instantiateClass('benchmark');</code>
      *
      * <code>$cacheManager</code> will now hold an instance of the cacheManager class
+     * <code>$benchmark</code> will now hold an instance of the benchmark class
      *
      * @param string $class The class name that we wish to instantiate
      * @param array $parameters The parameters we want to pass to the constructor, in array form
      * @return object Returns the object that we want to initialize
      */
     final public function instantiateClass($class, array $parameters=null) {
-        $rc = new \ReflectionClass(__NAMESPACE__.'\\'.$class);
+        $this->registerAutoLoader();
+        $rc = new \ReflectionClass('\\'.__NAMESPACE__.'\\'.$class);
+        if (!is_array($parameters)) {
+            $parameters = array();
+        }
         return $rc->newInstanceArgs($parameters);
     }
 }

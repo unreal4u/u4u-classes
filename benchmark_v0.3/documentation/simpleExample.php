@@ -10,7 +10,7 @@ function myProcess() {
     return true;
 }
 
-$benchmark = new benchmark();
+$benchmark = new \u4u\benchmark();
 $benchmark->decimals = 10;
 
 $benchmark->beginCounter('theProcess');

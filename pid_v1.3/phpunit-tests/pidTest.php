@@ -54,11 +54,11 @@ class pidTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider provider_constructor
      */
     public function test_constructor($directory='', $filename='', $timeout=null, $checkOnConstructor=true, $expected=null) {
-        $this->pid = new pid($directory, $filename, $timeout, $checkOnConstructor);
+        $this->pid = new \u4u\pid($directory, $filename, $timeout, $checkOnConstructor);
         $this->assertEquals($expected, $this->pid->pid);
         $this->assertFalse($this->pid->already_running);
 
-        $this->pid = new pid($directory, $filename, $timeout, $checkOnConstructor);
+        $this->pid = new \u4u\pid($directory, $filename, $timeout, $checkOnConstructor);
         $this->assertEquals($expected, $this->pid->pid);
         $this->assertTrue($this->pid->already_running);
     }

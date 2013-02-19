@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * This class will save data regarding times and memory sizes
  *
@@ -141,7 +143,7 @@ class benchmark {
             $this->data[$identifier]['endMemoryPeakSize'] = memory_get_peak_usage();
         }
 
-        return $this->getDiff($identifier);
+        return $this->getDiff($identifier, 'time');
     }
 
     /**

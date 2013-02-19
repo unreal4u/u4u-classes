@@ -1,11 +1,14 @@
 <?php
+
+namespace u4u;
+
 /**
  * This class will throw this type of exceptions
  *
  * @package db_mysqli
  * @author Camilo Sperberg - http://unreal4u.com/
  */
-class databaseException extends ErrorException {
+class databaseException extends \ErrorException {
     public function __construct($errstr, $errline=0, $errfile='') {
         parent::__construct($errstr, 0, 0, $errfile, $errline);
     }
@@ -17,7 +20,7 @@ class databaseException extends ErrorException {
  * @author Camilo Sperberg - http://unreal4u.com/
  * @package db_mysqli
  */
-class queryException extends Exception {
+class queryException extends \Exception {
     public function __construct($query, $errstr, $errno) {
         // Construct a error message and parent-construct the exception
         $message = $errstr;
@@ -82,11 +85,11 @@ class mysql_connect {
      */
     public function __construct($host, $username, $passwd, $database, $port) {
         try {
-            $this->db = new mysqli($host, $username, $passwd, $database, $port);
+            $this->db = new \mysqli($host, $username, $passwd, $database, $port);
             if (mysqli_connect_error()) {
                 $this->throwException(mysqli_connect_error(), __LINE__);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->throwException(mysqli_connect_error(), __LINE__);
         }
 

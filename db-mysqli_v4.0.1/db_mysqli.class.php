@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 include(dirname(__FILE__).'/auxiliar_classes.php');
 
 /**

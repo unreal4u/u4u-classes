@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * Chilean RUT or RUN verifier
  *

@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 include(dirname(__FILE__).'/auxiliar_classes.php');
 
 /**
@@ -94,7 +96,7 @@ class pid {
                 $this->pid = (int)trim(file_get_contents($this->_filename));
                 // If we are in Windows, do this check
                 if (strtolower(substr(PHP_OS, 0, 3)) == 'win') {
-                    $wmi = new COM('winmgmts://');
+                    $wmi = new \COM('winmgmts://');
                     $processes = $wmi->ExecQuery('SELECT ProcessId FROM Win32_Process WHERE ProcessId = \'' . $this->pid . '\'');
                     if (count($processes) > 0) {
                         $i = 0;
@@ -178,7 +180,7 @@ class pid {
      */
     protected function throwException($msg='', $line=0) {
         if (empty($this->supressErrors)) {
-            throw new pidException($msg, $line, __FILE__);
+            throw new \u4u\pidException($msg, $line, __FILE__);
         }
 
         return false;

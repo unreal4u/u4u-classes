@@ -11,7 +11,7 @@ function myProcess() {
     return $aTmp;
 }
 
-$benchmark = new benchmark();
+$benchmark = new \u4u\benchmark();
 $benchmark->decimals = 9;
 
 $benchmark->beginCounter('bigProcess1');

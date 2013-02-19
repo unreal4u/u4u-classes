@@ -4,7 +4,7 @@ include('../config.php');
 include('../db_mysqli.class.php');
 
 try {
-    $db = new db_mysqli();
+    $db = new \u4u\db_mysqli();
     //$db->keepLiveLog = true;
     //$db->supressErrors = true;
 
@@ -44,7 +44,7 @@ try {
         $db->query('INSERT INTO t1 (string_valued, int_valued, bool_valued, string_null_valued, int_null_valued, bool_null_valued, float_valued, float_null_valued, datetime_valued, datetime_null_valued, timestamp_valued, timestamp_null_valued) VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),?)',
                                     'e',           null,       null,        null,               null,            null,             null,         null,              null,            null,                                   null
         );
-    } catch (queryException $e) {
+    } catch (\u4u\queryException $e) {
         print('We have captured a query exception!');
         var_dump($e->getMessage());
     }
@@ -88,7 +88,7 @@ try {
     print("-------------------------- dbErrors --------------------------");
     var_dump($db->dbErrors);
 
-} catch (databaseException $e) {
+} catch (\u4u\databaseException $e) {
     print('Error: <strong>'.$e->getMessage().'</strong><br />File: '.$e->getFile().':'.$e->getLine());
 }
 

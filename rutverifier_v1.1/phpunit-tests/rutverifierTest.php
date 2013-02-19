@@ -1,11 +1,14 @@
 <?php
+
+namespace u4u;
+
 require_once '../rutverifier.class.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * rutverifier test case.
  */
-class rutverifierTest extends PHPUnit_Framework_TestCase {
+class rutverifierTest extends \PHPUnit_Framework_TestCase {
     /**
      * @var rutverifier
      */
@@ -16,7 +19,7 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         parent::setUp();
-        $this->rutverifier = new rutverifier();
+        $this->rutverifier = new \u4u\rutverifier();
     }
 
     /**
@@ -48,7 +51,7 @@ class rutverifierTest extends PHPUnit_Framework_TestCase {
         $result = $this->rutverifier->addToBlacklist($rut);
 
         // Fix to make private property accesible
-        $reflector = new ReflectionProperty('rutverifier', 'blacklist');
+        $reflector = new \ReflectionProperty('u4u\\rutverifier', 'blacklist');
         $reflector->setAccessible(true);
         $elements = $reflector->getValue($this->rutverifier);
 

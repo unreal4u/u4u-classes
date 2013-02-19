@@ -3,7 +3,7 @@
 include('../config.php');
 include('../db_mysqli.class.php');
 
-$db = new db_mysqli();
+$db = new \u4u\db_mysqli();
 $db->supressErrors = true;
 $db->keepLiveLog = true;
 echo $db->version();

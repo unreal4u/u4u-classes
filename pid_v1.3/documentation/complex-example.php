@@ -6,12 +6,12 @@ include('../pid.class.php');
 $timeout = 15;
 
 // Calling the pid class without it checking on load if we are running
-$pid = new pid(null, null, null, false);
+$pid = new \u4u\pid(null, null, null, false);
 
 try {
     // Manual call to a PID check, assume default directory and filename.
     $pid->checkPid('','',($timeout * 2));
-} catch (pidException $e) {
+} catch (\u4u\pidException $e) {
     die('Captured exception: '.$e->getMessage().PHP_EOL);
 }
 

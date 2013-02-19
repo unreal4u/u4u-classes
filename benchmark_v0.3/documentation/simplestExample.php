@@ -10,6 +10,6 @@ function myProcess() {
     return true;
 }
 
-$benchmark = new benchmark('bigProcess');
+$benchmark = new \u4u\benchmark('bigProcess');
 myProcess();
 print('Total time spent in bigProcess: '.$benchmark->endCounter('bigProcess'));

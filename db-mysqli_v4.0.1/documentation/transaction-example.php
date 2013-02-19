@@ -5,9 +5,9 @@ include('../db_mysqli.class.php');
 
 include('../../stable-versions.php');
 
-$u4uLoader = new u4u_autoloader();
-$bench     = new benchmark('databaseCalls');
-$db        = new db_mysqli();
+$u4uLoader = new \u4u\u4u_autoloader();
+$bench     = new \u4u\benchmark('databaseCalls');
+$db        = new \u4u\db_mysqli();
 
 echo '<pre>';
 
@@ -19,7 +19,7 @@ try {
     $db->query('INSERT INTO t VALUES (?)',1);
     $db->query('INSERT INTO t VALUES (?)',2);
     $db->end_transaction();
-} catch (queryException $e) {
+} catch (\u4u\queryException $e) {
     printf($e->getMessage().'<br />');
 }
 $bench->endCounter('newTable');
@@ -33,7 +33,7 @@ try {
     $db->query('INSERT INTO t VALUES (?)',2);
     $db->query('INSERT INTO t VALUES (?)',5);
     $db->end_transaction();
-} catch (queryException $e) {
+} catch (\u4u\queryException $e) {
     printf('Transaction failed! The message delivered by the database is: '.$e->getMessage().'<br />');
 }
 $bench->endCounter('databaseException');
@@ -46,7 +46,7 @@ $bench->beginCounter('databaseVersion');
 try {
     echo $db->version();
     print('<br />');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     print_r($e->getMessage().'<br />');
 }
 $bench->endCounter('databaseVersion');

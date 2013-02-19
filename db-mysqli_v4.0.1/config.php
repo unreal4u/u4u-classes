@@ -1,4 +1,7 @@
 <?php
+
+namespace u4u;
+
 /**
  * Config file for db_mysqli.class.php
  *
@@ -10,34 +13,34 @@
  * Defines the DB host
  * @var string
  */
-define('DB_MYSQLI_HOST', 'localhost');    // your db's host
+const DB_MYSQLI_HOST = 'localhost';
 
 /**
  * Defines the DB port
  * @var int
  */
-define('DB_MYSQLI_PORT', 3306);           // your db's port
+const DB_MYSQLI_PORT = 3306;
 
 /**
  * Defines the DB username
  * @var string
  */
-define('DB_MYSQLI_USER', 'db_mysqli_v4'); // your db's username
+const DB_MYSQLI_USER = 'db_mysqli_v4';
 
 /**
  * Defines the DB password
  * @var string
  */
-define('DB_MYSQLI_PASS', 'db_mysqli_v4'); // your db's password
+const DB_MYSQLI_PASS = 'db_mysqli_v4';
 
 /**
  * Defines the DB name
  * @var string
  */
-define('DB_MYSQLI_NAME', 'db_mysqli_v4'); // your db's database name
+const DB_MYSQLI_NAME = 'db_mysqli_v4';
 
 /**
  * Defines the used database charset
  * @var string
  */
-define('DB_MYSQLI_CHAR', 'utf8');         // the used charset
+const DB_MYSQLI_CHAR = 'utf8';

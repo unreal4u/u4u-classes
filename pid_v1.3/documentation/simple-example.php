@@ -2,7 +2,7 @@
 include ('../pid.class.php');
 // Enter here for how many seconds this example script should be running
 $howmany = 30;
-$pid = new pid();
+$pid = new \u4u\pid();
 
 if (!$pid->already_running) {
     for ($i = 1; $i != $howmany; $i++) {
