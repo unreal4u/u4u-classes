@@ -141,7 +141,7 @@ class benchmark {
             $this->data[$identifier]['endMemoryPeakSize'] = memory_get_peak_usage();
         }
 
-        return $this->getDiff($identifier);
+        return $this->getDiff($identifier, 'time');
     }
 
     /**
