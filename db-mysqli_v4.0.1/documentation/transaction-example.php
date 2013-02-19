@@ -5,7 +5,7 @@ include('../db_mysqli.class.php');
 
 include('../../stable-versions.php');
 
-$u4uLoader = new \u4u\u4u_autoloader();
+$u4uLoader = new \u4u\autoLoader();
 $bench     = new \u4u\benchmark('databaseCalls');
 $db        = new \u4u\db_mysqli();
 
@@ -53,8 +53,8 @@ $bench->endCounter('databaseVersion');
 $bench->endCounter('databaseCalls');
 
 printf('End of execution<br />');
-printf('Total time: %f<br />', $bench->getDiff('databaseCalls'));
-printf('New table creation: %f<br />', $bench->getDiff('newTable'));
-printf('Exception time: %f<br />', $bench->getDiff('databaseException'));
-printf('Version time: %f<br />', $bench->getDiff('databaseVersion'));
+printf('Total time: %f<br />', $bench->getDiff('databaseCalls', 'time'));
+printf('New table creation: %f<br />', $bench->getDiff('newTable', 'time'));
+printf('Exception time: %f<br />', $bench->getDiff('databaseException', 'time'));
+printf('Version time: %f<br />', $bench->getDiff('databaseVersion', 'time'));
 echo '</pre>';

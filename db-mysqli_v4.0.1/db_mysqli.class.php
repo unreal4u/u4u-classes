@@ -128,7 +128,7 @@ class db_mysqli {
     public $executedQueries = 0;
 
     /**
-     * When constructed we could enter transaction mode
+     * The constructor, optionally (default off) enter immediatly into transaction mode
      *
      * @param boolean $inTransaction Whether to begin a transaction, defaults to false
      */
@@ -564,7 +564,7 @@ class db_mysqli {
         $return = false;
         if ($this->isWithinCustomErrorHandler === false) {
             $this->isWithinCustomErrorHandler = true;
-            $return = set_error_handler(array('databaseErrorHandler', 'handleError'));
+            $return = set_error_handler(array('\\'.__NAMESPACE__.'\\databaseErrorHandler', 'handleError'));
         }
 
         return $return;

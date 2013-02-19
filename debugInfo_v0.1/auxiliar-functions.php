@@ -15,25 +15,25 @@ unset($rc, $methods, $method);
 */
 
 function _m($message='') {
-    u4u\debugInfo\debugInfo::_m($message);
+    u4u\debugInfo::_m($message);
 }
 
 function debug($a, $print=true) {
-    u4u\debugInfo\debugInfo::debug($a, $print);
+    u4u\debugInfo::debug($a, $print);
 }
 
 function debugFile($message='', $filename='') {
-    u4u\debugInfo\debugInfo::debugFile($message, $filename);
+    u4u\debugInfo::debugFile($message, $filename);
 }
 
 function exception_error_handler($errno, $errstr, $errfile, $errline) {
-    u4u\debugInfo\debugInfo::exception_error_handler($errno, $errstr, $errfile, $errline);
+    u4u\debugInfo::exception_error_handler($errno, $errstr, $errfile, $errline);
 }
 
 function throw_exceptions() {
-    u4u\debugInfo\debugInfo::throw_exceptions();
+    u4u\debugInfo::throw_exceptions();
 }
 
 function redirect($newUrl='', $redirectType=301) {
-    u4u\debugInfo\debugInfo::redirect($newUrl, $redirectType);
+    u4u\debugInfo::redirect($newUrl, $redirectType);
 }

@@ -1,5 +1,5 @@
 <?php
-namespace u4u\debugInfo;
+namespace u4u;
 
 class debugInfo {
     /**
