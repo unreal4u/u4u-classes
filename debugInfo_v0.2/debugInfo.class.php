@@ -28,41 +28,38 @@ class debugInfo {
      * @param string $message
      * @return boolean Returns always true
      */
-    public static function _m($message='') {
-      	echo $message.'<br />'.PHP_EOL;
-      	return true;
+    public static function _m($message = '') {
+        echo $message.'<br />'.PHP_EOL;
+        return true;
     }
 
     /**
      * Makes debugging a variable easier
      *
      * This function applies htmlentities so you can print whatever you want and
-     * display it nicely on-screen. This isn't a part of this class, so if you are
-     * paranoid about possible RAM consumption, just delete it.
+     * display it nicely on-screen.
+     *
      * @param mixed $a Whatever you want to print.
      * @param bool $print Whether you should echo inmediatly or only return the string.
      * @return string The formatted what-so-ever you wanted to print.
      */
-    public static function debug($a, $print=true) {
+    public static function debug($a, $print = true) {
         $output = true;
-
         if (!is_null($a)) {
-          if (empty($_SERVER['argv'][0])) {
-          	if (is_bool($a)) {
-          		$a .= (string)$a;
-          	}
-          	$output = '<pre class="u4u-debug">'.htmlentities(print_r($a,true)).'</pre>';
-          }
-          else {
-              $output = print_r($a,TRUE)."\n";
-          }
+            if (PHP_SAPI == 'cli') {
+                if (is_bool($a)) {
+                    $a .= (string)$a;
+                }
+                $output = '<pre class="u4u-debug">' . htmlentities(print_r($a, true)) . '</pre>';
+            } else {
+                $output = print_r($a, TRUE) . "\n";
+            }
         } else {
             $output = '<pre class="u4u-debug">(null)</pre>';
         }
         if ($print === true) {
             echo $output;
         }
-
         return $output;
     }
 
@@ -73,26 +70,21 @@ class debugInfo {
      * @param string $filename The filename to which we want to print. Can be overwritten with const DEBUGFILE
      * @return boolean Returns true if write was successfull, false otherwise
      */
-    public static function debugFile($message='', $filename='') {
+    public static function debugFile($message = '', $filename = '') {
         $success = false;
-
         if (empty($filename)) {
             $filename = 'u4u-log';
         }
-
         // We can easily write any output to the defined constant
         if (defined('DEBUGFILE')) {
             $filename = DEBUGFILE;
         }
-
-        $filename = sys_get_temp_dir().'/'.$filename;
-
-        $success = file_put_contents($filename, '['.strftime('%d-%m-%Y %T').'] '.print_r($message, true).PHP_EOL, FILE_APPEND);
+        $filename = sys_get_temp_dir() . '/' . $filename;
+        $success = file_put_contents($filename, '[' . strftime('%d-%m-%Y %T') . '] ' . print_r($message, true) . PHP_EOL, FILE_APPEND);
         // file_put_contents can return number of bytes written or false in case of error, convert to boolean
         if ($success !== false) {
             $success = true;
         }
-
         return $success;
     }
 
@@ -124,21 +116,19 @@ class debugInfo {
      * @param int $redirectType Choose between 301 and 302. Defaults to 301
      * @return boolean Returns false if invalid URL was given
      */
-    public static function redirect($newUrl='', $message='', $redirectType=301) {
-    	$msg = '';
-    	if (!empty($message)) {
-    		$msg = '('.$message.')';
-    	}
-
+    public static function redirect($newUrl = '', $message = '', $redirectType = 301) {
+        $msg = '';
+        if (!empty($message)) {
+            $msg = '(' . $message . ')';
+        }
         if (!empty($newUrl)) {
-        	header('Pragma: no-cache');
-        	header('Cache-Control: no-cache');
-            header('Location: '.$newUrl, true, $redirectType);
+            header('Pragma: no-cache');
+            header('Cache-Control: no-cache');
+            header('Location: ' . $newUrl, true, $redirectType);
             exit($msg);
         }
-
         return false;
     }
 }
 
-include('auxiliar-functions.php');
+include ('auxiliar-functions.php');

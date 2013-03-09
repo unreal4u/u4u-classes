@@ -167,6 +167,9 @@ final class u4u_autoloader {
      */
     final public function instantiateClass($class, array $parameters=null) {
         $rc = new ReflectionClass($class);
+        if (is_null($parameters)) {
+            $parameters = array();
+        }
         return $rc->newInstanceArgs($parameters);
     }
 }
