@@ -8,10 +8,10 @@ $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 include('../cacheManager.class.php');
 
 try {
-	$cache = new cacheManager('file', true, '/tmp/myCacheDirectory/');
-} catch(cacheException $e) {
+	$cache = new u4u\cacheManager('file', true, '/tmp/myCacheDirectory/');
+} catch(u4u\cacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
-} catch (versionException $e) {
+} catch (u4u\versionException $e) {
     die($e->getMessage());
 }
 

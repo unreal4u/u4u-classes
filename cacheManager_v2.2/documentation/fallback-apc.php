@@ -8,13 +8,13 @@ $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 include('../cacheManager.class.php');
 
 try {
-	$cache = new cacheManager('apc', true);
+	$cache = new u4u\cacheManager('apc', true);
 	if (!$cache->checkIsEnabled()) {
 	    $cache = new cacheManager('file', '/tmp/myCacheDirectory/');
 	}
-} catch(cacheException $e) {
+} catch(u4u\cacheException $e) {
 	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
-} catch (versionException $e) {
+} catch (u4u\versionException $e) {
     die($e->getMessage());
 }
 

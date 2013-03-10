@@ -27,7 +27,7 @@ $benchmark->endCounter('bigProcess3');
 
 $benchmark->beginCounter(array('print1', 'print2', 'print3'));
 for($i = 1; $i < 4; $i++) {
-    printf('The total time for process #%d was %.'.$benchmark->decimals.'f<br />', $i, $benchmark->getDiff('bigProcess'.$i));
+    printf('The total time for process #%d was %.'.$benchmark->decimals.'f<br />', $i, $benchmark->getDiff('bigProcess'.$i, 'time'));
 }
 $benchmark->endCounter('print1');
 
@@ -45,6 +45,6 @@ printf('Important: Difference between mebibytes and megabytes explained <a href=
 $benchmark->endCounter('print2');
 $benchmark->endCounter('print3');
 
-printf('Time print1: '.$benchmark->getDiff('print1').'<br />');
-printf('Time print2: '.$benchmark->getDiff('print2').'<br />');
-printf('Time print3: '.$benchmark->getDiff('print3').'<br />');
+printf('Time print1: '.$benchmark->getDiff('print1', 'time').'<br />');
+printf('Time print2: '.$benchmark->getDiff('print2', 'time').'<br />');
+printf('Time print3: '.$benchmark->getDiff('print3', 'time').'<br />');

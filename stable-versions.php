@@ -90,7 +90,7 @@ const RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
  * <li>etc...</li></ul>
  *
  * Then you must call this class as:
- * <code>$u4u_autoloader = new u4u_autoloader();</code>
+ * <code>$u4u_autoloader = new u4u\autoloader();</code>
  *
  * This will instantiate the autoLoader: no more worries for you!
  *
@@ -159,7 +159,7 @@ final class autoLoader {
      * Instantiates the class for us, will register the autoloader implicitly!
      *
      * The usage for this method is quite easy:
-     * <code>$u4uLoader = new u4u_autoloader();
+     * <code>$u4uLoader = new u4u\autoloader();
      * $cacheManager = $u4uLoader->instantiateClass('cacheManager', array('apc'));
      * $benchmark = $u4uLoader->instantiateClass('benchmark');</code>
      *

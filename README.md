@@ -1,6 +1,8 @@
 README
 ==============
 
+NOTE: This branch isn't ready for production yet as not all classes has been thoroughly tested yet!
+
 u4u-classes
 --------------
 
@@ -35,7 +37,8 @@ Classes description
 * *db-mysqli_v4.0.0*: Outdated class. See db-mysqli_v4.0.1
 * *db-mysqli_v4.0.1*: My very own class to do queries to MySQL using the mysqli connector. It can do paramatrized
   queries and many other things.
-* *debugInfo_v0.1*: Functions that aid me in the development of new functionality. Replacement of old functions.php.
+* *debugInfo_v0.1*: Outdated class. See debugInfo_v0.2
+* *debugInfo_v0.2*: Functions that aid me in the development of new functionality. Replacement of old functions.php.
 * *extended-pgsql_v1.1.0*: The postgres implementation for db-mysqli_v3.1.1. Expect very soon a newer improved version!
   Based on PDO.
 * *HTMLUtils_v1.0*: Outdated class. May or may not be updated in the future.
@@ -53,8 +56,9 @@ How to use these classes
 I recommend the following steps: 
 * Clone the project: <code>git clone git://github.com/unreal4u/u4u-classes.git u4u-classes</code>
 * Include the following file: <code>include('u4u-classes/stable-versions.php');</code>
-* Initialize the autoloader: <code>$u4uLoader = new u4u_autoloader();</code>
+* Initialize the autoloader: <code>$u4uLoader = new u4u\autoloader();</code>
 * Now anything you need to do is initializing the class you need: <code>$database = new db_mysqli();</code>
+* Recommended however is to initialize the classes you need via the incorporated instantiator: <code>$database = $u4uLoader->instantiateClass('db_mysqli');</code>
 * Use the basename of the class you need to use, the autoloader will automatically load the last stable version of the
   class for you. 
 
