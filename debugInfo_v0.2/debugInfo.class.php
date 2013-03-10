@@ -34,6 +34,15 @@ class debugInfo {
     }
 
     /**
+     * Returns the current date and time to be used in the debug functions
+     *
+     * @return string
+     */
+    private static function getDateStamp() {
+        return '[' . strftime('%d-%m-%Y %T') . '] ';
+    }
+
+    /**
      * Makes debugging a variable easier
      *
      * This function applies htmlentities so you can print whatever you want and
@@ -46,13 +55,13 @@ class debugInfo {
     public static function debug($a, $print = true) {
         $output = true;
         if (!is_null($a)) {
-            if (PHP_SAPI == 'cli') {
+            if (PHP_SAPI != 'cli') {
                 if (is_bool($a)) {
                     $a .= (string)$a;
                 }
                 $output = '<pre class="u4u-debug">' . htmlentities(print_r($a, true)) . '</pre>';
             } else {
-                $output = print_r($a, TRUE) . "\n";
+                $output = self::getDateStamp() . print_r($a, TRUE) . "\n";
             }
         } else {
             $output = '<pre class="u4u-debug">(null)</pre>';
@@ -80,7 +89,7 @@ class debugInfo {
             $filename = DEBUGFILE;
         }
         $filename = sys_get_temp_dir() . '/' . $filename;
-        $success = file_put_contents($filename, '[' . strftime('%d-%m-%Y %T') . '] ' . print_r($message, true) . PHP_EOL, FILE_APPEND);
+        $success = file_put_contents($filename, self::getDateStamp() . print_r($message, true) . PHP_EOL, FILE_APPEND);
         // file_put_contents can return number of bytes written or false in case of error, convert to boolean
         if ($success !== false) {
             $success = true;
@@ -107,27 +116,6 @@ class debugInfo {
      */
     public static function throw_exceptions() {
         set_error_handler('debugInfo::exception_error_handler');
-    }
-
-    /**
-     * Redirects the user to another location
-     *
-     * @param string $newUrl The new url to which redirect the user to
-     * @param int $redirectType Choose between 301 and 302. Defaults to 301
-     * @return boolean Returns false if invalid URL was given
-     */
-    public static function redirect($newUrl = '', $message = '', $redirectType = 301) {
-        $msg = '';
-        if (!empty($message)) {
-            $msg = '(' . $message . ')';
-        }
-        if (!empty($newUrl)) {
-            header('Pragma: no-cache');
-            header('Cache-Control: no-cache');
-            header('Location: ' . $newUrl, true, $redirectType);
-            exit($msg);
-        }
-        return false;
     }
 }
 
