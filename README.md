@@ -35,7 +35,8 @@ Classes description
 * *db-mysqli_v4.0.0*: Outdated class. See db-mysqli_v4.0.1
 * *db-mysqli_v4.0.1*: My very own class to do queries to MySQL using the mysqli connector. It can do paramatrized
   queries and many other things.
-* *debugInfo_v0.1*: Functions that aid me in the development of new functionality. Replacement of old functions.php.
+* *debugInfo_v0.1*: Outdated class. See debugInfo_v0.2
+* *debugInfo_v0.2*: Functions that aid me in the development of new functionality. Replacement of old functions.php.
 * *extended-pgsql_v1.1.0*: The postgres implementation for db-mysqli_v3.1.1. Expect very soon a newer improved version!
   Based on PDO.
 * *HTMLUtils_v1.0*: Outdated class. May or may not be updated in the future.
