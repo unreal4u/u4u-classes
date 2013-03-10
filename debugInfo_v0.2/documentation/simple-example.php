@@ -2,10 +2,6 @@
 
 include('../debugInfo.class.php');
 
-if (!empty($_GET['redirectToComplex'])) {
-    redirect('complex-example.php', 'Message if redirect is unsuccessfull');
-}
-
 debug('hello!');
 
 debug(str_repeat('-', 80));
@@ -27,7 +23,11 @@ print('array printing with debug function: ');
 debug($array);
 
 debug(str_repeat('-', 80));
-$array = array('<strong>Special <em>HTML tags</em> are automatically escaped!</strong>', '<script type="text/javascript">alert(\'hello!\');</script>');
+$array = array(
+    '<strong>Special <em>HTML tags</em> are automatically escaped!</strong>',
+    'Even if <em>they are incomplete!',
+    '<script type="text/javascript">alert(\'hello!\');</script>',
+);
 
 print('HTML strings with var_dump: ');
 var_dump($array);
@@ -35,4 +35,4 @@ var_dump($array);
 print('HTML strings with debug function: ');
 debug($array);
 
-printf('<a href="%s">Click here</a> to go to complex examples (will redirect first to this script and then complex-example.php)', 'simple-example.php?redirectToComplex=true');
+printf('<a href="%s">Click here</a> to go to complex examples', 'complex-example.php');

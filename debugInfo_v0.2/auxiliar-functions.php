@@ -17,32 +17,20 @@ foreach($methods AS $method) {
 unset($rc, $methods, $method);
 */
 
-if (!function_exists('_m')) {
-    function _m($message='') {
-        debugInfo::_m($message);
-    }
-}
-
 if (!function_exists('debug')) {
-    function debug($a, $print=true) {
-        debugInfo::debug($a, $print);
+    function debug($a, $print=true, $message='') {
+        return debugInfo::debug($a, $print, $message);
     }
 }
 
 if (!function_exists('debugFile')) {
-    function debugFile($message='', $filename='') {
-        debugInfo::debugFile($message, $filename);
-    }
-}
-
-if (!function_exists('exception_error_handler')) {
-    function exception_error_handler($errno, $errstr, $errfile, $errline) {
-        debugInfo::exception_error_handler($errno, $errstr, $errfile, $errline);
+    function debugFile($message='', $filename='', $directory='') {
+        return debugInfo::debugFile($message, $filename, $directory);
     }
 }
 
 if (!function_exists('throw_exceptions')) {
-    function throw_exceptions() {
-        debugInfo::throw_exceptions();
+    function throwExceptions() {
+        return debugInfo::throwExceptions();
     }
 }
