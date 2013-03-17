@@ -1,6 +1,6 @@
 <?php
 
-use u4u;
+use \u4u;
 
 /**
  * Implements debugInfo::debug as a function
