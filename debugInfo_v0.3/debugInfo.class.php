@@ -50,8 +50,8 @@ class debugInfo {
     /**
      * Makes debugging a variable easier
      *
-     * This function applies htmlentities so you can print whatever you want and
-     * display it nicely on-screen.
+     * This function applies htmlentities so you can print whatever you want and display it nicely on-screen. It will
+     * work nicely with CLI programs too formatting the output to differ a bit from the output made through HTML.
      *
      * @param mixed $a Whatever you want to print
      * @param bool $print Whether you should echo inmediatly or only return the string
@@ -83,13 +83,14 @@ class debugInfo {
                 }
                 break;
             // In case we're printing out an array, check out what for types each component of that array is
-            case 'array':
-                $copyOriginalArray = $a;
-                $a = array();
-                foreach($copyOriginalArray AS $index => $value) {
-                    $a[$index] = self::debug($value, false, $message);
-                }
-                break;
+            // @TODO Disabled for now, it produces a disastrous result when printing out nested arrays
+            #case 'array':
+            #    $copyOriginalArray = $a;
+            #    $a = array();
+            #    foreach($copyOriginalArray AS $index => $value) {
+            #        $a[$index] = self::debug($value, false, $message);
+            #    }
+            #    break;
         }
 
         if (PHP_SAPI != 'cli') {
@@ -115,13 +116,35 @@ class debugInfo {
     /**
      * This function will debug through FirePHP
      *
-     * This function will assume that PEAR is installed and up and running correctly. The steps to install FirePHP
-     * through PEAR are:
-     * <code>
-     * pear channel-discover pear.firephp.org
-     * pear install firephp/FirePHPCore
-     * </code>
-     * After that, you can include the FirePHP library (already done in the class) and finally print to it.
+     * Two pre-requisites are needed for this function to work properly:
+     * <ul>
+     *     <li>You need to install: Firefox + Firebug extension + FirePHP extension
+     *         <ul><li><a href="http://www.mozilla.org/en-US/firefox/all/">Firefox</a></li>
+     *             <li><a href="https://getfirebug.com/">Firebug extension</a></li>
+     *             <li><a href="https://addons.mozilla.org/en-US/firefox/addon/firephp/">FirePHP extension</a></li>
+     *         </ul>
+     *     </li>
+     *     <li>The initial setup requires enabling the Console and Net tabs within Firebug</li>
+     *     <li>FirePHP PHP classes:
+     *         <ul>
+     *             <li>You need to install PEAR:
+     *                 <ul><li><code>wget http://pear.php.net/go-pear</code></li>
+     *                     <li><code>php go-pear.php</code></li>
+     *                 </ul>
+     *             </li>
+     *             <li>Then you need to install FirePHPCore code:
+     *                 <ul><li><code>pear channel-discover pear.firephp.org</code></li>
+     *                     <li><code>pear install firephp/FirePHPCore</code></li>
+     *                 </ul>
+     *             </li>
+     *         </ul>
+     *     </li>
+     * </ul>
+     *
+     * After that, you can include the FirePHP library (already done in the class) and finally print to it. The result
+     * will appear in the Console tab within Firebug.
+     *
+     * Usage is exactly the same as the debug() function within this same class.
      *
      * @throws Exception Will throw an exception if FirePHP class isn't found
      * @throws Exception Will throw an exception if headers are already sent
