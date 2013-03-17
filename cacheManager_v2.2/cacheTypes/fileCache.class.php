@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * Provides a file-based cache manager
  *
@@ -8,7 +10,7 @@
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
-class fileCache extends u4u\cacheManager implements u4u\cacheManagerInterface {
+class fileCache extends \u4u\cacheManager implements \u4u\cacheManagerInterface {
     /**
      * Contains the actual directory
      *
