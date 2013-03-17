@@ -10,12 +10,6 @@ namespace u4u;
  */
 
 /**
- * Defines latest stable release of "Automatic database updater" class
- * @var string
- */
-const DB_UPDATER = 'Automatic-DB-Updater_v0.1/db_updater.class.php';
-
-/**
  * Defines latest stable release of "benchmark" class
  * @var string
  */
@@ -43,7 +37,7 @@ const DB_MYSQLI = 'db-mysqli_v4.0.1/db_mysqli.class.php';
  * Defines latest stable release of "debugInfo" class
  * @var string
  */
-const DEBUGINFO = 'debugInfo_v0.2/debugInfo.class.php';
+const DEBUGINFO = 'debugInfo_v0.3/debugInfo.class.php';
 
 /**
  * Defines latest stable release of "Extended PGSQL" class
@@ -56,18 +50,6 @@ const EXTENDED_PGSQL = 'extended-pgsql_v1.1.0/extended_pgsql.class.php';
  * @var string
  */
 const HTMLUTILS = 'HTMLUtils_v1.0/HTMLUtils.class.php';
-
-/**
- * Defines latest stable release of "Message Stacker" class
- * @var string
- */
-const MESSAGESTACK = 'messageStack_v1.0.2/messageStack.class.php';
-
-/**
- * Defines latest stable release of "MySQL paginator" class
- * @var string
- */
-const PAGINATOR = 'mysql-paginator_v1.1/paginator.class.php';
 
 /**
  * Defines latest stable release of "PID process identifier" class

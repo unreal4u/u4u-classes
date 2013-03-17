@@ -7,14 +7,14 @@ namespace u4u;
  *
  * @package debugInfo
  * @author Camilo Sperberg - http://unreal4u.com/
- * @version 0.2
+ * @version 0.3
  */
 class debugInfo {
     /**
      * Version of this class
      * @var string
      */
-    private $version = '0.2';
+    private $version = '0.3';
 
     /**
      * The format of the timestamp that will be printed, based on strftime
@@ -58,38 +58,40 @@ class debugInfo {
      * @param string $message The message to print before the variable printing
      * @return string The formatted what-so-ever you wanted to print
      */
-    public static function debug($a, $print=true, $message='') {
+    public static function debug($a=null, $print=true, $message='') {
         $output = true;
+        $type = gettype($a);
 
-        // If array, add to printing stack
-        if (is_array($a)) {
-            $copyOriginalArray = $a;
-            $a = array();
-            foreach($copyOriginalArray AS $index => $value) {
-                $a[$index] = self::debug($value, false, $message);
-            }
-        }
-
-        // Beginning of special cases: if boolean false, indicate so
-        if ($a === false) {
-            $a = '(boolean) false';
-        }
-
-        // Same with empty string
-        if ($a === '') {
-            $a = "(empty string) ''";
-        }
-
-        // Finally, check NULL and mark boolean true also
-        switch ($a) {
-            case is_bool($a):
-                if (is_null($a)) {
-                    $a = '(null)';
+        // Check what action to take depending on type of data
+        switch($type) {
+            // Overwrite variable with string to indicate clearly what type of data we're dealing with
+            case 'NULL':
+                $a = '(null)';
+                break;
+            // Overwrite variable with string to indicate clearly what type of data we're dealing with
+            case 'boolean':
+                if ($a === true) {
+                    $a = '('.$type.') true';
                 } else {
-                    $a = '(boolean) true';
+                    $a = '('.$type.') false';
                 }
-            break;
+                break;
+            // Indicate also empty string
+            case 'string':
+                if ($a === '') {
+                    $a = "(empty string) ''";
+                }
+                break;
+            // In case we're printing out an array, check out what for types each component of that array is
+            case 'array':
+                $copyOriginalArray = $a;
+                $a = array();
+                foreach($copyOriginalArray AS $index => $value) {
+                    $a[$index] = self::debug($value, false, $message);
+                }
+                break;
         }
+
         if (PHP_SAPI != 'cli') {
             // If outputting to browser, escape the contents
             $output = $message . htmlentities(print_r($a, true));
@@ -108,6 +110,27 @@ class debugInfo {
 
         // Return the output
         return $output;
+    }
+
+    /**
+     * This function will debug through FirePHP
+     *
+     * This function will assume that PEAR is installed and up and running correctly. The steps to install FirePHP
+     * through PEAR are:
+     * <code>
+     * pear channel-discover pear.firephp.org
+     * pear install firephp/FirePHPCore
+     * </code>
+     *
+     * @param mixed $a Whatever we want to print
+     * @param boolean $print Whether to print immediatly or not. Ignored for this function
+     * @param string $message What message to append to
+     */
+    public static function debugFirePHP($a=null, $print=false, $message='') {
+        require_once('FirePHPCore/FirePHP.class.php');
+
+        $firephp = \FirePHP::getInstance(true);
+        $firephp->log(self::debug($a, false), $message);
     }
 
     /**
