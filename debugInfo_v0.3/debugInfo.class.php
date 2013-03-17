@@ -121,16 +121,29 @@ class debugInfo {
      * pear channel-discover pear.firephp.org
      * pear install firephp/FirePHPCore
      * </code>
+     * After that, you can include the FirePHP library (already done in the class) and finally print to it.
      *
+     * @throws Exception Will throw an exception if FirePHP class isn't found
+     * @throws Exception Will throw an exception if headers are already sent
      * @param mixed $a Whatever we want to print
      * @param boolean $print Whether to print immediatly or not. Ignored for this function
      * @param string $message What message to append to
      */
     public static function debugFirePHP($a=null, $print=false, $message='') {
-        require_once('FirePHPCore/FirePHP.class.php');
+        if (!headers_sent()) {
+            include_once('FirePHPCore/FirePHP.class.php');
 
-        $firephp = \FirePHP::getInstance(true);
-        $firephp->log(self::debug($a, false), $message);
+            if (!class_exists('FirePHP')) {
+                throw new \Exception('FirePHP is not installed or its main file isn\'t being included');
+            }
+
+            $firePHP = \FirePHP::getInstance(true);
+            $firePHP->log($a, $message);
+        } else {
+            throw new \Exception('Headers already sent, can not send FirePHP\'s messages');
+        }
+
+        return self::debug($a, false, $message);
     }
 
     /**
