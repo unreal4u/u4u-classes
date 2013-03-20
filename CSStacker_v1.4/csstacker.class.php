@@ -1,5 +1,7 @@
 <?php
 
+namespace u4u;
+
 /**
  * CSStacker - A stacker for CSS files
  *
