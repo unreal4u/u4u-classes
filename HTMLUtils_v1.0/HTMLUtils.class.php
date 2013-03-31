@@ -54,9 +54,9 @@ it also checks whether it is readable.
     $output = array('external'=>FALSE,'href'=>$src,'readable'=>TRUE);
     if (strpos($src,'http://') === FALSE) {
       if (strpos($src,'/') === 0) $src = substr_replace($src,'',0,1);
-      if (!is_readable(ROUT.$src)) {
+      if (!is_readable(ABSPATH.$src)) {
         $output['readable'] = FALSE;
-        $this->logError(2,'File '.$src.' located in '.ROUT.$src.' isn\'t readable or doesn\'t exist');
+        $this->logError(2,'File '.$src.' located in '.ABSPATH.$src.' isn\'t readable or doesn\'t exist');
       }
       $output['href'] = HOME.$src;
     }
@@ -270,11 +270,11 @@ This function creates an "img" tag, with all necesary sintaxis that finally allo
   public function c_img($ruta='',$alt='',$class='',$style='',$javascript='',$absolute=false,$width=0,$height=0) {
     $file = $this->external($ruta);
     if ($file['readable'] === TRUE) {
-      if ($absolute === TRUE) $output = '<img src="'.ROUT.$ruta.'" ';
+      if ($absolute === TRUE) $output = '<img src="'.ABSPATH.$ruta.'" ';
       else $output = '<img src="'.$file['href'].'" ';
       if (empty($alt)) $alt = ' ';
       if($file['readable'] === TRUE AND $file['external'] === FALSE AND empty($width) AND empty($height)) {
-        $info_img = getimagesize(ROUT.$ruta);
+        $info_img = getimagesize(ABSPATH.$ruta);
         $output .= $info_img[3];
         unset($info_img);
       }
@@ -394,7 +394,7 @@ Allowed tags:
       $output .= '<!--[if !IE]> <--><object data="'.$file['href'].'" type="application/x-shockwave-flash" height="'.$height.'" width="'.$width.'"';
       if (!empty($id)) $output .= ' name="'.$id.'"';
       $output .= '><param name="quality" value="'.$quality.'"'.$this->endtag('param').'<param name="pluginurl" value="http://www.macromedia.com/go/getflashplayer"'.$this->endtag('param').'<!-- <![endif]-->';
-      if (is_readable(ROUT.$this->fallback_flash_img)) $output .= $this->c_img($this->fallback_flash_img,$this->fallback_flash_msg);
+      if (is_readable(ABSPATH.$this->fallback_flash_img)) $output .= $this->c_img($this->fallback_flash_img,$this->fallback_flash_msg);
       else $output .= $this->fallback_flash_msg;
       $output .= $this->endtag('object',TRUE).$post_text;
     }

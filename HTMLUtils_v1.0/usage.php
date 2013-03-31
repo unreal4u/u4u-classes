@@ -93,7 +93,7 @@ echo $he->c_list($data_array);
 
 echo $hr;
 echo $he->c_tag('h2','And finally... do we have some errors?');
-$he->pre(\u4u\$HTMLErrors);
+$he->pre($HTMLErrors);
 // pre() prints out by default, no need to echo that. If you don't want pre to print out, use this:
 //echo $he->pre($HTMLErrors,FALSE);
 
