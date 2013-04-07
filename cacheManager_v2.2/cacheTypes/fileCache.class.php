@@ -123,7 +123,7 @@ class fileCache extends \u4u\cacheManager implements \u4u\cacheManagerInterface 
             }
 
             if ($this->isEnabled !== true) {
-                throw new Exception('Directory is not writable!');
+                throw new \Exception('Directory is not writable!');
             }
         }
 

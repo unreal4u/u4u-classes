@@ -34,7 +34,7 @@ class apcCache extends \u4u\cacheManager implements \u4u\cacheManagerInterface {
             $this->isEnabled = (bool)ini_get('apc.enabled');
             if ($this->isEnabled === false or !extension_loaded('apc')) {
                 $this->isEnabled = false;
-                throw new Exception('APC extension is not loaded or not enabled!');
+                throw new \Exception('APC extension is not loaded or not enabled!');
             }
         }
 
