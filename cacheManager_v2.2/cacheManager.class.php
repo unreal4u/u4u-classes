@@ -51,6 +51,12 @@ class cacheManager {
     protected $isChecked = false;
 
     /**
+     * Whether to omit the is_readable call on the constructor, great for optimization
+     * @var boolean Defaults to false
+     */
+    protected $omitExistanceCheck = false;
+
+    /**
 	 * Whether APC is enabled and ready to be used or not
 	 * @var boolean Defaults to true
 	 */
@@ -78,12 +84,13 @@ class cacheManager {
         $route = dirname(__FILE__) . '/cacheTypes/' . $objectName . '.class.php';
 
         // If you want speed, ensure that the cache you've selected exists and delete the is_readable call
-        if (is_readable($route)) {
+        if (!$this->omitExistanceCheck || is_readable($route)) {
             include_once ($route);
+            $ns = '\\'.__NAMESPACE__.'\\';
 
-            $rc = new \ReflectionClass('\\'.__NAMESPACE__.'\\'.$objectName);
+            $rc = new \ReflectionClass($ns.$objectName);
             $this->object = $rc->newInstanceArgs($args);
-            if ((!$rc->implementsInterface('u4u\\cacheManagerInterface')) or !$rc->isSubclassOf('u4u\\cacheManager')) {
+            if ((!$rc->implementsInterface($ns.'cacheManagerInterface')) or !$rc->isSubclassOf($ns.'cacheManager')) {
                 $errorMessage = 'Class doesn\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation';
                 if ($this->throwExceptions === true) {
                     throw new \u4u\cacheException($errorMessage);
@@ -209,5 +216,18 @@ class cacheManager {
 	 */
     public function getVersion() {
         return $this->version;
+    }
+}
+
+/**
+ * Little subclass that deactivates the check whether the cache file exists
+ *
+ * @package Cache manager
+ * @author Camilo Sperberg - http://unreal4u.com/
+ */
+class cacheManagerNoChecks extends \u4u\cacheManager {
+    public function __construct() {
+        $this->omitExistanceCheck = true;
+        call_user_func_array('parent::__construct', func_get_args());
     }
 }

@@ -109,14 +109,13 @@ class benchmark {
      */
     public function beginCounter($identifier) {
         // First step: get the current exact time
-        $time = $this->getExactTime();
         if (!empty($identifier)) {
             if (!is_array($identifier)) {
                 $identifier = array($identifier);
             }
 
             foreach($identifier AS $id) {
-                $this->data[$id]['startTime'] = $time;
+                $this->data[$id]['startTime'] = $this->getExactTime();
                 $this->data[$id]['startMemorySize'] = memory_get_usage();
                 $this->data[$id]['startMemoryPeakSize'] = memory_get_peak_usage();
             }
