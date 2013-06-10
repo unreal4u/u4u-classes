@@ -115,6 +115,7 @@ class benchmark {
             }
 
             foreach($identifier AS $id) {
+                $this->data[$id] = array();
                 $this->data[$id]['startTime'] = $this->getExactTime();
                 $this->data[$id]['startMemorySize'] = memory_get_usage();
                 $this->data[$id]['startMemoryPeakSize'] = memory_get_peak_usage();
