@@ -1,5 +1,13 @@
 <?php
 
+function myProcess() {
+    for ($i = 0; $i < 200000; $i++) {
+        $j = round($i * 44 + 33 * $i - $i * sqrt(10), 6);
+    }
+
+    return true;
+}
+
 include('../debugInfo.class.php');
 
 debug('hello!');
@@ -35,4 +43,16 @@ var_dump($array);
 print('HTML strings with debug function: ');
 debug($array);
 
-printf('<a href="%s">Click here</a> to go to complex examples', 'complex-example.php');
+printf('<a href="%s">Click here</a> to go to complex examples<br />', 'complex-example.php');
+
+
+$a->decimals = 10;
+$a->beginCounter('theProcess');
+myProcess();
+$endTime = $a->endCounter('theProcess');
+
+printf('Total time: %.'.$a->decimals.'f<br />', $endTime);
+printf('Total memory: %d<br />', $a->getDiff('theProcess', 'memory'));
+printf('Total memory (Peak): %d<br />', $a->getDiff('theProcess', 'peakmemory'));
+
+print($a::convertTimestamp());

@@ -35,6 +35,9 @@ Version History
         * General cleanup
         * Code is now more consistent
         * Extensively tested
+* 0.3 :
+    * Changed defaults to a much better representation
+    * More checks for debugFirePHP
 
 Contact the author
 -------
