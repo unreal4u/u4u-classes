@@ -117,6 +117,16 @@ final class autoLoader {
     final public function registerAutoLoader() {
         return spl_autoload_register(array($this, 'includeClass'));
     }
+
+    /**
+     * Unsets the autoloader
+     *
+     * @return boolean
+     */
+    final public function unregisterAutoLoader() {
+        return spl_autoload_unregister(array($this, 'includeClass'));
+    }
+
     /**
      * Includes the given class file if it exists and isn't already loaded
      *
