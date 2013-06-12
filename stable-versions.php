@@ -83,6 +83,12 @@ const RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
  */
 final class autoLoader {
     /**
+     * Information about whether the autoloader is loaded or not
+     * @var boolean
+     */
+    private $autoLoaderLoaded = false;
+
+    /**
      * Container of the already included classes
      * @var array
      */
@@ -99,7 +105,7 @@ final class autoLoader {
      *
      * @param boolean $registerAutoLoader Whether we should register the autoloader on __construct or not. Defaults to true
      */
-    function __construct($registerAutoLoader=true) {
+    public function __construct($registerAutoLoader=true) {
         if ($registerAutoLoader === true) {
             $this->registerAutoLoader();
         }
@@ -110,21 +116,32 @@ final class autoLoader {
     }
 
     /**
+     * Destructor
+     */
+    public function __destruct() {
+        $this->unregisterAutoLoader();
+    }
+
+    /**
      * Registers the autoloader
      *
-     * @return boolean Returns always true
+     * @return boolean Returns true if autoLoader could be loaded
      */
     final public function registerAutoLoader() {
-        return spl_autoload_register(array($this, 'includeClass'));
+        $this->autoLoaderLoaded = spl_autoload_register(array($this, 'includeClass'));
+        return $this->autoLoaderLoaded;
     }
 
     /**
      * Unsets the autoloader
      *
-     * @return boolean
+     * @return boolean Returns true if autoloader could not be unregistered, false otherwise
      */
     final public function unregisterAutoLoader() {
-        return spl_autoload_unregister(array($this, 'includeClass'));
+        if ($this->autoLoaderLoaded === true) {
+            $this->autoLoaderLoaded = !spl_autoload_unregister(array($this, 'includeClass'));
+        }
+        return $this->autoLoaderLoaded;
     }
 
     /**
@@ -168,6 +185,7 @@ final class autoLoader {
         if (!is_array($parameters)) {
             $parameters = array();
         }
+        $this->unregisterAutoLoader();
         return $rc->newInstanceArgs($parameters);
     }
 }
