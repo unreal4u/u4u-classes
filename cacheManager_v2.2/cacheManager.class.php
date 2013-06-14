@@ -39,15 +39,15 @@ class cacheManager {
     protected $_ttl = 60;
 
     /**
-	 * Whether to throw exceptions or not
-	 * @var boolean Defaults to false
-	 */
+     * Whether to throw exceptions or not
+     * @var boolean Defaults to false
+     */
     protected $throwExceptions = true;
 
     /**
-	 * Stores whether we have already checked that APC is enabled or not
-	 * @var boolean Defaults to false
-	 */
+     * Stores whether we have already checked that APC is enabled or not
+     * @var boolean Defaults to false
+     */
     protected $isChecked = false;
 
     /**
@@ -57,15 +57,15 @@ class cacheManager {
     protected $omitExistanceCheck = false;
 
     /**
-	 * Whether APC is enabled and ready to be used or not
-	 * @var boolean Defaults to true
-	 */
+     * Whether APC is enabled and ready to be used or not
+     * @var boolean Defaults to true
+     */
     public $isEnabled = true;
 
     /**
-	 * Whether the class is in debug mode or not
-	 * @var boolean
-	 */
+     * Whether the class is in debug mode or not
+     * @var boolean
+     */
     public $debugMode = false;
 
     /**
@@ -78,19 +78,16 @@ class cacheManager {
         if (version_compare(PHP_VERSION, '5.3.0', '<=')) {
             throw new \u4u\versionException('This class will only work with PHP &gt;= 5.3.0');
         }
-
         $args = func_get_args();
         $objectName = array_shift($args) . 'Cache';
         $route = dirname(__FILE__) . '/cacheTypes/' . $objectName . '.class.php';
-
         // If you want speed, ensure that the cache you've selected exists and delete the is_readable call
         if (!$this->omitExistanceCheck || is_readable($route)) {
             include_once ($route);
-            $ns = '\\'.__NAMESPACE__.'\\';
-
-            $rc = new \ReflectionClass($ns.$objectName);
+            $ns = '\\' . __NAMESPACE__ . '\\';
+            $rc = new \ReflectionClass($ns . $objectName);
             $this->object = $rc->newInstanceArgs($args);
-            if ((!$rc->implementsInterface($ns.'cacheManagerInterface')) or !$rc->isSubclassOf($ns.'cacheManager')) {
+            if ((!$rc->implementsInterface($ns . 'cacheManagerInterface')) or !$rc->isSubclassOf($ns . 'cacheManager')) {
                 $errorMessage = 'Class doesn\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation';
                 if ($this->throwExceptions === true) {
                     throw new \u4u\cacheException($errorMessage);
@@ -118,14 +115,15 @@ class cacheManager {
     /**
      * Executes the child method name
      *
-     * @param string $methodName The name of the method
-     * @param mixed $args The arguments to pass on to the function
+     * @param string $methodName
+     *            The name of the method
+     * @param mixed $args
+     *            The arguments to pass on to the function
      * @throws cacheException If the called method doesn't exist
      * @return mixed Returns whatever response the child object gives
      */
     public function __call($methodName, $args) {
         $return = null;
-
         if (in_array($methodName, $this->methods)) {
             $return = false;
             if (!$this->debugMode) {
@@ -146,26 +144,28 @@ class cacheManager {
                 throw new cacheException('The method "' . $methodName . '" does not exist or is not public');
             }
         }
-
         return $return;
     }
 
     /**
-	 * Enabled throwing exceptions
-	 *
-	 * @param boolean $throwExceptionOnDisabled Pass true to enable exceptions, false otherwise
-	 */
+     * Enabled throwing exceptions
+     *
+     * @param boolean $throwExceptionOnDisabled
+     *            Pass true to enable exceptions, false otherwise
+     */
     public function throwExceptions($throwExceptions = true) {
         $this->throwExceptions = (bool)$throwExceptions;
     }
 
     /**
-	 * Function that creates an unique identifier based on optional arguments
-	 *
-	 * @param string $identifier A function name
-	 * @param array $funcArgs Unique extra optional arguments
-	 * @return string Returns an unique md5 string
-	 */
+     * Function that creates an unique identifier based on optional arguments
+     *
+     * @param string $identifier
+     *            A function name
+     * @param array $funcArgs
+     *            Unique extra optional arguments
+     * @return string Returns an unique md5 string
+     */
     protected function _cacheId($identifier = '', $funcArgs = null) {
         // Any empty value (0, NULL, false) will be converted to an empty array
         if (empty($funcArgs)) {
@@ -182,38 +182,39 @@ class cacheManager {
     }
 
     /**
-	 * Enabled debug mode (make this class a bit useless, but useful for testing)
-	 *
-	 * @return boolean Returns always true
-	 */
+     * Enabled debug mode (make this class a bit useless, but useful for testing)
+     *
+     * @return boolean Returns always true
+     */
     public function enableDebugMode() {
         $this->debugMode = true;
         return $this->debugMode;
     }
 
     /**
-	 * Disables debug mode and make this class work again
-	 *
-	 * @return boolean Returns always false
-	 */
+     * Disables debug mode and make this class work again
+     *
+     * @return boolean Returns always false
+     */
     public function disableDebugMode() {
         $this->debugMode = false;
         return $this->debugMode;
     }
 
     /**
-	 * Sets the total time to live for a cache
-	 *
-	 * @param int $ttl The total time to live setting
-	 * @return int Returns what is just set
-	 */
+     * Sets the total time to live for a cache
+     *
+     * @param int $ttl
+     *            The total time to live setting
+     * @return int Returns what is just set
+     */
     protected function _setTtl($ttl = 60) {
         return $this->_ttl = $ttl;
     }
 
     /**
-	 * Returns the current version
-	 */
+     * Returns the current version
+     */
     public function getVersion() {
         return $this->version;
     }
@@ -226,6 +227,7 @@ class cacheManager {
  * @author Camilo Sperberg - http://unreal4u.com/
  */
 class cacheManagerNoChecks extends \u4u\cacheManager {
+
     public function __construct() {
         $this->omitExistanceCheck = true;
         call_user_func_array('parent::__construct', func_get_args());

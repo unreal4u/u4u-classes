@@ -11,54 +11,63 @@ namespace u4u;
 
 /**
  * Defines latest stable release of "benchmark" class
+ *
  * @var string
  */
 const BENCHMARK = 'benchmark_v0.3/benchmark.class.php';
 
 /**
  * Defines latest stable release of "cacheManager" class
+ *
  * @var string
  */
 const CACHEMANAGER = 'cacheManager_v2.2/cacheManager.class.php';
 
 /**
  * Defines latest stable release of "CSS Stacker" class
+ *
  * @var string
  */
 const CSSTACKER = 'CSStacker_v1.4/csstacker.class.php';
 
 /**
  * Defines latest stable release of "Extended MySQLi" class
+ *
  * @var string
  */
 const DB_MYSQLI = 'db-mysqli_v4.0.1/db_mysqli.class.php';
 
 /**
  * Defines latest stable release of "debugInfo" class
+ *
  * @var string
  */
 const DEBUGINFO = 'debugInfo_v1.0/debugInfo.class.php';
 
 /**
  * Defines latest stable release of "Extended PGSQL" class
+ *
  * @var string
  */
 const EXTENDED_PGSQL = 'extended-pgsql_v1.1.0/extended_pgsql.class.php';
 
 /**
  * Defines latest stable release of "HTML Utilities" class
+ *
  * @var string
  */
 const HTMLUTILS = 'HTMLUtils_v1.0/HTMLUtils.class.php';
 
 /**
  * Defines latest stable release of "PID process identifier" class
+ *
  * @var string
  */
 const PID = 'pid_v1.3/pid.class.php';
 
 /**
  * Defines latest stable release of "RUT Verifier" class
+ *
  * @var string
  */
 const RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
@@ -84,34 +93,40 @@ const RUTVERIFIER = 'rutverifier_v1.1/rutverifier.class.php';
 final class autoLoader {
     /**
      * Information about whether the autoloader is loaded or not
+     *
      * @var boolean
      */
     private $autoLoaderLoaded = false;
 
     /**
      * Container of the already included classes
+     *
      * @var array
      */
-    private $includedClasses = array();
+    private $includedClasses = array ();
 
     /**
      * Automatically load the code from the following classes on __construct
+     *
      * @var array
      */
-    private $includeOnLoad = array('debugInfo');
+    private $includeOnLoad = array (
+            'debugInfo'
+    );
 
     /**
      * Registers a new autoload register
      *
-     * @param boolean $registerAutoLoader Whether we should register the autoloader on __construct or not. Defaults to true
+     * @param boolean $registerAutoLoader
+     *        	Whether we should register the autoloader on __construct or not. Defaults to true
      */
-    public function __construct($registerAutoLoader=true) {
+    public function __construct($registerAutoLoader = true) {
         if ($registerAutoLoader === true) {
-            $this->registerAutoLoader();
+            $this->registerAutoLoader ();
         }
 
-        foreach($this->includeOnLoad AS $includeClass) {
-            $this->includeClass($includeClass);
+        foreach ( $this->includeOnLoad as $includeClass ) {
+            $this->includeClass ( $includeClass );
         }
     }
 
@@ -119,7 +134,7 @@ final class autoLoader {
      * Destructor
      */
     public function __destruct() {
-        $this->unregisterAutoLoader();
+        $this->unregisterAutoLoader ();
     }
 
     /**
@@ -128,7 +143,10 @@ final class autoLoader {
      * @return boolean Returns true if autoLoader could be loaded
      */
     final public function registerAutoLoader() {
-        $this->autoLoaderLoaded = spl_autoload_register(array($this, 'includeClass'));
+        $this->autoLoaderLoaded = spl_autoload_register ( array (
+                $this,
+                'includeClass'
+        ) );
         return $this->autoLoaderLoaded;
     }
 
@@ -139,7 +157,10 @@ final class autoLoader {
      */
     final public function unregisterAutoLoader() {
         if ($this->autoLoaderLoaded === true) {
-            $this->autoLoaderLoaded = !spl_autoload_unregister(array($this, 'includeClass'));
+            $this->autoLoaderLoaded = ! spl_autoload_unregister ( array (
+                    $this,
+                    'includeClass'
+            ) );
         }
         return $this->autoLoaderLoaded;
     }
@@ -153,11 +174,11 @@ final class autoLoader {
     final public function includeClass($class) {
         $return = false;
 
-        $class = str_replace(strtoupper(__NAMESPACE__).'\\', '', strtoupper($class));
+        $class = str_replace ( strtoupper ( __NAMESPACE__ ) . '\\', '', strtoupper ( $class ) );
         // Prevent double inclusion and check if file exists
-        if (!in_array($class, $this->includedClasses) AND is_readable(dirname(__FILE__).'/'.constant('\\'.__NAMESPACE__.'\\'.$class))) {
-            include(dirname(__FILE__).'/'.constant('\\'.__NAMESPACE__.'\\'.$class));
-            $this->includedClasses[] = $class;
+        if (! in_array ( $class, $this->includedClasses ) and is_readable ( dirname ( __FILE__ ) . '/' . constant ( '\\' . __NAMESPACE__ . '\\' . $class ) )) {
+            include (dirname ( __FILE__ ) . '/' . constant ( '\\' . __NAMESPACE__ . '\\' . $class ));
+            $this->includedClasses [] = $class;
             $return = true;
         }
 
@@ -175,17 +196,19 @@ final class autoLoader {
      * <code>$cacheManager</code> will now hold an instance of the cacheManager class
      * <code>$benchmark</code> will now hold an instance of the benchmark class
      *
-     * @param string $class The class name that we wish to instantiate
-     * @param array $parameters The parameters we want to pass to the constructor, in array form
+     * @param string $class
+     *        	The class name that we wish to instantiate
+     * @param array $parameters
+     *        	The parameters we want to pass to the constructor, in array form
      * @return object Returns the object that we want to initialize
      */
-    final public function instantiateClass($class, array $parameters=null) {
-        $this->registerAutoLoader();
-        $rc = new \ReflectionClass('\\'.__NAMESPACE__.'\\'.$class);
-        if (!is_array($parameters)) {
-            $parameters = array();
+    final public function instantiateClass($class, array $parameters = null) {
+        $this->registerAutoLoader ();
+        $rc = new \ReflectionClass ( '\\' . __NAMESPACE__ . '\\' . $class );
+        if (! is_array ( $parameters )) {
+            $parameters = array ();
         }
-        $this->unregisterAutoLoader();
-        return $rc->newInstanceArgs($parameters);
+        $this->unregisterAutoLoader ();
+        return $rc->newInstanceArgs ( $parameters );
     }
 }
