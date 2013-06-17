@@ -1,6 +1,11 @@
 benchmark.class.php
 ======
 
+This class is deprecated! It is merged with the class "debugInfo" now!
+--------
+
+Please refer to this class before going on! This class will soon disappear from the repo.
+
 Credits
 --------
 

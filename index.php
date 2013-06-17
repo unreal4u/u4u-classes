@@ -2,30 +2,36 @@
 
 include('stable-versions.php');
 
-$output = false;
 $autoLoader = new \u4u\autoLoader();
+$autoLoader->includeClass('cacheManager');
 $definedConstants = get_defined_constants(true);
+$userDefinedConstants = $definedConstants['user'];
+unset($definedConstants);
 
 try {
-    // Either way is valid, I prefer second method as it is simpler
-    #$cacheManager = $autoLoader->instantiateClass('cacheManager', array('apc'));
-    $cacheManager = new u4u\cacheManager('apc');
-    $output = $cacheManager->load('definedU4UClasses', $definedConstants['user']);
+    // Initialize cacheManager without checks (thus, assume apcCache file exists)
+    $cacheManager = new \u4u\cacheManagerNoChecks('apc');
+    $output = $cacheManager->load('definedU4UClasses', array('u4u-internals', $userDefinedConstants));
 } catch (Exception $e) {
-    print('APC not installed? '.$e->getMessage());
+    printf('Error: <span style="color:red">%s</span><br />', $e->getMessage());
+    $output = false;
 }
 
+$bench = $autoLoader->instantiateClass('benchmark');
+
+$bench->beginCounter('outputGeneration');
 if ($output === false) {
     $output = '';
-    foreach($definedConstants['user'] AS $definedConstantKey => $definedConstantValue) {
+    foreach($userDefinedConstants AS $definedConstantKey => $definedConstantValue) {
         $output .= '<p>Go to class: <a href="./'.dirname($definedConstantValue).'/">'.str_replace('u4u\\', '', strtolower($definedConstantKey)).'</a></p>';
     }
 
     if (!empty($cacheManager)) {
-        // Silently fail
-        $cacheManager->save($output, 'definedU4UClasses', $definedConstants['user'], 3600);
+        // Silently fail if APC is not defined
+        $cacheManager->save($output, 'definedU4UClasses', array('u4u-internals', $userDefinedConstants), 86400);
     }
-
 }
+
+printf('Total generation time: %f seconds', $bench->endCounter('outputGeneration'));
 
 echo $output;

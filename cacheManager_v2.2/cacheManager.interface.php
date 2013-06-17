@@ -12,6 +12,11 @@ namespace u4u;
  */
 interface cacheManagerInterface {
     /**
+     * Every interface MUST implement the constructor or else we'll have a infinite loop problem!
+     */
+    public function __construct();
+
+    /**
      * Does the actual check whether the module can be enabled or not
      *
      * For APC it can be used to check if APC is installed and loaded, file based cache can check whether the cache dir

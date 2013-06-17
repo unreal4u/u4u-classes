@@ -1,8 +1,6 @@
 README
 ==============
 
-NOTE: This branch isn't ready for production yet as not all classes has been thoroughly tested yet!
-
 u4u-classes
 --------------
 
