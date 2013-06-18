@@ -6,7 +6,7 @@ namespace u4u;
  * Provides interaction with user space cache in APC
  *
  * @package Cache Class
- * @version 2.0
+ * @since 2.0
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */

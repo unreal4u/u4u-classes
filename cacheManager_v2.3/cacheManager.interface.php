@@ -6,7 +6,7 @@ namespace u4u;
  * The interface that all childs must implement
  *
  * @package Cache manager
- * @version 2.0
+ * @since 2.0
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
@@ -53,20 +53,20 @@ interface cacheManagerInterface {
      */
     public function load($identifier='', $funcArgs=null);
 
-   	/**
-   	 * Physically removes a cache entry from memory
-   	 *
-   	 * @param string $identifier A unique name to use
-   	 * @param array $funcArgs Optional extra arguments to differentiate cache options
-   	 * @return boolean Returns true when the cache could be deleted successfully, false otherwise
-   	 */
+       /**
+        * Physically removes a cache entry from memory
+        *
+        * @param string $identifier A unique name to use
+        * @param array $funcArgs Optional extra arguments to differentiate cache options
+        * @return boolean Returns true when the cache could be deleted successfully, false otherwise
+        */
     public function delete($identifier='', $funcArgs=null);
 
-   	/**
-   	 * Deletes the entire cache
-   	 *
-   	 * @return boolean Returns true when cache could be deleted, false otherwise
-   	 */
+       /**
+        * Deletes the entire cache
+        *
+        * @return boolean Returns true when cache could be deleted, false otherwise
+        */
     public function purgeCache();
 
     /**

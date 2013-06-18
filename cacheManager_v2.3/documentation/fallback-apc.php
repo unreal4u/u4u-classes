@@ -8,12 +8,14 @@ $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 include('../cacheManager.class.php');
 
 try {
-	$cache = new u4u\cacheManager('apc', true);
-	if (!$cache->checkIsEnabled()) {
-	    $cache = new cacheManager('file', '/tmp/myCacheDirectory/');
-	}
+    $cache = new u4u\cacheManager('apc', true);
+    if (!$cache->checkIsEnabled()) {
+        $cache = new cacheManager('file', '/tmp/myCacheDirectory/');
+    }
 } catch(u4u\cacheException $e) {
-	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+    print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+    $cache = new u4u\cacheManagerNoChecks('default');
+    print('Going back to "'.$cache->cacheName.'" base class! This equals no cache at all!<br />');
 } catch (u4u\versionException $e) {
     die($e->getMessage());
 }
@@ -22,33 +24,33 @@ try {
 $languageMessages = $cache->load('languageMessages', $languageIds);
 // If that didn't deliver any results, process it and save it into cache
 if (empty($languageMessages)) {
-	foreach($languageIds AS $languageId) {
-		switch($languageId) {
-			case 'en_US':
-				$message = 'Good morning';
-				break;
-			case 'en_UK':
-				$message = 'All hail the queen on this beautiful morning';
-				break;
-			case 'nl_NL':
-				$message = 'Goede morgen allemaal';
-				break;
-			case 'es_ES':
-				$message = 'Buenos días tío!';
-				break;
-			case 'es_CL':
-				$message = 'Buenos días a todos! - El matinal de Chile';
-				break;
-		}
+    foreach($languageIds AS $languageId) {
+        switch($languageId) {
+            case 'en_US':
+                $message = 'Good morning';
+                break;
+            case 'en_UK':
+                $message = 'All hail the queen on this beautiful morning';
+                break;
+            case 'nl_NL':
+                $message = 'Goede morgen allemaal';
+                break;
+            case 'es_ES':
+                $message = 'Buenos días tío!';
+                break;
+            case 'es_CL':
+                $message = 'Buenos días a todos! - El matinal de Chile';
+                break;
+        }
 
-		$languageMessages[$languageId] = $message;
-	}
+        $languageMessages[$languageId] = $message;
+    }
 
-	print('Build cache from scratch');
-	// Saving the cache
-	$cache->save($languageMessages, 'languageMessages', $languageIds, 120);
+    print('Build cache from scratch');
+    // Saving the cache
+    $cache->save($languageMessages, 'languageMessages', $languageIds, 120);
 } else {
-	print('Rescued from cache');
+    print('Rescued from cache');
 }
 
 print('<br />var_dump of newly created (or rescued) cache below: ');

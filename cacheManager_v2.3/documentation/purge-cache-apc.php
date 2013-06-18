@@ -5,9 +5,11 @@ $languageIds = array('en_US', 'en_UK', 'nl_NL', 'es_ES', 'es_CL');
 include('../cacheManager.class.php');
 
 try {
-	$cache = new u4u\cacheManager('apc', true);
+    $cache = new u4u\cacheManager('apc', true);
 } catch(u4u\cacheException $e) {
-	print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+    print('Exception caught! Message: "'.$e->getMessage().'"<br />');
+    $cache = new u4u\cacheManagerNoChecks('default');
+    print('Going back to "'.$cache->cacheName.'" base class! This equals no cache at all!<br />');
 } catch (u4u\versionException $e) {
     die($e->getMessage());
 }

@@ -9,7 +9,7 @@ include ('exceptions.class.php');
  * The main cache manager class which will call the child specified cache module
  *
  * @package Cache manager
- * @version 2.2
+ * @version 2.3
  * @author Camilo Sperberg - http://unreal4u.com/
  * @license BSD License. Feel free to use and modify
  */
@@ -18,7 +18,7 @@ class cacheManager {
      * The version of this class
      * @var string
      */
-    private $version = '2.2';
+    private $version = '2.3';
 
     /**
      * Holds the child object
@@ -69,6 +69,12 @@ class cacheManager {
     public $debugMode = false;
 
     /**
+     * Stores the cache name on which we are operating
+     * @var string
+     */
+    public $cacheName = '';
+
+    /**
      * Constructor, initializes the object
      *
      * @throws versionException If minimum PHP version is not met, this exception will be thrown
@@ -79,13 +85,13 @@ class cacheManager {
             throw new \u4u\versionException('This class will only work with PHP &gt;= 5.3.0');
         }
         $args = func_get_args();
-        $objectName = array_shift($args) . 'Cache';
-        $route = dirname(__FILE__) . '/cacheTypes/' . $objectName . '.class.php';
+        $this->cacheName = array_shift($args) . 'Cache';
+        $route = dirname(__FILE__) . '/cacheTypes/' . $this->cacheName . '.class.php';
         // If you want speed, ensure that the cache you've selected exists and delete the is_readable call
         if (!$this->omitExistanceCheck || is_readable($route)) {
             include_once ($route);
             $ns = '\\' . __NAMESPACE__ . '\\';
-            $rc = new \ReflectionClass($ns . $objectName);
+            $rc = new \ReflectionClass($ns . $this->cacheName);
             $this->object = $rc->newInstanceArgs($args);
             if ((!$rc->implementsInterface($ns . 'cacheManagerInterface')) or !$rc->isSubclassOf($ns . 'cacheManager')) {
                 $errorMessage = 'Class doesn\'t implements cacheManager and/or don\'t extends cacheManager, aborting creation';
@@ -107,7 +113,7 @@ class cacheManager {
             }
         } else {
             if ($this->throwExceptions === true) {
-                throw new \u4u\cacheException('Cache type "' . $objectName . '" does not exist');
+                throw new \u4u\cacheException('Cache type "' . $this->cacheName . '" does not exist');
             }
         }
     }
@@ -224,6 +230,7 @@ class cacheManager {
  * Little subclass that deactivates the check whether the cache file exists
  *
  * @package Cache manager
+ * @since 2.2
  * @author Camilo Sperberg - http://unreal4u.com/
  */
 class cacheManagerNoChecks extends \u4u\cacheManager {
