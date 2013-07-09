@@ -45,6 +45,10 @@ class csstacker {
      */
     public $CSSErrors = array();
 
+    public function __construct() {
+        // Not implemented yet
+    }
+
     /**
      * Adds CSS files to the stack
      *
