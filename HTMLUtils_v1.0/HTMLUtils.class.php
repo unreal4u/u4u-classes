@@ -150,8 +150,7 @@ This function creates all necesary output for the "link" tag. I didn't support t
   public function c_link($href='',$type='css') {
     $output = '<link rel="';
     $file = $this->external($href);
-    if ($file['readable'] === FALSE) $output = FALSE;
-    if ($output !== FALSE) {
+    if (!empty($file['href'])) {
       if ($type == 'shortcut') $output .= 'shortcut icon';
       elseif ($type == 'css')  $output .= 'stylesheet" type="text/css';
       else $output = FALSE;
