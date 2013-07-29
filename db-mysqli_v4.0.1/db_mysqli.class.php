@@ -442,7 +442,7 @@ class db_mysqli {
                 $this->logError($sqlQuery, $this->db->errno, 'fatal', $this->db->error);
             }
 
-            if (isset($arg_array[0])) {
+            if (is_array($arg_array)) {
                 array_unshift($arg_array, $types);
                 if (empty($this->error)) {
                     if (!$executeQuery = @call_user_func_array(array($this->stmt, 'bind_param'), $this->makeValuesReferenced($arg_array))) {
