@@ -9,6 +9,8 @@ namespace u4u;
  * @author Camilo Sperberg - http://unreal4u.com/
  */
 
+const ARRAYOPERATIONS = 'arrayOperations_v0.1/arrayOperations.class.php';
+
 /**
  * Defines latest stable release of "benchmark" class
  *

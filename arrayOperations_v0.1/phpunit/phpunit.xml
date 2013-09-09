@@ -1,0 +1,9 @@
+<phpunit colors="true" strict="true" verbose="false">
+    <testsuite name="previousNext">
+        <directory>./</directory>
+    </testsuite>
+
+    <logging>
+        <log type="coverage-html" target="report/" charset="UTF-8" yui="true" highlight="true"/>
+    </logging>
+</phpunit>
