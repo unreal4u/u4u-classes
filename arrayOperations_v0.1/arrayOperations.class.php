@@ -20,22 +20,21 @@ class arrayOperations extends \ArrayIterator {
      * @return array
      */
     public function getNextAndPrevious($id, $valuesArray) {
-        $done = $previous = $next = $returnId = false;
-        $i = 0;
+        $previous = $next = $returnId = false;
         if (is_array($valuesArray) && in_array($id, $valuesArray)) {
-            reset($valuesArray);
-            while ($done !== true || key($valuesArray) !== null) {
-                if (current($valuesArray) === $id) {
-                    $done = true;
-                    if ($i !== 0) {
-                        $previous = prev($valuesArray);
-                        next($valuesArray);
-                    }
-                    $next = next($valuesArray);
+            $arrayObject = new \ArrayObject($valuesArray);
+            $arrayIterator = $arrayObject->getIterator();
+            while ($arrayIterator->valid() && empty($returnId)) {
+                if ($arrayIterator->current() === $id) {
                     $returnId = $id;
+                } else {
+                    $previous = $arrayIterator->current();
                 }
-                next($valuesArray);
-                $i++;
+                $arrayIterator->next();
+            }
+
+            if ($arrayIterator->valid()) {
+                $next = $arrayIterator->current();
             }
         }
 
