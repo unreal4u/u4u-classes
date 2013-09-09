@@ -1,5 +1,5 @@
 <phpunit colors="true" strict="true" verbose="false">
-    <testsuite name="previousNext">
+    <testsuite name="arrayOperations class">
         <directory>./</directory>
     </testsuite>
 
