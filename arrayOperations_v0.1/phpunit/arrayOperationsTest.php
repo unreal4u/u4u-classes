@@ -6,11 +6,11 @@ require_once '../arrayOperations.class.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
- * rutverifier test case.
+ * arrayOperations test case.
  */
 class arrayOperationsTest extends \PHPUnit_Framework_TestCase {
     /**
-     * @var rutverifier
+     * @var arrayOperations
      */
     private $arrayOperations;
 
@@ -36,23 +36,26 @@ class arrayOperationsTest extends \PHPUnit_Framework_TestCase {
      * @return array
      */
     public function provider_getNextAndPrevious() {
-        $mapValues[] = array(1,       array(1,3,5,6,7,8,11), array('prev' => false, 'next' => 3,     'curr' => 1));
-        $mapValues[] = array(7,       array(1,3,5,6,7,8,11), array('prev' => 6,     'next' => 8,     'curr' => 7));
-        $mapValues[] = array(5,       array(1,3,5,6,7,8,11), array('prev' => 3,     'next' => 6,     'curr' => 5));
-        $mapValues[] = array(8,       array(1,3,5,6,8,11),   array('prev' => 6,     'next' => 11,    'curr' => 8));
-        $mapValues[] = array(11,      array(1,3,5,6,8,11),   array('prev' => 8,     'next' => false, 'curr' => 11));
-        $mapValues[] = array(20,      array(1,3,5,6,8,11),   array('prev' => false, 'next' => false, 'curr' => false));
-        $mapValues[] = array('a',     array('a', 'b', 'c'),  array('prev' => false, 'next' => 'b',   'curr' => 'a'));
-        $mapValues[] = array(1,       array(1,2),            array('prev' => false, 'next' => 2,     'curr' => 1));
-        $mapValues[] = array(2,       array(1,2),            array('prev' => 1,     'next' => false, 'curr' => 2));
-        $mapValues[] = array(1,       array(1),              array('prev' => false, 'next' => false, 'curr' => 1));
-        $mapValues[] = array(5,       array(),               array('prev' => false, 'next' => false, 'curr' => false));
-        $mapValues[] = array(false,   array(),               array('prev' => false, 'next' => false, 'curr' => false));
-        $mapValues[] = array(array(), array(),               array('prev' => false, 'next' => false, 'curr' => false));
-        $mapValues[] = array(true,    array(true, false),    array('prev' => false, 'next' => false, 'curr' => true));
-        $mapValues[] = array(true,    array(true),           array('prev' => false, 'next' => false, 'curr' => true));
-        $mapValues[] = array(null,    null,                  array('prev' => false, 'next' => false, 'curr' => false));
-        $mapValues[] = array(3,       null,                  array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(1,       array(1,3,5,6,7,8,11),   array('prev' => false, 'next' => 3,     'curr' => 1));
+        $mapValues[] = array(7,       array(1,3,5,6,7,8,11),   array('prev' => 6,     'next' => 8,     'curr' => 7));
+        $mapValues[] = array(5,       array(1,3,5,6,7,8,11),   array('prev' => 3,     'next' => 6,     'curr' => 5));
+        $mapValues[] = array(8,       array(1,3,5,6,8,11),     array('prev' => 6,     'next' => 11,    'curr' => 8));
+        $mapValues[] = array(11,      array(1,3,5,6,8,11),     array('prev' => 8,     'next' => false, 'curr' => 11));
+        $mapValues[] = array(20,      array(1,3,5,6,8,11),     array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array('a',     array('a', 'b', 'c'),    array('prev' => false, 'next' => 'b',   'curr' => 'a'));
+        $mapValues[] = array(1,       array(1,2),              array('prev' => false, 'next' => 2,     'curr' => 1));
+        $mapValues[] = array(2,       array(1,2),              array('prev' => 1,     'next' => false, 'curr' => 2));
+        $mapValues[] = array(1,       array(1),                array('prev' => false, 'next' => false, 'curr' => 1));
+        $mapValues[] = array(5,       array(),                 array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(false,   array(),                 array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(array(), array(),                 array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(true,    array(true, false),      array('prev' => false, 'next' => false, 'curr' => true));
+        $mapValues[] = array(true,    array(true),             array('prev' => false, 'next' => false, 'curr' => true));
+        $mapValues[] = array(null,    null,                    array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(3,       null,                    array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(array(3),array(array(3), 4),      array('prev' => false, 'next' => 4,     'curr' => array(3)));
+        $mapValues[] = array(array(3),array(array(3, 4), 5),   array('prev' => false, 'next' => false, 'curr' => false));
+        $mapValues[] = array(3.1415,  array(3.14,3.1415,3.15), array('prev' => 3.14, 'next' => 3.15,  'curr' => 3.1415));
 
         return $mapValues;
     }

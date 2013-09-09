@@ -13,11 +13,16 @@ namespace u4u;
 class arrayOperations extends \ArrayIterator {
 
     /**
-     * Gets the previous, next and current value of array. Current equals given id
+     * Gets the previous, next and current value of array. Current equals given id if id is found, otherwise it will
+     * return false
      *
-     * @param mixed $id
-     * @param array $valuesArray
-     * @return array
+     * Possible use-cases:
+     * 1- Show next and previous search result given that you have a searchresult in the form of an array with id's
+     * 2- Every operation where you need to be aware if there is a possible next and/or previous id
+     *
+     * @param mixed $id Any value of the array
+     * @param array $valuesArray The array with all the possible values
+     * @return array Returns an array with indexes 'prev', 'next' and 'curr'
      */
     public function getNextAndPrevious($id, $valuesArray) {
         $previous = $next = $returnId = false;
