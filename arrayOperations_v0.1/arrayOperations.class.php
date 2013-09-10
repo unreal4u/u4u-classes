@@ -22,27 +22,57 @@ class arrayOperations extends \ArrayIterator {
      *
      * @param mixed $id Any value of the array
      * @param array $valuesArray The array with all the possible values
+     * @param boolean $basedOnKey Whether to check the key of the array or the value. Defaults to value
      * @return array Returns an array with indexes 'prev', 'next' and 'curr'
      */
-    public function getNextAndPrevious($id, $valuesArray) {
-        $previous = $next = $returnId = false;
-        if (is_array($valuesArray) && in_array($id, $valuesArray)) {
-            $arrayObject = new \ArrayObject($valuesArray);
-            $arrayIterator = $arrayObject->getIterator();
-            while ($arrayIterator->valid() && empty($returnId)) {
-                if ($arrayIterator->current() === $id) {
-                    $returnId = $id;
-                } else {
-                    $previous = $arrayIterator->current();
-                }
-                $arrayIterator->next();
-            }
+    public function getNextAndPrevious($id, $valuesArray, $basedOnKey=false) {
+        // Declaring must needed variables
+        $previous = $next = $returnId = $checkValue = false;
 
-            if ($arrayIterator->valid()) {
-                $next = $arrayIterator->current();
+        // Check if we have valid values
+        if (is_array($valuesArray)) {
+            if ($basedOnKey) {
+                $checkValue = array_key_exists($id, $valuesArray);
+            } else {
+                $checkValue = in_array($id, $valuesArray);
             }
         }
 
+        // Value/Key does exist in array and array is valid array... continue on
+        if ($checkValue) {
+            $arrayObject = new \ArrayObject($valuesArray);
+            $arrayIterator = $arrayObject->getIterator();
+            // Exit immediatly if we get a valid id
+            while ($arrayIterator->valid() && empty($returnId)) {
+                // Get the current id we are looking for
+                if ($basedOnKey) {
+                    $currentId = $arrayIterator->key();
+                } else {
+                    $currentId = $arrayIterator->current();
+                }
+
+                if ($currentId == $id) {
+                    // We have found our key!
+                    $returnId = $id;
+                } else {
+                    // If we are here, it means we haven't found our value yet, so set previous already
+                    $previous = $currentId;
+                }
+                // Advance pointer for next (?) operation
+                $arrayIterator->next();
+            }
+
+            // Set next key
+            if ($arrayIterator->valid()) {
+                if ($basedOnKey) {
+                    $next = $arrayIterator->key();
+                } else {
+                    $next = $arrayIterator->current();
+                }
+            }
+        }
+
+        // Return everything
         return array(
             'prev' => $previous,
             'next' => $next,
